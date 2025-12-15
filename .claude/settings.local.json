@@ -1,0 +1,17 @@
+{
+  "permissions": {
+    "allow": [
+      "WebSearch",
+      "Bash(npx bmad-method@alpha install:*)",
+      "Bash(npx bmad-method@alpha --help)",
+      "Bash(npm install:*)",
+      "Bash(npx bmad-cli:*)",
+      "Bash(node:*)",
+      "Bash(start index.html)",
+      "Bash(ls:*)",
+      "Bash(cat:*)",
+      "Bash(git init:*)",
+      "Bash(git add:*)"
+    ]
+  }
+}
