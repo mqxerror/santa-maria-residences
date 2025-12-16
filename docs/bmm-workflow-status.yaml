@@ -29,14 +29,14 @@ workflow_status:
 
   # Phase 1: Planning
   prd: "docs/prd.md"
-  create-ux-design: conditional
+  create-ux-design: "docs/ux-design-specification.md"
 
   # Phase 2: Solutioning
-  create-architecture: required
-  create-epics-and-stories: required
+  create-architecture: "docs/architecture.md"
+  create-epics-and-stories: "docs/epics.md"
   test-design: recommended
   validate-architecture: optional
-  implementation-readiness: required
+  implementation-readiness: "docs/implementation-readiness-report.md"
 
   # Phase 3: Implementation
-  sprint-planning: required
+  sprint-planning: "docs/sprint-status.yaml"

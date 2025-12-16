@@ -1,0 +1,65 @@
+# generated: 2025-12-16
+# project: Santa Maria Residences
+# tracking_system: file-system
+# story_location: docs/stories
+
+# STATUS DEFINITIONS:
+# ==================
+# Epic Status:
+#   - backlog: Epic not yet started
+#   - in-progress: Epic actively being worked on
+#   - done: All stories in epic completed
+#
+# Story Status:
+#   - backlog: Story only exists in epic file
+#   - drafted: Story file created in stories folder
+#   - ready-for-dev: Draft approved, ready for development
+#   - in-progress: Developer actively working on implementation
+#   - review: Implementation complete, ready for review
+#   - done: Story completed
+#
+# Retrospective Status:
+#   - optional: Can be completed but not required
+#   - completed: Retrospective has been done
+#
+# WORKFLOW NOTES:
+# ===============
+# - Mark epic as 'in-progress' when starting work on its first story
+# - SM typically drafts next story ONLY after previous one is 'done' to incorporate learnings
+# - Dev moves story to 'review', then Dev runs code-review (fresh context, ideally different LLM)
+
+generated: 2025-12-16
+project: Santa Maria Residences
+tracking_system: file-system
+story_location: docs/stories
+
+development_status:
+  # Epic 1: Foundation & Database
+  epic-1: done
+  1-1-project-initialization: done
+  1-2-supabase-configuration: done
+  1-3-database-schema-and-seed-data: done
+  epic-1-retrospective: optional
+
+  # Epic 2: Public Building Exploration
+  epic-2: done
+  2-1-building-visualization-component: done  # Hybrid image + floor overlays
+  2-2-floor-panel-with-apartments: done
+  2-3-status-color-display: done
+  2-4-contact-information-display: done  # Descoped - not needed per client
+  epic-2-retrospective: optional
+
+  # Epic 3: Admin Authentication
+  epic-3: done
+  3-1-login-page: done
+  3-2-protected-routes: done
+  3-3-logout-functionality: done
+  epic-3-retrospective: optional
+
+  # Epic 4: Admin Inventory Management
+  epic-4: done
+  4-1-inventory-dashboard: done
+  4-2-status-filtering: done
+  4-3-single-click-status-update: done
+  4-4-apartment-notes: done
+  epic-4-retrospective: optional

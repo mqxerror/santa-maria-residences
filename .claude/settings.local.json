@@ -11,7 +11,20 @@
       "Bash(ls:*)",
       "Bash(cat:*)",
       "Bash(git init:*)",
-      "Bash(git add:*)"
+      "Bash(git add:*)",
+      "Bash(git commit -m \"$(cat <<''EOF''\nInitial commit: Santa Maria Residences project setup\n\n- BMAD Method v6 alpha framework installed\n- Product Brief completed (docs/analysis/product-brief-*.md)\n- PRD completed with 29 FRs and 15 NFRs (docs/prd.md)\n- Workflow status tracking configured\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nCo-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>\nEOF\n)\")",
+      "Bash(git config:*)",
+      "Bash(gh repo create:*)",
+      "Bash(winget install:*)",
+      "Bash(git remote add:*)",
+      "Bash(git push:*)",
+      "Bash(git restore:*)",
+      "Bash(npm create:*)",
+      "Bash(npx tsc:*)",
+      "Bash(npm run build:*)",
+      "Bash(npm run dev:*)",
+      "Bash(curl:*)",
+      "Bash(dir \"C:\\Users\\Wassim\\Documents\\Pana Hotel Website\\public\\assets\")"
     ]
   }
 }

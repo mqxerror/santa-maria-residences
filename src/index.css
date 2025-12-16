@@ -1,0 +1,175 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    background-color: #f8fafc;
+    color: #0f172a;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}
+
+@layer components {
+  /* Card base styles */
+  .card {
+    @apply bg-surface rounded-lg border border-border shadow-card;
+  }
+
+  .card-hover {
+    @apply transition-all duration-150 ease-out;
+  }
+
+  .card-hover:hover {
+    @apply shadow-card-hover border-border-dark;
+    transform: translateY(-2px);
+  }
+
+  /* Status badges */
+  .badge {
+    @apply inline-flex items-center px-2 py-0.5 rounded text-xs font-medium;
+  }
+
+  .badge-available {
+    background-color: rgba(16, 185, 129, 0.1);
+    color: #10b981;
+  }
+
+  .badge-limited {
+    background-color: rgba(245, 158, 11, 0.1);
+    color: #f59e0b;
+  }
+
+  .badge-sold {
+    background-color: rgba(100, 116, 139, 0.1);
+    color: #64748b;
+  }
+
+  /* Section titles */
+  .section-title {
+    @apply text-xl font-semibold;
+    color: #0f172a;
+  }
+
+  .section-subtitle {
+    @apply text-sm;
+    color: #475569;
+  }
+
+  /* Button base */
+  .btn {
+    @apply inline-flex items-center justify-center px-4 py-2 rounded-md font-medium transition-all duration-150;
+  }
+
+  .btn-primary {
+    @apply bg-primary text-white;
+  }
+
+  .btn-primary:hover {
+    @apply bg-primary-light;
+  }
+
+  .btn-secondary {
+    @apply bg-surface border border-border;
+    color: #0f172a;
+  }
+
+  .btn-secondary:hover {
+    @apply bg-background border-border-dark;
+  }
+
+  .btn-accent {
+    @apply bg-accent text-white;
+  }
+
+  .btn-accent:hover {
+    @apply bg-accent-light;
+  }
+
+  /* Tooltip */
+  .tooltip {
+    @apply absolute z-50 px-3 py-2 bg-primary text-white text-sm rounded-lg shadow-lg;
+    animation: fadeIn 150ms ease-out;
+  }
+
+  .tooltip::after {
+    content: '';
+    @apply absolute w-2 h-2 bg-primary;
+    transform: rotate(45deg);
+  }
+
+  .tooltip-right::after {
+    @apply top-1/2;
+    left: -4px;
+    transform: translateY(-50%) rotate(45deg);
+  }
+}
+
+@layer utilities {
+  /* Text colors using CSS variables for nested colors */
+  .text-text-primary {
+    color: #0f172a;
+  }
+
+  .text-text-secondary {
+    color: #475569;
+  }
+
+  .text-text-muted {
+    color: #94a3b8;
+  }
+
+  /* Scrollbar styling */
+  .scrollbar-thin {
+    scrollbar-width: thin;
+    scrollbar-color: #cbd5e1 transparent;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar-thumb {
+    background-color: #cbd5e1;
+    border-radius: 3px;
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes fadeSlide {
+  from {
+    opacity: 0;
+    transform: translateX(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes pulseSubtle {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.85;
+  }
+}
+
+.animate-fade-slide {
+  animation: fadeSlide 200ms ease-out;
+}
+
+.animate-pulse-subtle {
+  animation: pulseSubtle 2s ease-in-out infinite;
+}
