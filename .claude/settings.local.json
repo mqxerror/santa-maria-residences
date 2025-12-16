@@ -24,7 +24,10 @@
       "Bash(npm run build:*)",
       "Bash(npm run dev:*)",
       "Bash(curl:*)",
-      "Bash(dir \"C:\\Users\\Wassim\\Documents\\Pana Hotel Website\\public\\assets\")"
+      "Bash(dir \"C:\\Users\\Wassim\\Documents\\Pana Hotel Website\\public\\assets\")",
+      "Bash(git commit -m \"$(cat <<''EOF''\nfeat: Complete public website with premium UI design\n\nImplemented all 4 epics for Santa Maria Residences:\n\nEpic 1: Foundation & Database\n- Vite + React + TypeScript + Tailwind CSS setup\n- Supabase integration with 204 apartments seeded\n- RLS policies for public read / admin update\n\nEpic 2: Public Building Exploration\n- Hybrid building visualization with real tower image\n- Elevator panel navigation with jump-to-floor\n- Premium floor glow band with in-band labels\n- Accessibility icons (check/clock/lock) for colorblind safety\n\nEpic 3: Admin Authentication\n- Login page with Supabase Auth\n- Protected routes for /admin\n- Logout functionality\n\nEpic 4: Admin Inventory Management\n- Dashboard with summary cards\n- Status filtering and single-click updates\n- Inline notes editing\n\nDesign System:\n- 8px spacing grid\n- Inter font with typography scale\n- Emerald accent with semantic status colors\n- Premium tooltips with motion\n- Decision cards with price estimates\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nCo-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>\nEOF\n)\")",
+      "Bash(dir \"C:\\Users\\Wassim\\Documents\\Pana Hotel Website\\public\\assets\\gallery\")",
+      "Bash(git commit:*)"
     ]
   }
 }

@@ -42,37 +42,43 @@ export default function HomePage() {
     setSelectedApartment(null)
   }
 
+  // In detail view mode (apartment selected)
+  const isDetailView = !!selectedApartment
+
   return (
     <div className="min-h-screen flex flex-col bg-background">
       <Header />
 
       <main className="flex-1 flex overflow-hidden">
-        {/* Left Panel - Building Navigator (38%) */}
-        <div className="w-[38%] border-r border-border bg-surface flex flex-col">
-          <div className="flex-1 p-5 overflow-hidden">
-            {isLoading ? (
-              <div className="h-full flex items-center justify-center">
-                <div className="flex flex-col items-center gap-3">
-                  <div className="animate-spin rounded-full h-8 w-8 border-2 border-primary border-t-transparent"></div>
-                  <span className="text-sm text-text-muted">Loading building data...</span>
+        {/* Left Panel - Building Navigator (hidden in detail view) */}
+        {!isDetailView && (
+          <div className="w-[38%] border-r border-border bg-surface flex flex-col">
+            <div className="flex-1 p-4 overflow-hidden">
+              {isLoading ? (
+                <div className="h-full flex items-center justify-center">
+                  <div className="flex flex-col items-center gap-3">
+                    <div className="animate-spin rounded-full h-8 w-8 border-2 border-primary border-t-transparent"></div>
+                    <span className="text-sm text-text-muted">Loading...</span>
+                  </div>
                 </div>
-              </div>
-            ) : (
-              <BuildingImage
-                apartments={apartments}
-                selectedFloor={selectedFloor}
-                onFloorClick={handleFloorClick}
-              />
-            )}
+              ) : (
+                <BuildingImage
+                  apartments={apartments}
+                  selectedFloor={selectedFloor}
+                  onFloorClick={handleFloorClick}
+                />
+              )}
+            </div>
           </div>
-        </div>
+        )}
 
-        {/* Right Panel - Units Selection (62%) */}
-        <div className="w-[62%] flex flex-col overflow-hidden">
-          <div className="flex-1 p-5 overflow-hidden">
+        {/* Right Panel - Units Selection / Detail View */}
+        <div className={isDetailView ? 'flex-1' : 'w-[62%]'}>
+          <div className="h-full p-5 overflow-hidden">
             <FloorPanel
               floor={selectedFloor}
               apartments={floorApartments}
+              allApartments={apartments}
               selectedApartment={selectedApartment}
               onApartmentClick={setSelectedApartment}
               totalStats={totalStats}

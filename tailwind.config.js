@@ -23,7 +23,7 @@ export default {
         '24': '96px',
       },
       colors: {
-        // Brand colors - premium palette
+        // Brand colors - premium restrained palette
         primary: {
           DEFAULT: '#1e3a5f',      // Deep navy
           light: '#2d4a6f',
@@ -40,19 +40,20 @@ export default {
           light: '#d4b33d',
           foreground: '#1f2937',
         },
-        // Neutral system
-        background: '#f8fafc',
+        // Warm neutral system
+        background: '#fafaf9',     // Warm off-white (stone-50)
         surface: '#ffffff',
+        'surface-warm': '#fefdfb', // Slightly warm white
         border: {
-          DEFAULT: '#e2e8f0',
-          light: '#f1f5f9',
-          dark: '#cbd5e1',
+          DEFAULT: '#e7e5e4',      // Warm gray (stone-200)
+          light: '#f5f5f4',        // stone-100
+          dark: '#d6d3d1',         // stone-300
         },
         // Text hierarchy
         text: {
-          primary: '#0f172a',      // Near black - high contrast
-          secondary: '#475569',    // Slate - medium contrast
-          muted: '#94a3b8',        // Light slate - low contrast
+          primary: '#1c1917',      // Warm near-black (stone-900)
+          secondary: '#57534e',    // Warm medium (stone-600)
+          muted: '#a8a29e',        // Warm light (stone-400)
         },
         // Semantic status colors
         status: {

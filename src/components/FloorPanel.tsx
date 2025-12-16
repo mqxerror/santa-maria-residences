@@ -2,26 +2,32 @@ import { useState } from 'react'
 import type { Apartment } from '@/types/database'
 import ApartmentCard from './ApartmentCard'
 import ApartmentDetail from './ApartmentDetail'
-import { Check, Clock, Lock, Building2, Home, Filter } from 'lucide-react'
+import { Check, Clock, Lock, Building2, Home, ArrowUpDown } from 'lucide-react'
+import { cn } from '@/lib/utils'
 
 interface FloorPanelProps {
   floor: number | null
   apartments: Apartment[]
+  allApartments?: Apartment[]
   selectedApartment: Apartment | null
   onApartmentClick: (apt: Apartment | null) => void
   totalStats?: { available: number; reserved: number; sold: number; total: number }
 }
 
 type StatusFilter = 'all' | 'available' | 'reserved' | 'sold'
+type SortOption = 'unit' | 'price' | 'size'
 
 export default function FloorPanel({
   floor,
   apartments,
+  allApartments = [],
   selectedApartment,
   onApartmentClick,
   totalStats,
 }: FloorPanelProps) {
   const [statusFilter, setStatusFilter] = useState<StatusFilter>('all')
+  const [sortBy, setSortBy] = useState<SortOption>('unit')
+  const [showOnlyAvailable, setShowOnlyAvailable] = useState(false)
 
   // Empty state
   if (!floor) {
@@ -36,16 +42,16 @@ export default function FloorPanel({
 
           {/* Summary chips */}
           {totalStats && (
-            <div className="flex items-center gap-3 mt-3">
-              <div className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-background rounded-full text-sm">
+            <div className="flex items-center gap-2 mt-4">
+              <div className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-background rounded-full text-xs border border-border">
                 <Building2 className="w-3.5 h-3.5 text-text-muted" />
-                <span className="text-text-secondary">35 Floors</span>
+                <span className="text-text-secondary font-medium">35 Floors</span>
               </div>
-              <div className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-status-available-bg rounded-full text-sm">
+              <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs border border-status-available/30 bg-status-available/5">
                 <Check className="w-3.5 h-3.5 text-status-available" />
                 <span className="text-status-available font-medium">{totalStats.available} Available</span>
               </div>
-              <div className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-status-limited-bg rounded-full text-sm">
+              <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs border border-status-limited/30 bg-status-limited/5">
                 <Clock className="w-3.5 h-3.5 text-status-limited" />
                 <span className="text-status-limited font-medium">{totalStats.reserved} Reserved</span>
               </div>
@@ -56,7 +62,7 @@ export default function FloorPanel({
         {/* Empty state */}
         <div className="flex-1 flex items-center justify-center">
           <div className="text-center max-w-sm">
-            <div className="w-16 h-16 mx-auto mb-4 rounded-2xl bg-background border border-border flex items-center justify-center">
+            <div className="w-16 h-16 mx-auto mb-4 rounded-2xl bg-gradient-to-br from-background to-border-light border border-border flex items-center justify-center">
               <Home className="w-8 h-8 text-text-muted" />
             </div>
             <h3 className="text-lg text-text-primary font-semibold mb-2">Select a Floor</h3>
@@ -64,7 +70,7 @@ export default function FloorPanel({
               Use the elevator panel or click directly on the building to explore available units.
             </p>
             <p className="text-xs text-text-muted mt-3">
-              Tip: Use arrow keys to navigate floors
+              Tip: Use <kbd className="px-1.5 py-0.5 bg-background rounded border border-border text-[10px]">↑</kbd> <kbd className="px-1.5 py-0.5 bg-background rounded border border-border text-[10px]">↓</kbd> keys to navigate
             </p>
           </div>
         </div>
@@ -78,6 +84,7 @@ export default function FloorPanel({
       <ApartmentDetail
         apartment={selectedApartment}
         onBack={() => onApartmentClick(null)}
+        allApartments={allApartments}
       />
     )
   }
@@ -91,65 +98,102 @@ export default function FloorPanel({
   }
 
   // Filter apartments
-  const filteredApartments = statusFilter === 'all'
+  let filteredApartments = statusFilter === 'all'
     ? apartments
     : apartments.filter((a) => a.status === statusFilter)
+
+  if (showOnlyAvailable) {
+    filteredApartments = filteredApartments.filter((a) => a.status === 'available')
+  }
+
+  // Sort apartments
+  filteredApartments = [...filteredApartments].sort((a, b) => {
+    if (sortBy === 'unit') return a.unit.localeCompare(b.unit)
+    if (sortBy === 'size') return b.size_sqm - a.size_sqm
+    if (sortBy === 'price') {
+      const priceA = (3500 + (a.floor - 7) * 50) * a.size_sqm
+      const priceB = (3500 + (b.floor - 7) * 50) * b.size_sqm
+      return priceA - priceB
+    }
+    return 0
+  })
 
   return (
     <div className="h-full flex flex-col">
       {/* Page Header */}
       <div className="mb-4">
-        <div className="text-xs text-text-muted mb-2">
-          Projects / Santa Maria / Floor {floor}
+        <div className="text-xs text-text-muted mb-1">
+          Santa Maria / Floor {floor}
         </div>
-        <div className="flex items-center justify-between">
-          <div>
-            <h2 className="text-2xl text-text-primary font-semibold">Floor {floor}</h2>
-            <p className="text-sm text-text-secondary mt-0.5">
-              {stats.available} of {stats.total} units available
-            </p>
-          </div>
-          {/* Future: Filters button */}
-          <button className="btn-secondary text-sm gap-2 opacity-50 cursor-not-allowed" disabled>
-            <Filter className="w-4 h-4" />
-            Filters
-          </button>
+        <div className="flex items-baseline justify-between">
+          <h2 className="text-xl text-text-primary font-semibold">Floor {floor}</h2>
+          <span className="text-xs text-text-muted">
+            {stats.available} of {stats.total} available
+          </span>
         </div>
       </div>
 
-      {/* Segmented Control Tabs */}
-      <div className="card p-1.5 mb-4">
-        <div className="flex">
-          <TabButton
-            active={statusFilter === 'all'}
+      {/* Controls Bar */}
+      <div className="flex items-center justify-between gap-4 mb-4">
+        {/* Left: Segmented Control */}
+        <div className="segmented-control">
+          <button
             onClick={() => setStatusFilter('all')}
-            label="All"
-            count={stats.total}
-          />
-          <TabButton
-            active={statusFilter === 'available'}
+            className={cn('segment-btn', statusFilter === 'all' && 'active')}
+          >
+            <span>All</span>
+            <span className="count">{stats.total}</span>
+          </button>
+          <button
             onClick={() => setStatusFilter('available')}
-            label="Available"
-            count={stats.available}
-            icon={<Check className="w-3 h-3" />}
-            color="available"
-          />
-          <TabButton
-            active={statusFilter === 'reserved'}
+            className={cn('segment-btn', statusFilter === 'available' && 'active')}
+          >
+            <Check className={cn('w-3 h-3', statusFilter === 'available' ? 'text-white' : 'text-status-available')} />
+            <span>Available</span>
+            <span className="count">{stats.available}</span>
+          </button>
+          <button
             onClick={() => setStatusFilter('reserved')}
-            label="Reserved"
-            count={stats.reserved}
-            icon={<Clock className="w-3 h-3" />}
-            color="limited"
-          />
-          <TabButton
-            active={statusFilter === 'sold'}
+            className={cn('segment-btn', statusFilter === 'reserved' && 'active')}
+          >
+            <Clock className={cn('w-3 h-3', statusFilter === 'reserved' ? 'text-white' : 'text-status-limited')} />
+            <span>Reserved</span>
+            <span className="count">{stats.reserved}</span>
+          </button>
+          <button
             onClick={() => setStatusFilter('sold')}
-            label="Sold"
-            count={stats.sold}
-            icon={<Lock className="w-3 h-3" />}
-            color="sold"
-          />
+            className={cn('segment-btn', statusFilter === 'sold' && 'active')}
+          >
+            <Lock className={cn('w-3 h-3', statusFilter === 'sold' ? 'text-white' : 'text-status-sold')} />
+            <span>Sold</span>
+            <span className="count">{stats.sold}</span>
+          </button>
+        </div>
+
+        {/* Right: Sort + Toggle */}
+        <div className="flex items-center gap-4">
+          {/* Sort control */}
+          <div className="flex items-center gap-1.5">
+            <ArrowUpDown className="w-3 h-3 text-text-muted" />
+            <select
+              value={sortBy}
+              onChange={(e) => setSortBy(e.target.value as SortOption)}
+              className="text-xs bg-transparent text-text-secondary font-medium cursor-pointer focus:outline-none"
+            >
+              <option value="unit">Unit</option>
+              <option value="price">Price</option>
+              <option value="size">Size</option>
+            </select>
+          </div>
+
+          {/* Toggle */}
+          <button
+            onClick={() => setShowOnlyAvailable(!showOnlyAvailable)}
+            className="flex items-center gap-2"
+          >
+            <div className={cn('toggle-switch', showOnlyAvailable && 'active')} />
+            <span className="text-xs text-text-secondary">Available only</span>
+          </button>
         </div>
       </div>
 
@@ -157,11 +201,11 @@ export default function FloorPanel({
       {filteredApartments.length === 0 ? (
         <div className="flex-1 flex items-center justify-center">
           <div className="text-center">
-            <p className="text-text-muted">No {statusFilter} units on this floor</p>
+            <p className="text-sm text-text-muted">No {statusFilter !== 'all' ? statusFilter : ''} units found</p>
           </div>
         </div>
       ) : (
-        <div className="flex-1 overflow-y-auto scrollbar-thin -mx-2 px-2">
+        <div className="flex-1 overflow-y-auto scrollbar-thin -mx-1 px-1">
           <div className="grid grid-cols-2 xl:grid-cols-3 gap-3">
             {filteredApartments.map((apt) => (
               <ApartmentCard
@@ -174,47 +218,5 @@ export default function FloorPanel({
         </div>
       )}
     </div>
-  )
-}
-
-// Segmented Tab Button Component
-interface TabButtonProps {
-  active: boolean
-  onClick: () => void
-  label: string
-  count: number
-  icon?: React.ReactNode
-  color?: 'available' | 'limited' | 'sold'
-}
-
-function TabButton({ active, onClick, label, count, icon, color }: TabButtonProps) {
-  const colorClasses = {
-    available: 'text-status-available',
-    limited: 'text-status-limited',
-    sold: 'text-status-sold',
-  }
-
-  return (
-    <button
-      onClick={onClick}
-      className={`
-        flex-1 py-2 px-3 rounded-md text-sm font-medium transition-all duration-150
-        flex items-center justify-center gap-1.5
-        ${active
-          ? 'bg-primary text-white shadow-sm'
-          : 'text-text-secondary hover:bg-background'
-        }
-      `}
-    >
-      {icon && (
-        <span className={active ? 'text-white' : color ? colorClasses[color] : ''}>
-          {icon}
-        </span>
-      )}
-      <span>{label}</span>
-      <span className={`ml-1 ${active ? 'text-white/70' : 'text-text-muted'}`}>
-        ({count})
-      </span>
-    </button>
   )
 }

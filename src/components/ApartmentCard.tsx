@@ -1,13 +1,12 @@
 import { cn } from '@/lib/utils'
 import type { Apartment } from '@/types/database'
-import { Check, Clock, Lock, Maximize2, Compass, ArrowRight } from 'lucide-react'
+import { Check, Clock, Lock, Maximize2, ArrowRight } from 'lucide-react'
 
 interface ApartmentCardProps {
   apartment: Apartment
   onClick: () => void
 }
 
-// Unit type based on size
 const getUnitType = (sizeSqm: number): string => {
   if (sizeSqm >= 150) return 'Penthouse'
   if (sizeSqm >= 120) return '3 Bedroom'
@@ -16,10 +15,9 @@ const getUnitType = (sizeSqm: number): string => {
   return 'Studio'
 }
 
-// Estimate price based on floor and size (placeholder logic)
 const getEstimatedPrice = (floor: number, sizeSqm: number): string => {
-  const basePrice = 3500 // $ per sqm
-  const floorPremium = (floor - 7) * 50 // Higher floors cost more
+  const basePrice = 3500
+  const floorPremium = (floor - 7) * 50
   const pricePerSqm = basePrice + floorPremium
   const totalPrice = pricePerSqm * sizeSqm
 
@@ -29,44 +27,43 @@ const getEstimatedPrice = (floor: number, sizeSqm: number): string => {
   return `$${Math.round(totalPrice / 1000)}K`
 }
 
-// View direction based on unit
-const getViewDirection = (unit: string): string => {
-  const directions: Record<string, string> = {
-    'A': 'North',
-    'B': 'Northeast',
-    'C': 'East',
-    'D': 'West',
-    'E': 'Southeast',
-    'F': 'South',
+const getViewDirection = (unit: string): { full: string; short: string } => {
+  const directions: Record<string, { full: string; short: string }> = {
+    'A': { full: 'North', short: 'N' },
+    'B': { full: 'Northeast', short: 'NE' },
+    'C': { full: 'East', short: 'E' },
+    'D': { full: 'West', short: 'W' },
+    'E': { full: 'Southeast', short: 'SE' },
+    'F': { full: 'South', short: 'S' },
   }
-  return directions[unit] || 'City'
+  return directions[unit] || { full: 'City', short: 'C' }
 }
 
-// Status configuration
+// Status styling - all neutral CTAs, no green in grid
 const statusConfig = {
   available: {
     icon: Check,
     label: 'Available',
-    badgeClass: 'bg-status-available-bg text-status-available',
-    borderClass: 'group-hover:border-status-available/30',
-    cta: 'View Details',
-    ctaClass: 'bg-accent hover:bg-accent-light text-white',
+    badgeClass: 'bg-status-available/10 text-status-available',
+    ctaClass: 'bg-primary/5 border border-primary/20 text-primary hover:bg-primary/10',
+    cardClass: '',
+    contentClass: '',
   },
   reserved: {
     icon: Clock,
     label: 'Reserved',
-    badgeClass: 'bg-status-limited-bg text-status-limited',
-    borderClass: 'group-hover:border-status-limited/30',
-    cta: 'View Details',
-    ctaClass: 'bg-surface border border-border text-text-primary hover:bg-background',
+    badgeClass: 'bg-status-limited/10 text-status-limited',
+    ctaClass: 'bg-transparent border border-border text-text-secondary hover:bg-background',
+    cardClass: '',
+    contentClass: '',
   },
   sold: {
     icon: Lock,
     label: 'Sold',
-    badgeClass: 'bg-status-sold-bg text-status-sold',
-    borderClass: 'group-hover:border-status-sold/30',
-    cta: 'View Details',
-    ctaClass: 'bg-surface border border-border text-text-muted',
+    badgeClass: 'bg-status-sold/10 text-status-sold',
+    ctaClass: 'bg-transparent border border-border/60 text-text-muted hover:bg-background',
+    cardClass: 'bg-stone-50/50',
+    contentClass: 'opacity-60',
   },
 }
 
@@ -77,61 +74,74 @@ export default function ApartmentCard({ apartment, onClick }: ApartmentCardProps
   const viewDirection = getViewDirection(apartment.unit)
   const StatusIcon = config.icon
 
+  const isSold = apartment.status === 'sold'
+
   return (
     <button
       onClick={onClick}
       className={cn(
-        'card p-4 text-left w-full group relative',
-        'transition-all duration-200 ease-out',
-        'hover:shadow-card-hover hover:-translate-y-1',
-        config.borderClass
+        'bg-surface rounded-xl p-4 text-left w-full group relative',
+        'border border-border',
+        'card-interactive',
+        'focus:outline-none focus:ring-2 focus:ring-accent/50 focus:ring-offset-2',
+        config.cardClass
       )}
     >
-      {/* Status Badge */}
+      {/* Status Badge - consistent placement for all statuses */}
       <div className={cn(
-        'absolute top-3 right-3 flex items-center gap-1 px-2 py-0.5 rounded text-xs font-medium',
+        'absolute top-3 right-3 flex items-center gap-1 px-1.5 py-0.5 rounded-full text-[10px] font-medium',
         config.badgeClass
       )}>
-        <StatusIcon className="w-3 h-3" />
+        <StatusIcon className="w-2.5 h-2.5" />
         <span>{config.label}</span>
       </div>
 
-      {/* Unit Header */}
-      <div className="pr-20 mb-3">
-        <h3 className="text-lg text-text-primary font-semibold">
-          {apartment.floor}-{apartment.unit}
-        </h3>
-        <p className="text-sm text-text-secondary">
-          {unitType}
-        </p>
-      </div>
-
-      {/* Price */}
-      <div className="mb-3">
-        <span className="text-xs text-text-muted">From</span>
-        <div className="text-xl text-text-primary font-semibold">{price}</div>
-      </div>
-
-      {/* Attributes */}
-      <div className="flex items-center gap-4 text-sm text-text-secondary mb-4">
-        <div className="flex items-center gap-1.5">
-          <Maximize2 className="w-3.5 h-3.5 text-text-muted" />
-          <span>{apartment.size_sqm} m²</span>
+      {/* Content - muted for sold */}
+      <div className={config.contentClass}>
+        {/* Unit Header */}
+        <div className="pr-16 mb-2">
+          <h3 className="text-base text-text-primary font-semibold">
+            {apartment.floor}-{apartment.unit}
+          </h3>
+          <p className="text-xs text-text-muted">
+            {unitType}
+          </p>
         </div>
-        <div className="flex items-center gap-1.5">
-          <Compass className="w-3.5 h-3.5 text-text-muted" />
-          <span>{viewDirection}</span>
+
+        {/* Price - Visual Anchor */}
+        <div className="mb-3">
+          <span className="text-[10px] text-text-muted uppercase tracking-wide">{isSold ? 'Sold at' : 'From'}</span>
+          <div className="text-lg text-text-primary font-semibold">{price}</div>
+        </div>
+
+        {/* Attributes Row */}
+        <div className="flex items-center gap-3 text-xs text-text-secondary mb-3">
+          {/* Size */}
+          <div className="flex items-center gap-1">
+            <Maximize2 className="w-3 h-3 text-text-muted" />
+            <span>{apartment.size_sqm} m²</span>
+          </div>
+
+          {/* Compass Direction */}
+          <div className="flex items-center gap-1">
+            <div
+              className="compass-indicator"
+              data-direction={viewDirection.short}
+              title={viewDirection.full}
+            />
+            <span>{viewDirection.short}</span>
+          </div>
         </div>
       </div>
 
-      {/* CTA - Always visible but enhanced on hover */}
+      {/* CTA - Consistent "View Details" for all, sublabel for sold */}
       <div className={cn(
-        'flex items-center justify-center gap-2 py-2 px-3 rounded-md text-sm font-medium',
-        'transition-all duration-150',
+        'flex items-center justify-center gap-1.5 py-2 rounded-lg text-xs font-medium transition-colors',
         config.ctaClass
       )}>
-        <span>{config.cta}</span>
-        <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5" />
+        <span>View Details</span>
+        {isSold && <span className="text-[10px] opacity-60">· Reference</span>}
+        <ArrowRight className="w-3 h-3" />
       </div>
     </button>
   )

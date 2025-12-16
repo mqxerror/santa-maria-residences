@@ -1,5 +1,4 @@
-import { useState, useRef, useEffect } from 'react'
-import { cn } from '@/lib/utils'
+import { useState, useEffect } from 'react'
 import type { Apartment } from '@/types/database'
 import { ChevronUp, ChevronDown, Check, Clock, Lock } from 'lucide-react'
 
@@ -16,8 +15,8 @@ const TOTAL_FLOORS = MAX_FLOOR - MIN_FLOOR + 1
 const BUILDING_CONFIG = {
   top: 5,
   bottom: 72,
-  left: 30,
-  right: 70,
+  left: 28,
+  right: 72,
 }
 
 type FloorStatus = 'available' | 'limited' | 'sold' | 'empty'
@@ -25,7 +24,6 @@ type FloorStatus = 'available' | 'limited' | 'sold' | 'empty'
 export default function BuildingImage({ apartments, selectedFloor, onFloorClick }: BuildingImageProps) {
   const [hoveredFloor, setHoveredFloor] = useState<number | null>(null)
   const [jumpToFloor, setJumpToFloor] = useState('')
-  const buildingRef = useRef<HTMLDivElement>(null)
 
   const getFloorStatus = (floor: number): FloorStatus => {
     const floorApts = apartments.filter((apt) => apt.floor === floor)
@@ -41,8 +39,7 @@ export default function BuildingImage({ apartments, selectedFloor, onFloorClick 
     const floorApts = apartments.filter((apt) => apt.floor === floor)
     const available = floorApts.filter((a) => a.status === 'available').length
     const reserved = floorApts.filter((a) => a.status === 'reserved').length
-    const sold = floorApts.filter((a) => a.status === 'sold').length
-    return { total: floorApts.length, available, reserved, sold }
+    return { total: floorApts.length, available, reserved }
   }
 
   const handleJumpToFloor = (e: React.FormEvent) => {
@@ -73,6 +70,7 @@ export default function BuildingImage({ apartments, selectedFloor, onFloorClick 
   // Keyboard navigation
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.target instanceof HTMLInputElement) return
       if (e.key === 'ArrowUp') {
         e.preventDefault()
         handleFloorUp()
@@ -107,10 +105,10 @@ export default function BuildingImage({ apartments, selectedFloor, onFloorClick 
         <p className="text-sm text-text-secondary mt-1">Select a floor to explore units</p>
       </div>
 
-      <div className="flex-1 flex gap-3 min-h-0">
-        {/* Elevator Panel Control */}
+      <div className="flex-1 flex gap-4 min-h-0">
+        {/* Elevator Panel - PRIMARY CONTROL */}
         <div className="flex flex-col w-20 shrink-0">
-          {/* Jump to floor input */}
+          {/* Jump to floor */}
           <form onSubmit={handleJumpToFloor} className="mb-3">
             <label className="text-xs text-text-muted block mb-1">Go to floor</label>
             <input
@@ -120,28 +118,28 @@ export default function BuildingImage({ apartments, selectedFloor, onFloorClick 
               value={jumpToFloor}
               onChange={(e) => setJumpToFloor(e.target.value)}
               placeholder="19"
-              className="w-full px-2 py-1.5 text-center text-sm font-semibold border border-border rounded-md bg-surface focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent"
+              className="w-full px-2 py-1.5 text-center text-sm font-semibold border border-border rounded-lg bg-surface focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent"
             />
           </form>
 
           {/* Elevator display */}
-          <div className="card flex-1 flex flex-col overflow-hidden">
+          <div className="flex-1 flex flex-col rounded-xl overflow-hidden shadow-md border border-border">
             {/* Up button */}
             <button
               onClick={handleFloorUp}
               disabled={selectedFloor === MAX_FLOOR}
-              className="p-2 border-b border-border hover:bg-background disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+              className="p-3 bg-surface border-b border-border hover:bg-background active:bg-border-light disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
             >
               <ChevronUp className="w-5 h-5 mx-auto text-text-secondary" />
             </button>
 
             {/* Floor display */}
-            <div className="flex-1 flex items-center justify-center bg-primary">
+            <div className="flex-1 flex items-center justify-center bg-gradient-to-b from-primary to-primary-dark">
               <div className="text-center">
-                <div className="text-3xl font-bold text-white tabular-nums">
+                <div className="text-4xl font-bold text-white tabular-nums tracking-tight">
                   {selectedFloor || '--'}
                 </div>
-                <div className="text-xs text-white/70 mt-0.5">FLOOR</div>
+                <div className="text-[10px] text-white/60 mt-1 uppercase tracking-widest">Floor</div>
               </div>
             </div>
 
@@ -149,52 +147,30 @@ export default function BuildingImage({ apartments, selectedFloor, onFloorClick 
             <button
               onClick={handleFloorDown}
               disabled={selectedFloor === MIN_FLOOR}
-              className="p-2 border-t border-border hover:bg-background disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+              className="p-3 bg-surface border-t border-border hover:bg-background active:bg-border-light disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
             >
               <ChevronDown className="w-5 h-5 mx-auto text-text-secondary" />
             </button>
           </div>
 
-          {/* Floor range indicator */}
+          {/* Floor range */}
           <div className="mt-2 text-center text-xs text-text-muted">
-            {MIN_FLOOR} - {MAX_FLOOR}
+            Floors {MIN_FLOOR}–{MAX_FLOOR}
           </div>
         </div>
 
-        {/* Building Image with Premium Overlays */}
-        <div ref={buildingRef} className="flex-1 relative flex items-center justify-center min-h-0">
-          <div className="relative h-full max-h-[580px] aspect-[3/5]">
+        {/* Building Image - SECONDARY CONTEXT */}
+        <div className="flex-1 relative flex items-center justify-center min-h-0">
+          <div className="relative h-full max-h-[560px] aspect-[3/5]">
             {/* Building Image */}
             <img
               src="/assets/santa-maria-tower.jpg"
               alt="Santa Maria Residences Tower"
-              className="h-full w-full object-cover rounded-xl shadow-lg"
+              className="h-full w-full object-cover rounded-2xl shadow-lg"
             />
 
-            {/* Floor status ticks on the right edge */}
-            <div className="absolute right-0 top-0 bottom-0 w-3 flex flex-col" style={{ top: `${BUILDING_CONFIG.top}%`, height: `${BUILDING_CONFIG.bottom - BUILDING_CONFIG.top}%` }}>
-              {floors.map((f) => {
-                const statusIcon = {
-                  available: <Check className="w-2 h-2 text-status-available" />,
-                  limited: <Clock className="w-2 h-2 text-status-limited" />,
-                  sold: <Lock className="w-2 h-2 text-status-sold" />,
-                  empty: null,
-                }[f.status]
-
-                return (
-                  <div
-                    key={f.floor}
-                    className="flex-1 flex items-center justify-center"
-                    title={`Floor ${f.floor}: ${f.stats.available} available`}
-                  >
-                    {statusIcon}
-                  </div>
-                )
-              })}
-            </div>
-
             {/* Floor Overlays */}
-            <div className="absolute inset-0 rounded-xl overflow-hidden">
+            <div className="absolute inset-0 rounded-2xl overflow-hidden">
               {floors.map((f) => {
                 const isHovered = hoveredFloor === f.floor
                 const isSelected = selectedFloor === f.floor
@@ -205,10 +181,7 @@ export default function BuildingImage({ apartments, selectedFloor, onFloorClick 
                     onClick={() => onFloorClick(f.floor)}
                     onMouseEnter={() => setHoveredFloor(f.floor)}
                     onMouseLeave={() => setHoveredFloor(null)}
-                    className={cn(
-                      'absolute transition-all duration-200',
-                      isSelected && 'z-10'
-                    )}
+                    className="absolute transition-all duration-200"
                     style={{
                       top: `${f.top}%`,
                       left: `${BUILDING_CONFIG.left}%`,
@@ -217,31 +190,19 @@ export default function BuildingImage({ apartments, selectedFloor, onFloorClick 
                     }}
                     aria-label={`Floor ${f.floor}: ${f.stats.available} of ${f.stats.total} available`}
                   >
-                    {/* Selected floor glow band */}
+                    {/* Selected floor - architectural glow band */}
                     {isSelected && (
-                      <div
-                        className="absolute inset-0 rounded-sm animate-pulse-subtle"
-                        style={{
-                          background: 'linear-gradient(90deg, rgba(16, 185, 129, 0.25), rgba(16, 185, 129, 0.35), rgba(16, 185, 129, 0.25))',
-                          boxShadow: '0 0 20px rgba(16, 185, 129, 0.4), inset 0 0 0 1.5px rgba(16, 185, 129, 0.6)',
-                        }}
-                      >
-                        {/* In-band floor label */}
-                        <div className="absolute left-1 top-1/2 -translate-y-1/2 bg-accent text-white text-[10px] font-bold px-1.5 py-0.5 rounded shadow-sm">
+                      <div className="absolute inset-x-0 inset-y-[-1px] floor-highlight-band flex items-center justify-center">
+                        {/* Floor pill - centered */}
+                        <div className="floor-pill text-primary text-[11px] font-bold px-3 py-1 rounded-md">
                           {f.floor}
                         </div>
                       </div>
                     )}
 
-                    {/* Hover state */}
+                    {/* Hover state - subtle */}
                     {isHovered && !isSelected && (
-                      <div
-                        className="absolute inset-0 rounded-sm transition-all duration-150"
-                        style={{
-                          background: 'rgba(255, 255, 255, 0.15)',
-                          boxShadow: 'inset 0 0 0 1px rgba(255, 255, 255, 0.4)',
-                        }}
-                      />
+                      <div className="absolute inset-0 bg-white/10 transition-all duration-150" />
                     )}
                   </button>
                 )
@@ -251,26 +212,26 @@ export default function BuildingImage({ apartments, selectedFloor, onFloorClick 
             {/* Premium Tooltip */}
             {activeFloor && (
               <div
-                className="absolute z-20 pointer-events-none animate-fade-slide"
+                className="absolute z-20 pointer-events-none floor-tooltip"
                 style={{
-                  left: `${BUILDING_CONFIG.right + 3}%`,
+                  left: `${BUILDING_CONFIG.right + 2}%`,
                   top: `${floors.find((f) => f.floor === activeFloor)?.top || 0}%`,
                 }}
               >
-                <div className="bg-primary text-white rounded-lg shadow-xl px-4 py-3 min-w-[140px]">
+                <div className="bg-primary text-white rounded-xl shadow-xl px-4 py-3 min-w-[150px]">
                   <div className="text-lg font-semibold">Floor {activeFloor}</div>
-                  <div className="text-sm text-white/80 mt-1 space-y-0.5">
+                  <div className="text-sm text-white/80 mt-1.5 space-y-1">
                     {(() => {
                       const stats = getFloorStats(activeFloor)
                       return (
                         <>
-                          <div className="flex items-center gap-1.5">
-                            <Check className="w-3 h-3 text-accent-light" />
+                          <div className="flex items-center gap-2">
+                            <Check className="w-3.5 h-3.5 text-accent-light" />
                             <span>{stats.available} available</span>
                           </div>
                           {stats.reserved > 0 && (
-                            <div className="flex items-center gap-1.5">
-                              <Clock className="w-3 h-3 text-status-limited" />
+                            <div className="flex items-center gap-2">
+                              <Clock className="w-3.5 h-3.5 text-amber-400" />
                               <span>{stats.reserved} reserved</span>
                             </div>
                           )}
@@ -278,53 +239,31 @@ export default function BuildingImage({ apartments, selectedFloor, onFloorClick 
                       )
                     })()}
                   </div>
-                  <div className="text-xs text-white/60 mt-2 pt-2 border-t border-white/20">
+                  <div className="text-xs text-white/50 mt-2 pt-2 border-t border-white/20">
                     Click to view units
                   </div>
                   {/* Arrow */}
-                  <div className="absolute left-0 top-4 w-2 h-2 bg-primary transform -translate-x-1 rotate-45" />
+                  <div className="absolute left-0 top-5 w-2.5 h-2.5 bg-primary transform -translate-x-1 rotate-45" />
                 </div>
               </div>
             )}
-          </div>
-        </div>
 
-        {/* Floor list with grouped labels */}
-        <div className="w-8 shrink-0 flex flex-col justify-between py-2" style={{ height: '580px' }}>
-          {[41, 35, 28, 21, 14, 7].map((floor) => (
-            <button
-              key={floor}
-              onClick={() => onFloorClick(floor)}
-              className={cn(
-                'text-xs font-medium transition-colors',
-                selectedFloor === floor ? 'text-accent font-bold' : 'text-text-muted hover:text-text-secondary'
-              )}
-            >
-              {floor}
-            </button>
-          ))}
-        </div>
-      </div>
-
-      {/* Legend */}
-      <div className="mt-4 flex items-center justify-center gap-6">
-        <div className="flex items-center gap-2">
-          <div className="w-4 h-4 rounded-full bg-status-available-bg flex items-center justify-center">
-            <Check className="w-2.5 h-2.5 text-status-available" />
+            {/* Legend - inside building card, bottom-left */}
+            <div className="absolute bottom-3 left-3 flex items-center gap-3 px-2.5 py-1.5 bg-black/50 backdrop-blur-sm rounded-lg">
+              <div className="flex items-center gap-1">
+                <Check className="w-3 h-3 text-emerald-400" />
+                <span className="text-[10px] text-white/90">Available</span>
+              </div>
+              <div className="flex items-center gap-1">
+                <Clock className="w-3 h-3 text-amber-400" />
+                <span className="text-[10px] text-white/90">Reserved</span>
+              </div>
+              <div className="flex items-center gap-1">
+                <Lock className="w-3 h-3 text-white/60" />
+                <span className="text-[10px] text-white/90">Sold</span>
+              </div>
+            </div>
           </div>
-          <span className="text-sm text-text-secondary">Available</span>
-        </div>
-        <div className="flex items-center gap-2">
-          <div className="w-4 h-4 rounded-full bg-status-limited-bg flex items-center justify-center">
-            <Clock className="w-2.5 h-2.5 text-status-limited" />
-          </div>
-          <span className="text-sm text-text-secondary">Reserved</span>
-        </div>
-        <div className="flex items-center gap-2">
-          <div className="w-4 h-4 rounded-full bg-status-sold-bg flex items-center justify-center">
-            <Lock className="w-2.5 h-2.5 text-status-sold" />
-          </div>
-          <span className="text-sm text-text-secondary">Sold</span>
         </div>
       </div>
     </div>
