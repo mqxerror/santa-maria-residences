@@ -5,7 +5,19 @@ export default {
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
+    // Custom breakpoints
+    screens: {
+      'sm': '640px',
+      'md': '768px',      // Tablet starts
+      'lg': '1024px',
+      'xl': '1200px',     // Desktop starts
+      '2xl': '1440px',
+    },
     extend: {
+      // Layout system
+      maxWidth: {
+        'container': '1280px',
+      },
       // 8px spacing system
       spacing: {
         '0': '0',

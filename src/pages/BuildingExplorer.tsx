@@ -1,12 +1,12 @@
 import { useState } from 'react'
+import { Link } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
 import { supabase } from '@/lib/supabase'
 import type { Apartment } from '@/types/database'
-import Header from '@/components/Header'
 import BuildingImage from '@/components/BuildingImage'
 import FloorPanel from '@/components/FloorPanel'
 
-export default function HomePage() {
+export default function BuildingExplorer() {
   const [selectedFloor, setSelectedFloor] = useState<number | null>(null)
   const [selectedApartment, setSelectedApartment] = useState<Apartment | null>(null)
 
@@ -47,7 +47,34 @@ export default function HomePage() {
 
   return (
     <div className="min-h-screen flex flex-col bg-background">
-      <Header />
+      {/* Header */}
+      <header className="bg-surface border-b border-border sticky top-0 z-50">
+        <div className="max-w-screen-2xl mx-auto px-6 lg:px-8 py-4 flex items-center justify-between">
+          <Link to="/" className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-lg bg-primary flex items-center justify-center">
+              <span className="text-white font-bold text-lg">SM</span>
+            </div>
+            <div>
+              <h1 className="text-lg font-semibold text-text-primary">Santa Maria</h1>
+              <p className="text-xs text-text-muted -mt-0.5">Residences</p>
+            </div>
+          </Link>
+          <nav className="flex items-center gap-6">
+            <Link to="/" className="text-sm text-text-secondary hover:text-primary transition-colors font-medium">
+              Home
+            </Link>
+            <Link to="/building" className="text-sm text-primary font-medium">
+              Explore
+            </Link>
+            <Link to="/about" className="text-sm text-text-secondary hover:text-primary transition-colors font-medium">
+              About
+            </Link>
+            <Link to="/contact" className="text-sm text-text-secondary hover:text-primary transition-colors font-medium">
+              Contact
+            </Link>
+          </nav>
+        </div>
+      </header>
 
       <main className="flex-1 flex overflow-hidden">
         {/* Left Panel - Building Navigator (hidden in detail view) */}

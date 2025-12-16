@@ -13,6 +13,65 @@
 }
 
 @layer components {
+  /* Layout System */
+  .page-container {
+    width: 100%;
+    max-width: 1280px;
+    margin: 0 auto;
+    padding-left: 24px;
+    padding-right: 24px;
+  }
+
+  @media (max-width: 1199px) {
+    .page-container {
+      padding-left: 16px;
+      padding-right: 16px;
+    }
+  }
+
+  @media (max-width: 767px) {
+    .page-container {
+      padding-left: 12px;
+      padding-right: 12px;
+    }
+  }
+
+  /* 12-column grid */
+  .grid-12 {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: 24px;
+  }
+
+  .grid-12.gap-16 {
+    gap: 16px;
+  }
+
+  @media (max-width: 1199px) {
+    .grid-12 {
+      gap: 16px;
+    }
+  }
+
+  @media (max-width: 767px) {
+    .grid-12 {
+      grid-template-columns: 1fr;
+      gap: 12px;
+    }
+  }
+
+  /* Column spans */
+  .col-4 { grid-column: span 4; }
+  .col-6 { grid-column: span 6; }
+  .col-8 { grid-column: span 8; }
+  .col-12 { grid-column: span 12; }
+
+  @media (max-width: 1199px) {
+    .col-4, .col-6, .col-8 {
+      grid-column: span 12;
+    }
+  }
+
   /* Card base styles */
   .card {
     @apply bg-surface rounded-lg border border-border shadow-card;
