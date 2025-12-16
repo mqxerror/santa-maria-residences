@@ -87,7 +87,9 @@ export default function LandingPage() {
             alt={projectConfig.name}
             className="w-full h-full object-cover"
           />
-          <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/50 to-transparent" />
+          {/* Layered gradient for depth */}
+          <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/40 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/20" />
         </div>
 
         {/* Content */}
@@ -104,7 +106,7 @@ export default function LandingPage() {
             </p>
 
             {/* CTAs */}
-            <div className="flex items-center gap-4 mb-10">
+            <div className="flex items-center gap-3 mb-10">
               <Link
                 to="/building"
                 className="inline-flex items-center gap-2 px-6 py-3 bg-accent hover:bg-accent-light text-white font-medium rounded-xl transition-colors"
@@ -112,25 +114,27 @@ export default function LandingPage() {
                 Explore Availability
                 <ArrowRight className="w-4 h-4" />
               </Link>
-              <button className="inline-flex items-center gap-2 px-6 py-3 bg-white/10 hover:bg-white/20 backdrop-blur-sm text-white font-medium rounded-xl transition-colors border border-white/20">
+              <button className="inline-flex items-center gap-2 px-5 py-3 text-white/80 hover:text-white text-sm font-medium transition-colors">
                 <Download className="w-4 h-4" />
-                Download Brochure
+                Brochure
               </button>
             </div>
 
-            {/* Stats Chips */}
-            <div className="flex items-center gap-4">
-              <div className="px-4 py-2 bg-white/10 backdrop-blur-sm rounded-lg border border-white/10">
-                <p className="text-xs text-white/60">Floors</p>
-                <p className="text-lg text-white font-semibold">{stats.floors}</p>
+            {/* Consolidated Stats Pill */}
+            <div className="inline-flex items-center gap-6 px-5 py-3 bg-white/10 backdrop-blur-sm rounded-full border border-white/10">
+              <div className="flex items-center gap-2">
+                <span className="text-white font-semibold">{stats.floors}</span>
+                <span className="text-white/60 text-sm">Floors</span>
               </div>
-              <div className="px-4 py-2 bg-white/10 backdrop-blur-sm rounded-lg border border-white/10">
-                <p className="text-xs text-white/60">Available</p>
-                <p className="text-lg text-white font-semibold">{stats.available} units</p>
+              <div className="w-px h-4 bg-white/20" />
+              <div className="flex items-center gap-2">
+                <span className="text-white font-semibold">{stats.available}</span>
+                <span className="text-white/60 text-sm">Available</span>
               </div>
-              <div className="px-4 py-2 bg-white/10 backdrop-blur-sm rounded-lg border border-white/10">
-                <p className="text-xs text-white/60">Starting from</p>
-                <p className="text-lg text-white font-semibold">{stats.startingPrice}</p>
+              <div className="w-px h-4 bg-white/20" />
+              <div className="flex items-center gap-2">
+                <span className="text-white font-semibold">{stats.startingPrice}</span>
+                <span className="text-white/60 text-sm">Starting</span>
               </div>
             </div>
           </div>
@@ -138,49 +142,45 @@ export default function LandingPage() {
       </section>
 
       {/* Quick Search Bar */}
-      <section className="relative -mt-12 z-10">
+      <section className="relative -mt-10 z-10">
         <div className="page-container">
-          <div className="bg-surface rounded-2xl shadow-lg border border-border p-6">
-            <div className="flex items-end gap-4">
-              <div className="flex-1">
-                <label className="text-xs text-text-muted block mb-2">Bedrooms</label>
-                <select
-                  value={selectedBeds}
-                  onChange={(e) => setSelectedBeds(e.target.value)}
-                  className="w-full px-4 py-3 bg-background border border-border rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-accent"
-                >
-                  <option value="any">Any</option>
-                  <option value="studio">Studio</option>
-                  <option value="1">1 Bedroom</option>
-                  <option value="2">2 Bedrooms</option>
-                  <option value="3">3 Bedrooms</option>
-                  <option value="penthouse">Penthouse</option>
-                </select>
-              </div>
-              <div className="flex-1">
-                <label className="text-xs text-text-muted block mb-2">Status</label>
-                <select
-                  value={selectedStatus}
-                  onChange={(e) => setSelectedStatus(e.target.value)}
-                  className="w-full px-4 py-3 bg-background border border-border rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-accent"
-                >
-                  <option value="available">Available Only</option>
-                  <option value="all">All Units</option>
-                </select>
-              </div>
-              <div className="flex-1">
-                <label className="text-xs text-text-muted block mb-2">Budget</label>
-                <select className="w-full px-4 py-3 bg-background border border-border rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-accent">
-                  <option value="any">Any Budget</option>
-                  <option value="300">Under $300K</option>
-                  <option value="500">Under $500K</option>
-                  <option value="750">Under $750K</option>
-                  <option value="1000">$1M+</option>
-                </select>
+          <div className="bg-surface rounded-xl shadow-lg border border-border px-5 py-4">
+            <div className="flex items-center gap-3">
+              <select
+                value={selectedBeds}
+                onChange={(e) => setSelectedBeds(e.target.value)}
+                className="px-3 py-2 bg-background border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-accent"
+              >
+                <option value="any">All Bedrooms</option>
+                <option value="studio">Studio</option>
+                <option value="1">1 Bedroom</option>
+                <option value="2">2 Bedrooms</option>
+                <option value="3">3 Bedrooms</option>
+                <option value="penthouse">Penthouse</option>
+              </select>
+              <select
+                value={selectedStatus}
+                onChange={(e) => setSelectedStatus(e.target.value)}
+                className="px-3 py-2 bg-background border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-accent"
+              >
+                <option value="available">Available</option>
+                <option value="all">All Status</option>
+              </select>
+              <select className="px-3 py-2 bg-background border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-accent">
+                <option value="any">Any Budget</option>
+                <option value="300">Under $300K</option>
+                <option value="500">Under $500K</option>
+                <option value="750">Under $750K</option>
+                <option value="1000">$1M+</option>
+              </select>
+              <div className="flex-1 text-right">
+                <span className="text-sm text-text-muted">
+                  <span className="font-semibold text-text-primary">{stats.available}</span> units available
+                </span>
               </div>
               <button
                 onClick={handleSearch}
-                className="px-8 py-3 bg-primary hover:bg-primary-light text-white font-medium rounded-xl transition-colors flex items-center gap-2"
+                className="px-5 py-2 bg-primary hover:bg-primary-light text-white text-sm font-medium rounded-lg transition-colors flex items-center gap-2"
               >
                 View Units
                 <ChevronRight className="w-4 h-4" />
@@ -191,18 +191,18 @@ export default function LandingPage() {
       </section>
 
       {/* Highlights Strip */}
-      <section className="py-16">
+      <section className="pt-20 pb-16">
         <div className="page-container">
-          <div className="grid grid-cols-4 gap-6">
+          <div className="grid grid-cols-4 gap-8">
             {projectConfig.highlights.map((highlight, i) => {
               const Icon = iconMap[highlight.icon as keyof typeof iconMap]
               return (
                 <div key={i} className="text-center">
-                  <div className="w-14 h-14 mx-auto mb-4 rounded-2xl bg-accent/10 flex items-center justify-center">
-                    <Icon className="w-6 h-6 text-accent" />
+                  <div className="w-12 h-12 mx-auto mb-3 rounded-xl bg-accent/10 flex items-center justify-center">
+                    <Icon className="w-5 h-5 text-accent" />
                   </div>
-                  <h3 className="text-base font-semibold text-text-primary mb-2">{highlight.title}</h3>
-                  <p className="text-sm text-text-secondary">{highlight.description}</p>
+                  <h3 className="text-sm font-semibold text-text-primary mb-1">{highlight.title}</h3>
+                  <p className="text-xs text-text-secondary leading-relaxed">{highlight.description}</p>
                 </div>
               )
             })}
@@ -211,57 +211,56 @@ export default function LandingPage() {
       </section>
 
       {/* Featured Availability */}
-      <section className="py-16 bg-surface">
+      <section className="py-20 bg-stone-50 border-y border-stone-200/60">
         <div className="page-container">
-          <div className="flex items-center justify-between mb-8">
+          <div className="flex items-center justify-between mb-6">
             <div>
-              <h2 className="text-2xl font-semibold text-text-primary">Featured Availability</h2>
-              <p className="text-sm text-text-secondary mt-1">Hand-picked premium units</p>
+              <h2 className="text-xl font-semibold text-text-primary">Featured Units</h2>
+              <p className="text-sm text-text-muted mt-0.5">Premium high-floor residences</p>
             </div>
             <Link
               to="/building"
               className="text-sm text-primary hover:text-primary-light font-medium flex items-center gap-1"
             >
-              View all units
+              View all {stats.available} available
               <ChevronRight className="w-4 h-4" />
             </Link>
           </div>
 
           <div className="grid grid-cols-4 gap-4">
-            {featuredUnits.map((apt) => (
-              <FeaturedUnitCard key={apt.id} apartment={apt} />
+            {featuredUnits.map((apt, index) => (
+              <FeaturedUnitCard key={apt.id} apartment={apt} rank={index} />
             ))}
           </div>
         </div>
       </section>
 
       {/* Location & Lifestyle */}
-      <section className="py-16">
+      <section className="py-20">
         <div className="page-container">
           <div className="grid grid-cols-2 gap-12 items-center">
             <div>
-              <p className="text-accent text-sm font-medium tracking-wider uppercase mb-3">Location</p>
-              <h2 className="text-3xl font-semibold text-text-primary mb-4">
+              <p className="text-accent text-xs font-medium tracking-wider uppercase mb-2">Location</p>
+              <h2 className="text-2xl font-semibold text-text-primary mb-3">
                 In the Heart of {projectConfig.location.city}
               </h2>
-              <p className="text-text-secondary mb-6">
+              <p className="text-sm text-text-secondary mb-5 leading-relaxed">
                 {projectConfig.location.neighborhood} offers the perfect balance of urban convenience and residential tranquility. Walking distance to premier shopping, dining, and entertainment.
               </p>
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-2 gap-3">
                 {projectConfig.amenities.nearby.slice(0, 4).map((item, i) => (
                   <div key={i} className="flex items-center gap-2">
-                    <Check className="w-4 h-4 text-accent" />
+                    <Check className="w-3.5 h-3.5 text-accent" />
                     <span className="text-sm text-text-secondary">{item}</span>
                   </div>
                 ))}
               </div>
             </div>
-            <div className="aspect-[4/3] bg-stone-200 rounded-2xl overflow-hidden">
-              {/* Map placeholder */}
+            <div className="aspect-[4/3] bg-stone-100 rounded-xl overflow-hidden">
               <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-primary/5 to-accent/5">
                 <div className="text-center">
-                  <MapPin className="w-12 h-12 text-primary/30 mx-auto mb-3" />
-                  <p className="text-sm text-text-muted">Interactive map coming soon</p>
+                  <MapPin className="w-10 h-10 text-primary/20 mx-auto mb-2" />
+                  <p className="text-xs text-text-muted">Interactive map coming soon</p>
                 </div>
               </div>
             </div>
@@ -269,45 +268,39 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* CTA Footer */}
-      <section className="py-16 bg-primary">
-        <div className="page-container">
-          <div className="flex items-center justify-between">
+      {/* Pre-Footer */}
+      <footer className="bg-stone-900">
+        <div className="page-container py-10">
+          <div className="flex items-center justify-between pb-8 border-b border-white/10">
             <div>
-              <h2 className="text-2xl font-semibold text-white mb-2">Ready to find your new home?</h2>
-              <p className="text-white/70">Speak with our sales team today</p>
+              <h2 className="text-lg font-semibold text-white mb-1">Ready to find your new home?</h2>
+              <p className="text-sm text-white/60">Speak with our sales team today</p>
             </div>
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-3">
               <a
                 href={`tel:${projectConfig.contact.phone}`}
-                className="inline-flex items-center gap-2 px-6 py-3 bg-white text-primary font-medium rounded-xl hover:bg-white/90 transition-colors"
+                className="inline-flex items-center gap-2 px-5 py-2.5 bg-white text-stone-900 text-sm font-medium rounded-lg hover:bg-white/90 transition-colors"
               >
                 <Phone className="w-4 h-4" />
                 Call Us
               </a>
               <Link
                 to="/contact"
-                className="inline-flex items-center gap-2 px-6 py-3 bg-white/10 text-white font-medium rounded-xl hover:bg-white/20 transition-colors border border-white/20"
+                className="inline-flex items-center gap-2 px-5 py-2.5 bg-white/10 text-white text-sm font-medium rounded-lg hover:bg-white/20 transition-colors"
               >
-                Contact Form
+                Contact
                 <ChevronRight className="w-4 h-4" />
               </Link>
             </div>
           </div>
-        </div>
-      </section>
-
-      {/* Footer */}
-      <footer className="py-8 bg-stone-900">
-        <div className="page-container">
-          <div className="flex items-center justify-between">
+          <div className="flex items-center justify-between pt-6">
             <div className="flex items-center gap-3">
               <div className="w-8 h-8 rounded-lg bg-white/10 flex items-center justify-center">
                 <span className="text-white font-bold text-sm">SM</span>
               </div>
-              <span className="text-white/60 text-sm">{projectConfig.name}</span>
+              <span className="text-white/50 text-sm">{projectConfig.name}</span>
             </div>
-            <p className="text-white/40 text-xs">
+            <p className="text-white/30 text-xs">
               © {new Date().getFullYear()} {projectConfig.name}. All rights reserved.
             </p>
           </div>
@@ -318,7 +311,7 @@ export default function LandingPage() {
 }
 
 // Featured Unit Card
-function FeaturedUnitCard({ apartment }: { apartment: Apartment }) {
+function FeaturedUnitCard({ apartment, rank }: { apartment: Apartment; rank: number }) {
   const getUnitType = (sizeSqm: number): string => {
     if (sizeSqm >= 150) return 'Penthouse'
     if (sizeSqm >= 120) return '3 Bed'
@@ -333,25 +326,33 @@ function FeaturedUnitCard({ apartment }: { apartment: Apartment }) {
     return `$${Math.round(price / 1000)}K`
   }
 
+  const getFeatureLabel = (rank: number, floor: number, sizeSqm: number): string => {
+    if (sizeSqm >= 150) return 'Penthouse'
+    if (rank === 0) return 'Highest floor'
+    if (floor >= 35) return 'Premium views'
+    if (sizeSqm >= 120) return 'Spacious layout'
+    return 'Best value'
+  }
+
   return (
     <Link
       to="/building"
-      className="bg-background rounded-xl border border-border p-4 hover:border-primary/30 hover:shadow-md transition-all group"
+      className="bg-white rounded-xl border border-stone-200 p-4 hover:border-primary/30 hover:shadow-md transition-all group"
     >
-      <div className="flex items-center justify-between mb-3">
+      <div className="flex items-center justify-between mb-2">
+        <span className="text-xs text-accent font-medium">{getFeatureLabel(rank, apartment.floor, apartment.size_sqm)}</span>
+        <span className="text-xs text-text-muted">Floor {apartment.floor}</span>
+      </div>
+      <div className="mb-3">
         <span className="text-lg font-semibold text-text-primary">
           {apartment.floor}-{apartment.unit}
         </span>
-        <span className="px-2 py-0.5 bg-status-available/10 text-status-available text-xs font-medium rounded-full">
-          Available
-        </span>
+        <p className="text-xs text-text-muted mt-0.5">{getUnitType(apartment.size_sqm)} · {apartment.size_sqm} m²</p>
       </div>
-      <p className="text-xs text-text-muted mb-2">{getUnitType(apartment.size_sqm)} · {apartment.size_sqm} m²</p>
-      <p className="text-base text-text-primary font-semibold">{getPrice(apartment.floor, apartment.size_sqm)}</p>
-      <div className="mt-3 pt-3 border-t border-border flex items-center justify-between">
-        <span className="text-xs text-text-muted">Floor {apartment.floor}</span>
-        <span className="text-xs text-primary font-medium group-hover:underline flex items-center gap-1">
-          View Details
+      <div className="flex items-center justify-between">
+        <p className="text-base text-text-primary font-semibold">{getPrice(apartment.floor, apartment.size_sqm)}</p>
+        <span className="text-xs text-primary font-medium opacity-0 group-hover:opacity-100 transition-opacity flex items-center gap-1">
+          View
           <ChevronRight className="w-3 h-3" />
         </span>
       </div>
