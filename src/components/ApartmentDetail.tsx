@@ -1,10 +1,9 @@
 import { useState } from 'react'
-import { ArrowLeft, Check, Clock, Lock, Maximize2, Compass, Share2, Download, X, Bed, Bath, Building2, Sun, Wind, Wifi, Car, Shield, Waves, ChevronRight, Expand, Image, ChevronDown, Phone, Copy, CheckCircle } from 'lucide-react'
+import { ArrowLeft, Check, Clock, Lock, Maximize2, Compass, Share2, Download, X, Bed, Bath, Building2, Sun, Wind, Wifi, Car, Shield, Waves, ChevronRight, Expand, Image, ChevronDown, Phone } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import type { Apartment } from '@/types/database'
 import { cn } from '@/lib/utils'
 import { toast } from 'sonner'
-import { projectConfig } from '@/config/project'
 
 interface ApartmentDetailProps {
   apartment: Apartment

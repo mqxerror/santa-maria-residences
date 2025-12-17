@@ -5,7 +5,7 @@ import { supabase } from '@/lib/supabase'
 import type { Apartment } from '@/types/database'
 import BuildingImage from '@/components/BuildingImage'
 import FloorPanel from '@/components/FloorPanel'
-import { BuildingNavigatorSkeleton, FloorPanelSkeleton } from '@/components/Skeleton'
+import { BuildingNavigatorSkeleton } from '@/components/Skeleton'
 import { Menu, X, ChevronDown, Building2 } from 'lucide-react'
 
 export default function BuildingExplorer() {
