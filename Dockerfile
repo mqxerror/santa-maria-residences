@@ -12,6 +12,10 @@ RUN npm ci
 # Copy source code
 COPY . .
 
+# Set environment variables for Vite build
+ENV VITE_SUPABASE_URL=http://38.97.60.181:8000
+ENV VITE_SUPABASE_ANON_KEY=eyJhbGciOiAiSFMyNTYiLCAidHlwIjogIkpXVCJ9.eyJyb2xlIjogImFub24iLCAiaXNzIjogInN1cGFiYXNlIiwgImlhdCI6IDE3MDAwMDAwMDAsICJleHAiOiAyMDAwMDAwMDAwfQ.dwquv_XjdVzN3DystbMAfy1KI3VS0zNdb-up3TUtCYA
+
 # Build the application
 RUN npm run build
 
