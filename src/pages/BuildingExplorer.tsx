@@ -1,14 +1,19 @@
-import { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { useState, useEffect } from 'react'
+import { Link, useSearchParams } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
 import { supabase } from '@/lib/supabase'
 import type { Apartment } from '@/types/database'
 import BuildingImage from '@/components/BuildingImage'
 import FloorPanel from '@/components/FloorPanel'
+import { BuildingNavigatorSkeleton, FloorPanelSkeleton } from '@/components/Skeleton'
+import { Menu, X, ChevronDown, Building2 } from 'lucide-react'
 
 export default function BuildingExplorer() {
+  const [searchParams, setSearchParams] = useSearchParams()
   const [selectedFloor, setSelectedFloor] = useState<number | null>(null)
   const [selectedApartment, setSelectedApartment] = useState<Apartment | null>(null)
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const [showMobileFloorPicker, setShowMobileFloorPicker] = useState(false)
 
   const { data: apartments = [], isLoading } = useQuery({
     queryKey: ['apartments'],
@@ -23,6 +28,31 @@ export default function BuildingExplorer() {
       return data as Apartment[]
     },
   })
+
+  // Handle URL params for deep linking
+  useEffect(() => {
+    if (apartments.length === 0) return
+
+    const floorParam = searchParams.get('floor')
+    const unitParam = searchParams.get('unit')
+
+    if (floorParam) {
+      const floor = parseInt(floorParam)
+      if (floor >= 7 && floor <= 41) {
+        setSelectedFloor(floor)
+
+        // If unit ID is also provided, select that apartment
+        if (unitParam) {
+          const apt = apartments.find((a) => a.id === unitParam)
+          if (apt) {
+            setSelectedApartment(apt)
+          }
+        }
+      }
+      // Clear params after processing
+      setSearchParams({}, { replace: true })
+    }
+  }, [apartments, searchParams])
 
   const floorApartments = selectedFloor
     ? apartments.filter((apt) => apt.floor === selectedFloor)
@@ -45,26 +75,38 @@ export default function BuildingExplorer() {
   // In detail view mode (apartment selected)
   const isDetailView = !!selectedApartment
 
+  // Get floor stats for mobile picker
+  const getFloorStats = (floor: number) => {
+    const floorApts = apartments.filter((apt) => apt.floor === floor)
+    return {
+      total: floorApts.length,
+      available: floorApts.filter((a) => a.status === 'available').length,
+    }
+  }
+
   return (
     <div className="min-h-screen flex flex-col bg-background">
       {/* Header */}
       <header className="bg-surface border-b border-border sticky top-0 z-50">
-        <div className="max-w-screen-2xl mx-auto px-6 lg:px-8 py-4 flex items-center justify-between">
+        <div className="max-w-screen-2xl mx-auto px-4 md:px-6 lg:px-8 py-4 flex items-center justify-between">
           <Link to="/" className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-lg bg-primary flex items-center justify-center">
-              <span className="text-white font-bold text-lg">SM</span>
-            </div>
-            <div>
-              <h1 className="text-lg font-semibold text-text-primary">Santa Maria</h1>
-              <p className="text-xs text-text-muted -mt-0.5">Residences</p>
-            </div>
+            <img
+              src="https://www.mercan.com/wp-content/uploads/2024/06/logo.png"
+              alt="Mercan Group"
+              className="h-14 w-auto"
+            />
           </Link>
-          <nav className="flex items-center gap-6">
+
+          {/* Desktop Nav */}
+          <nav className="hidden md:flex items-center gap-6">
             <Link to="/" className="text-sm text-text-secondary hover:text-primary transition-colors font-medium">
               Home
             </Link>
             <Link to="/building" className="text-sm text-primary font-medium">
               Explore
+            </Link>
+            <Link to="/location" className="text-sm text-text-secondary hover:text-primary transition-colors font-medium">
+              Location
             </Link>
             <Link to="/about" className="text-sm text-text-secondary hover:text-primary transition-colors font-medium">
               About
@@ -73,21 +115,98 @@ export default function BuildingExplorer() {
               Contact
             </Link>
           </nav>
+
+          {/* Mobile Menu Button */}
+          <button
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            className="md:hidden p-2 hover:bg-background rounded-lg"
+          >
+            {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+          </button>
         </div>
+
+        {/* Mobile Nav Dropdown */}
+        {mobileMenuOpen && (
+          <div className="md:hidden border-t border-border bg-surface px-4 py-3 space-y-2">
+            <Link to="/" className="block py-2 text-sm text-text-secondary hover:text-primary">Home</Link>
+            <Link to="/building" className="block py-2 text-sm text-primary font-medium">Explore</Link>
+            <Link to="/location" className="block py-2 text-sm text-text-secondary hover:text-primary">Location</Link>
+            <Link to="/about" className="block py-2 text-sm text-text-secondary hover:text-primary">About</Link>
+            <Link to="/contact" className="block py-2 text-sm text-text-secondary hover:text-primary">Contact</Link>
+          </div>
+        )}
       </header>
 
-      <main className="flex-1 flex overflow-hidden">
-        {/* Left Panel - Building Navigator (hidden in detail view) */}
+      <main id="main-content" className="flex-1 flex flex-col lg:flex-row overflow-hidden">
+        {/* Mobile Floor Picker - Shows on small screens */}
         {!isDetailView && (
-          <div className="w-[38%] border-r border-border bg-surface flex flex-col">
+          <div className="lg:hidden bg-surface border-b border-border p-4">
+            <button
+              onClick={() => setShowMobileFloorPicker(!showMobileFloorPicker)}
+              className="w-full flex items-center justify-between px-4 py-3 bg-primary text-white rounded-xl"
+            >
+              <div className="flex items-center gap-3">
+                <Building2 className="w-5 h-5" />
+                <span className="font-medium">
+                  {selectedFloor ? `Floor ${selectedFloor}` : 'Select a Floor'}
+                </span>
+              </div>
+              <ChevronDown className={`w-5 h-5 transition-transform ${showMobileFloorPicker ? 'rotate-180' : ''}`} />
+            </button>
+
+            {/* Mobile Floor Grid */}
+            {showMobileFloorPicker && (
+              <div className="mt-3 grid grid-cols-5 sm:grid-cols-7 gap-2 max-h-[40vh] overflow-y-auto p-1">
+                {Array.from({ length: 35 }, (_, i) => 41 - i).map((floor) => {
+                  const stats = getFloorStats(floor)
+                  const isSelected = selectedFloor === floor
+                  return (
+                    <button
+                      key={floor}
+                      onClick={() => {
+                        handleFloorClick(floor)
+                        setShowMobileFloorPicker(false)
+                      }}
+                      className={`p-2 rounded-lg text-center transition-all ${
+                        isSelected
+                          ? 'bg-primary text-white'
+                          : stats.available > 0
+                          ? 'bg-emerald-50 text-emerald-700 hover:bg-emerald-100'
+                          : 'bg-stone-100 text-stone-400'
+                      }`}
+                    >
+                      <div className="text-sm font-bold">{floor}</div>
+                      <div className="text-[10px] opacity-75">{stats.available}/{stats.total}</div>
+                    </button>
+                  )
+                })}
+              </div>
+            )}
+
+            {/* Quick Stats */}
+            <div className="flex items-center justify-center gap-4 mt-3 text-xs text-text-muted">
+              <span className="flex items-center gap-1">
+                <div className="w-2 h-2 rounded-full bg-emerald-500" />
+                {totalStats.available} available
+              </span>
+              <span className="flex items-center gap-1">
+                <div className="w-2 h-2 rounded-full bg-amber-500" />
+                {totalStats.reserved} reserved
+              </span>
+              <span className="flex items-center gap-1">
+                <div className="w-2 h-2 rounded-full bg-slate-400" />
+                {totalStats.sold} sold
+              </span>
+            </div>
+          </div>
+        )}
+
+        {/* Left Panel - Building Navigator (hidden on mobile and in detail view) */}
+        {!isDetailView && (
+          <div className="hidden lg:flex w-[38%] border-r border-border bg-surface flex-col">
             <div className="flex-1 p-4 overflow-hidden">
               {isLoading ? (
-                <div className="h-full flex items-center justify-center">
-                  <div className="flex flex-col items-center gap-3">
-                    <div className="animate-spin rounded-full h-8 w-8 border-2 border-primary border-t-transparent"></div>
-                    <span className="text-sm text-text-muted">Loading...</span>
-                  </div>
-                </div>
+                <BuildingNavigatorSkeleton />
               ) : (
                 <BuildingImage
                   apartments={apartments}
@@ -100,7 +219,7 @@ export default function BuildingExplorer() {
         )}
 
         {/* Right Panel - Units Selection / Detail View */}
-        <div className={isDetailView ? 'flex-1 overflow-hidden' : 'w-[62%]'}>
+        <div className={isDetailView ? 'flex-1 overflow-hidden' : 'flex-1 lg:w-[62%]'}>
           {isDetailView ? (
             <FloorPanel
               floor={selectedFloor}
@@ -111,7 +230,7 @@ export default function BuildingExplorer() {
               totalStats={totalStats}
             />
           ) : (
-            <div className="h-full p-5 overflow-hidden">
+            <div className="h-full p-4 lg:p-5 overflow-auto">
               <FloorPanel
                 floor={selectedFloor}
                 apartments={floorApartments}

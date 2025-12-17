@@ -37,8 +37,8 @@ export const projectConfig = {
 
   // Contact
   contact: {
-    phone: '+507 6000-0000',
-    whatsapp: '+507 6000-0000',
+    phone: '+1-514-282-9214',
+    whatsapp: '+1-514-282-9214',
     email: 'info@santamariaresidences.com',
     salesOffice: 'Tower Lobby, Ground Floor',
   },
@@ -49,9 +49,9 @@ export const projectConfig = {
     heroVideo: null, // '/assets/hero-video.mp4' when available
     logo: '/assets/logo.png',
     gallery: [
-      '/assets/gallery/unit-render.jpg',
-      '/assets/gallery/view-rooftop.jpg',
-      '/assets/gallery/lobby.jpg',
+      { src: '/assets/gallery/unit-render.jpg', alt: 'Modern living room interior with floor-to-ceiling windows and city views' },
+      { src: '/assets/gallery/view-rooftop.jpg', alt: 'Rooftop infinity pool with panoramic Panama City skyline' },
+      { src: '/assets/gallery/lobby.jpg', alt: 'Grand lobby entrance with marble floors and contemporary design' },
     ],
   },
 

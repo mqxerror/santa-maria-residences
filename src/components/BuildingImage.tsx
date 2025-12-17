@@ -249,18 +249,23 @@ export default function BuildingImage({ apartments, selectedFloor, onFloorClick 
             )}
 
             {/* Legend - inside building card, bottom-left */}
-            <div className="absolute bottom-3 left-3 flex items-center gap-3 px-2.5 py-1.5 bg-black/50 backdrop-blur-sm rounded-lg">
-              <div className="flex items-center gap-1">
+            <div className="absolute bottom-3 left-3 flex items-center gap-4 px-3 py-2 bg-black/60 backdrop-blur-sm rounded-lg">
+              <div className="flex items-center gap-1.5">
+                <div className="w-2.5 h-2.5 rounded-full bg-emerald-400" />
                 <Check className="w-3 h-3 text-emerald-400" />
-                <span className="text-[10px] text-white/90">Available</span>
+                <span className="text-[11px] text-white font-medium">Available</span>
               </div>
-              <div className="flex items-center gap-1">
+              <div className="w-px h-4 bg-white/20" />
+              <div className="flex items-center gap-1.5">
+                <div className="w-2.5 h-2.5 rounded-full bg-amber-400" />
                 <Clock className="w-3 h-3 text-amber-400" />
-                <span className="text-[10px] text-white/90">Reserved</span>
+                <span className="text-[11px] text-white font-medium">Reserved</span>
               </div>
-              <div className="flex items-center gap-1">
+              <div className="w-px h-4 bg-white/20" />
+              <div className="flex items-center gap-1.5">
+                <div className="w-2.5 h-2.5 rounded-full bg-white/40" />
                 <Lock className="w-3 h-3 text-white/60" />
-                <span className="text-[10px] text-white/90">Sold</span>
+                <span className="text-[11px] text-white font-medium">Sold</span>
               </div>
             </div>
           </div>

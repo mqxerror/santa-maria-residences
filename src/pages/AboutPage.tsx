@@ -1,6 +1,8 @@
 import { Link } from 'react-router-dom'
 import { projectConfig } from '@/config/project'
 import { Check, Building2, Sun, MapPin, ChevronRight } from 'lucide-react'
+import { GalleryImage } from '@/components/LazyImage'
+import Footer from '@/components/Footer'
 
 export default function AboutPage() {
   return (
@@ -10,13 +12,11 @@ export default function AboutPage() {
         <div className="page-container py-4">
           <div className="flex items-center justify-between">
             <Link to="/" className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-lg bg-primary flex items-center justify-center">
-                <span className="text-white font-bold text-lg">SM</span>
-              </div>
-              <div>
-                <h1 className="text-lg font-semibold text-text-primary">Santa Maria</h1>
-                <p className="text-xs text-text-muted -mt-0.5">Residences</p>
-              </div>
+              <img
+                src="https://www.mercan.com/wp-content/uploads/2024/06/logo.png"
+                alt="Mercan Group"
+                className="h-14 w-auto"
+              />
             </Link>
             <nav className="flex items-center gap-6">
               <Link to="/" className="text-sm text-text-secondary hover:text-primary transition-colors font-medium">
@@ -24,6 +24,9 @@ export default function AboutPage() {
               </Link>
               <Link to="/building" className="text-sm text-text-secondary hover:text-primary transition-colors font-medium">
                 Explore
+              </Link>
+              <Link to="/location" className="text-sm text-text-secondary hover:text-primary transition-colors font-medium">
+                Location
               </Link>
               <Link to="/about" className="text-sm text-primary font-medium">
                 About
@@ -37,7 +40,7 @@ export default function AboutPage() {
       </header>
 
       {/* Hero */}
-      <section className="relative h-[50vh] min-h-[400px]">
+      <section id="main-content" className="relative h-[50vh] min-h-[400px]">
         <div className="absolute inset-0">
           <img
             src={projectConfig.media.heroImage}
@@ -67,7 +70,7 @@ export default function AboutPage() {
                 A New Standard in Urban Living
               </h2>
               <p className="text-text-secondary mb-4">
-                {projectConfig.name} represents the pinnacle of modern residential development in {projectConfig.location.city}. Rising 35 floors above the vibrant {projectConfig.location.neighborhood} district, this architectural masterpiece offers an unparalleled living experience.
+                {projectConfig.name} represents the pinnacle of modern residential development in {projectConfig.location.city}. Rising {projectConfig.building.totalFloors} floors above the vibrant {projectConfig.location.neighborhood} district, this architectural masterpiece offers an unparalleled living experience.
               </p>
               <p className="text-text-secondary mb-6">
                 Every detail has been thoughtfully designed to provide residents with the perfect balance of luxury, comfort, and convenience. From the moment you enter the grand lobby to the stunning views from your private residence, excellence is evident at every turn.
@@ -174,11 +177,14 @@ export default function AboutPage() {
             </h2>
           </div>
 
-          <div className="grid grid-cols-3 gap-4">
-            {projectConfig.media.gallery.map((src, i) => (
-              <div key={i} className="aspect-[4/3] rounded-xl overflow-hidden">
-                <img src={src} alt={`Gallery ${i + 1}`} className="w-full h-full object-cover hover:scale-105 transition-transform duration-500" />
-              </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            {projectConfig.media.gallery.map((image, i) => (
+              <GalleryImage
+                key={i}
+                src={typeof image === 'string' ? image : image.src}
+                alt={typeof image === 'string' ? `${projectConfig.name} gallery image ${i + 1}` : image.alt}
+                className="aspect-[4/3] rounded-xl"
+              />
             ))}
           </div>
         </div>
@@ -209,12 +215,17 @@ export default function AboutPage() {
               </div>
             </div>
             <div className="aspect-[4/3] bg-stone-200 rounded-2xl overflow-hidden">
-              <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-primary/5 to-accent/5">
-                <div className="text-center">
-                  <MapPin className="w-12 h-12 text-primary/30 mx-auto mb-3" />
-                  <p className="text-sm text-text-muted">Interactive map coming soon</p>
-                </div>
-              </div>
+              <iframe
+                src={`https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3940.5!2d${projectConfig.location.coordinates.lng}!3d${projectConfig.location.coordinates.lat}!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zOcKwMDAnMjkuNSJOIDc5wrAzMCcxMi4yIlc!5e0!3m2!1sen!2sus!4v1702000000000!5m2!1sen!2sus`}
+                width="100%"
+                height="100%"
+                style={{ border: 0 }}
+                allowFullScreen
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+                title={`${projectConfig.name} location map`}
+                className="w-full h-full"
+              />
             </div>
           </div>
         </div>
@@ -247,22 +258,7 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="py-8 bg-stone-900">
-        <div className="page-container">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <div className="w-8 h-8 rounded-lg bg-white/10 flex items-center justify-center">
-                <span className="text-white font-bold text-sm">SM</span>
-              </div>
-              <span className="text-white/60 text-sm">{projectConfig.name}</span>
-            </div>
-            <p className="text-white/40 text-xs">
-              © {new Date().getFullYear()} {projectConfig.name}. All rights reserved.
-            </p>
-          </div>
-        </div>
-      </footer>
+      <Footer />
     </div>
   )
 }

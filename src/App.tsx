@@ -1,25 +1,30 @@
-import { Routes, Route } from 'react-router-dom'
+import { Routes, Route, useLocation } from 'react-router-dom'
 import { AuthProvider } from './contexts/AuthContext'
 import ProtectedRoute from './components/ProtectedRoute'
+import PageTransition from './components/PageTransition'
 
 // Public Pages
 import LandingPage from './pages/LandingPage'
 import BuildingExplorer from './pages/BuildingExplorer'
 import AboutPage from './pages/AboutPage'
 import ContactPage from './pages/ContactPage'
+import LocationPage from './pages/LocationPage'
 
 // Admin Pages
 import LoginPage from './pages/LoginPage'
 import AdminDashboard from './pages/AdminDashboard'
 
-function App() {
+function AppRoutes() {
+  const location = useLocation()
+
   return (
-    <AuthProvider>
-      <Routes>
+    <PageTransition key={location.pathname}>
+      <Routes location={location}>
         {/* Public Routes */}
         <Route path="/" element={<LandingPage />} />
         <Route path="/building" element={<BuildingExplorer />} />
         <Route path="/about" element={<AboutPage />} />
+        <Route path="/location" element={<LocationPage />} />
         <Route path="/contact" element={<ContactPage />} />
 
         {/* Admin Routes */}
@@ -33,6 +38,14 @@ function App() {
           }
         />
       </Routes>
+    </PageTransition>
+  )
+}
+
+function App() {
+  return (
+    <AuthProvider>
+      <AppRoutes />
     </AuthProvider>
   )
 }

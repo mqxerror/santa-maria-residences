@@ -16,9 +16,9 @@ export default function SummaryCards({ counts, activeFilter, onFilterClick }: Su
 
   const cards = [
     { label: 'Total', value: total, status: 'all' as const, color: 'bg-primary' },
-    { label: 'Available', value: counts.available, status: 'available' as const, color: 'bg-status-available' },
-    { label: 'Reserved', value: counts.reserved, status: 'reserved' as const, color: 'bg-status-reserved' },
-    { label: 'Sold', value: counts.sold, status: 'sold' as const, color: 'bg-status-sold' },
+    { label: 'Available', value: counts.available, status: 'available' as const, color: 'bg-emerald-500' },
+    { label: 'Reserved', value: counts.reserved, status: 'reserved' as const, color: 'bg-amber-500' },
+    { label: 'Sold', value: counts.sold, status: 'sold' as const, color: 'bg-slate-500' },
   ]
 
   return (

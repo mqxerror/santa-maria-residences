@@ -1,7 +1,10 @@
 import { useState } from 'react'
-import { ArrowLeft, Check, Clock, Lock, Maximize2, Compass, Share2, Download, X, Bed, Bath, Building2, Sun, Wind, Wifi, Car, Shield, Waves, ChevronRight, Expand, Image, ChevronDown } from 'lucide-react'
+import { ArrowLeft, Check, Clock, Lock, Maximize2, Compass, Share2, Download, X, Bed, Bath, Building2, Sun, Wind, Wifi, Car, Shield, Waves, ChevronRight, Expand, Image, ChevronDown, Phone, Copy, CheckCircle } from 'lucide-react'
+import { Link } from 'react-router-dom'
 import type { Apartment } from '@/types/database'
 import { cn } from '@/lib/utils'
+import { toast } from 'sonner'
+import { projectConfig } from '@/config/project'
 
 interface ApartmentDetailProps {
   apartment: Apartment
@@ -260,21 +263,36 @@ export default function ApartmentDetail({ apartment, onBack, allApartments = [] 
                 <div className="p-5 border-b border-border">
                   <p className="text-xs text-text-muted uppercase tracking-wide mb-1">From</p>
                   <p className="text-3xl text-text-primary font-bold">{formatPrice(price)}</p>
-                  <p className="text-sm text-text-muted mt-1">
-                    Est. ${Math.round(price / 240).toLocaleString()}/mo
-                  </p>
                 </div>
 
                 {/* Actions */}
                 <div className="p-5 space-y-3">
-                  <button className="w-full py-3 px-4 bg-primary hover:bg-primary-light text-white text-sm font-medium rounded-xl transition-colors flex items-center justify-center gap-2">
+                  <a
+                    href="/Floor_Plan_Santa_Maria.pdf"
+                    download={`Unit-${apartment.floor}-${apartment.unit}-Brochure.pdf`}
+                    className="w-full py-3 px-4 bg-primary hover:bg-primary-light text-white text-sm font-medium rounded-xl transition-colors flex items-center justify-center gap-2"
+                  >
                     <Download className="w-4 h-4" />
                     Download Brochure
-                  </button>
-                  <button className="w-full py-3 px-4 bg-transparent border border-border text-text-secondary text-sm font-medium rounded-xl hover:bg-background transition-colors flex items-center justify-center gap-2">
+                  </a>
+                  <button
+                    onClick={() => {
+                      const url = `${window.location.origin}/building?floor=${apartment.floor}&unit=${apartment.id}`
+                      navigator.clipboard.writeText(url)
+                      toast.success('Link copied to clipboard!')
+                    }}
+                    className="w-full py-3 px-4 bg-transparent border border-border text-text-secondary text-sm font-medium rounded-xl hover:bg-background transition-colors flex items-center justify-center gap-2"
+                  >
                     <Share2 className="w-4 h-4" />
                     Share Unit
                   </button>
+                  <Link
+                    to={`/contact?unit=${apartment.floor}-${apartment.unit}`}
+                    className="w-full py-3 px-4 bg-emerald-500 hover:bg-emerald-600 text-white text-sm font-medium rounded-xl transition-colors flex items-center justify-center gap-2"
+                  >
+                    <Phone className="w-4 h-4" />
+                    Contact Us
+                  </Link>
                 </div>
 
                 {/* Status */}
@@ -406,15 +424,16 @@ export default function ApartmentDetail({ apartment, onBack, allApartments = [] 
       {/* Gallery Modal */}
       {showModal && (
         <div
-          className="fixed inset-0 z-50 modal-backdrop flex items-center justify-center p-4 md:p-8"
+          className="fixed inset-0 z-50 modal-backdrop flex items-center justify-center p-4 md:p-6"
           onClick={() => setShowModal(false)}
         >
           <div
-            className="modal-content bg-surface rounded-2xl shadow-2xl max-w-5xl w-full max-h-[90vh] overflow-hidden"
+            className="modal-content bg-surface rounded-2xl shadow-2xl max-w-5xl w-full flex flex-col"
+            style={{ maxHeight: 'calc(100vh - 48px)' }}
             onClick={(e) => e.stopPropagation()}
           >
             {/* Modal Header */}
-            <div className="flex items-center justify-between p-4 border-b border-border">
+            <div className="flex items-center justify-between p-4 border-b border-border flex-shrink-0">
               <div>
                 <h3 className="text-lg text-text-primary font-semibold">
                   Unit {apartment.floor}-{apartment.unit}
@@ -422,10 +441,14 @@ export default function ApartmentDetail({ apartment, onBack, allApartments = [] 
                 <p className="text-xs text-text-muted">{unitType} • {apartment.size_sqm} m²</p>
               </div>
               <div className="flex items-center gap-2">
-                <button className="py-2 px-3 bg-background border border-border text-text-secondary text-xs font-medium rounded-lg hover:bg-surface transition-colors flex items-center gap-1.5">
+                <a
+                  href={activeMedia === 'render' ? '/assets/gallery/unit-render.jpg' : activeMedia === 'view' ? '/assets/gallery/view-rooftop.jpg' : '#'}
+                  download={`Unit-${apartment.floor}-${apartment.unit}-${activeMedia}.jpg`}
+                  className="py-2 px-3 bg-background border border-border text-text-secondary text-xs font-medium rounded-lg hover:bg-surface transition-colors flex items-center gap-1.5"
+                >
                   <Download className="w-3.5 h-3.5" />
                   Download
-                </button>
+                </a>
                 <button
                   onClick={() => setShowModal(false)}
                   className="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-background transition-colors"
@@ -436,7 +459,7 @@ export default function ApartmentDetail({ apartment, onBack, allApartments = [] 
             </div>
 
             {/* Modal Content */}
-            <div className="aspect-[16/10] relative overflow-hidden bg-stone-900">
+            <div className="flex-1 min-h-0 relative overflow-hidden bg-stone-900">
               {activeMedia === 'render' && (
                 <img
                   src="/assets/gallery/unit-render.jpg"
@@ -464,11 +487,11 @@ export default function ApartmentDetail({ apartment, onBack, allApartments = [] 
             </div>
 
             {/* Modal Thumbnails */}
-            <div className="flex border-t border-border p-3 gap-2 bg-stone-50">
+            <div className="flex border-t border-border p-4 gap-3 bg-stone-50 flex-shrink-0">
               <button
                 onClick={() => setActiveMedia('render')}
                 className={cn(
-                  'w-20 h-14 rounded-lg overflow-hidden',
+                  'w-20 h-16 rounded-lg overflow-hidden flex-shrink-0',
                   activeMedia === 'render' ? 'ring-2 ring-primary' : 'opacity-60 hover:opacity-100'
                 )}
               >
@@ -477,7 +500,7 @@ export default function ApartmentDetail({ apartment, onBack, allApartments = [] 
               <button
                 onClick={() => setActiveMedia('view')}
                 className={cn(
-                  'w-20 h-14 rounded-lg overflow-hidden',
+                  'w-20 h-16 rounded-lg overflow-hidden flex-shrink-0',
                   activeMedia === 'view' ? 'ring-2 ring-primary' : 'opacity-60 hover:opacity-100'
                 )}
               >
@@ -486,7 +509,7 @@ export default function ApartmentDetail({ apartment, onBack, allApartments = [] 
               <button
                 onClick={() => setActiveMedia('floorplan')}
                 className={cn(
-                  'w-20 h-14 rounded-lg bg-stone-200 flex items-center justify-center',
+                  'w-20 h-16 rounded-lg bg-stone-200 flex items-center justify-center flex-shrink-0',
                   activeMedia === 'floorplan' ? 'ring-2 ring-primary' : 'opacity-60 hover:opacity-100'
                 )}
               >

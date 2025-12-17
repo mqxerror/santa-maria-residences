@@ -107,6 +107,15 @@ export default {
         'card-hover': '0 8px 24px -4px rgba(0, 0, 0, 0.12)',
         'glow': '0 0 20px rgba(16, 185, 129, 0.3)',
       },
+      ringColor: {
+        DEFAULT: '#1e3a5f',
+      },
+      ringOffsetWidth: {
+        DEFAULT: '2px',
+      },
+      ringWidth: {
+        DEFAULT: '2px',
+      },
       animation: {
         'fade-in': 'fadeIn 150ms ease-out',
         'slide-up': 'slideUp 200ms ease-out',
