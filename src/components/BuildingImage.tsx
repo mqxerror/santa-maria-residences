@@ -94,16 +94,16 @@ export default function BuildingImage({ apartments, selectedFloor, onFloorClick 
   return (
     <div className="h-full flex flex-col">
       {/* Header */}
-      <div className="mb-4">
-        <h2 className="text-2xl text-text-primary heading-display">Building Navigator</h2>
-        <p className="text-sm text-gold-600 mt-1">Select a floor to explore apartments</p>
+      <div className="mb-2 xl:mb-4">
+        <h2 className="text-xl xl:text-2xl text-text-primary heading-display">Building Navigator</h2>
+        <p className="text-xs xl:text-sm text-gold-600 mt-0.5 xl:mt-1">Select a floor to explore apartments</p>
       </div>
 
-      <div className="flex-1 flex gap-4 min-h-0">
+      <div className="flex-1 flex gap-2 xl:gap-4 min-h-0">
         {/* Elevator Panel */}
-        <div className="flex flex-col w-20 shrink-0">
-          <form onSubmit={handleJumpToFloor} className="mb-3">
-            <label className="text-xs text-text-muted block mb-1">Go to floor</label>
+        <div className="flex flex-col w-14 xl:w-20 shrink-0">
+          <form onSubmit={handleJumpToFloor} className="mb-2 xl:mb-3">
+            <label className="text-[10px] xl:text-xs text-text-muted block mb-1">Floor</label>
             <input
               type="number"
               min={MIN_FLOOR}
@@ -111,28 +111,28 @@ export default function BuildingImage({ apartments, selectedFloor, onFloorClick 
               value={jumpToFloor}
               onChange={(e) => setJumpToFloor(e.target.value)}
               placeholder="7-44"
-              className="w-full px-2 py-1.5 text-center text-sm font-semibold border border-border rounded-lg bg-surface focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent"
+              className="w-full px-1.5 py-1 xl:px-2 xl:py-1.5 text-center text-xs xl:text-sm font-semibold border border-border rounded-lg bg-surface focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent"
             />
           </form>
 
-          <div className="flex-1 flex flex-col rounded-xl overflow-hidden shadow-md border border-border">
+          <div className="flex-1 flex flex-col max-h-[50vh] xl:max-h-none rounded-xl overflow-hidden shadow-md border border-border">
             <button
               onClick={handleFloorUp}
               disabled={selectedFloor === MAX_FLOOR}
-              className="p-3 bg-surface border-b border-border hover:bg-background active:bg-border-light disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+              className="p-2 xl:p-3 bg-surface border-b border-border hover:bg-background active:bg-border-light disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
             >
-              <ChevronUp className="w-5 h-5 mx-auto text-text-secondary" />
+              <ChevronUp className="w-4 h-4 xl:w-5 xl:h-5 mx-auto text-text-secondary" />
             </button>
 
             <div className={`flex-1 flex items-center justify-center ${selectedFloor && selectedFloor >= PENTHOUSE_FLOOR ? 'bg-gradient-to-b from-amber-600 to-amber-700' : 'bg-gradient-to-b from-primary to-primary-dark'}`}>
               <div className="text-center">
                 {selectedFloor && selectedFloor >= PENTHOUSE_FLOOR && (
-                  <Crown className="w-4 h-4 text-amber-200 mx-auto mb-1" />
+                  <Crown className="w-3 h-3 xl:w-4 xl:h-4 text-amber-200 mx-auto mb-0.5 xl:mb-1" />
                 )}
-                <div className="text-4xl font-bold text-white tabular-nums tracking-tight">
+                <div className="text-2xl xl:text-4xl font-bold text-white tabular-nums tracking-tight">
                   {selectedFloor || '--'}
                 </div>
-                <div className="text-[10px] text-white/60 mt-1 uppercase tracking-widest">
+                <div className="text-[9px] xl:text-[10px] text-white/60 mt-0.5 xl:mt-1 uppercase tracking-widest">
                   {selectedFloor && selectedFloor >= PENTHOUSE_FLOOR ? 'PH' : 'Floor'}
                 </div>
               </div>
@@ -141,14 +141,14 @@ export default function BuildingImage({ apartments, selectedFloor, onFloorClick 
             <button
               onClick={handleFloorDown}
               disabled={selectedFloor === MIN_FLOOR}
-              className="p-3 bg-surface border-t border-border hover:bg-background active:bg-border-light disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+              className="p-2 xl:p-3 bg-surface border-t border-border hover:bg-background active:bg-border-light disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
             >
-              <ChevronDown className="w-5 h-5 mx-auto text-text-secondary" />
+              <ChevronDown className="w-4 h-4 xl:w-5 xl:h-5 mx-auto text-text-secondary" />
             </button>
           </div>
 
-          <div className="mt-2 text-center text-xs text-text-muted">
-            Floors {MIN_FLOOR}–{MAX_FLOOR}
+          <div className="mt-1 xl:mt-2 text-center text-[10px] xl:text-xs text-text-muted">
+            {MIN_FLOOR}–{MAX_FLOOR}
           </div>
         </div>
 
@@ -156,7 +156,7 @@ export default function BuildingImage({ apartments, selectedFloor, onFloorClick 
         <div className="flex-1 flex flex-col min-h-0">
           {/* Building Image */}
           <div className="flex-1 relative flex items-center justify-center min-h-0">
-            <div className="relative h-full w-full max-h-[750px]">
+            <div className="relative h-full w-full max-h-[55vh] xl:max-h-[750px]">
               <img
                 src="/assets/renders/elevation.jpg"
                 alt="Santa Maria Residences Tower"
@@ -203,9 +203,9 @@ export default function BuildingImage({ apartments, selectedFloor, onFloorClick 
           </div>
 
           {/* Floor Info Panel — fixed below building, never clips */}
-          <div className="shrink-0 mt-3">
+          <div className="shrink-0 mt-2 xl:mt-3">
             <div
-              className={`rounded-xl overflow-hidden transition-all duration-300 ${
+              className={`rounded-lg xl:rounded-xl overflow-hidden transition-all duration-300 ${
                 activeFloor
                   ? isPH
                     ? 'bg-gradient-to-r from-amber-600 via-amber-500 to-amber-600 shadow-lg shadow-amber-500/20'
@@ -214,49 +214,49 @@ export default function BuildingImage({ apartments, selectedFloor, onFloorClick 
               }`}
             >
               {activeFloor && activeStats ? (
-                <div className="px-4 py-3 flex items-center gap-4">
+                <div className="px-3 py-2 xl:px-4 xl:py-3 flex items-center gap-3 xl:gap-4">
                   {/* Floor number badge */}
-                  <div className={`shrink-0 w-14 h-14 rounded-lg flex flex-col items-center justify-center ${
+                  <div className={`shrink-0 w-10 h-10 xl:w-14 xl:h-14 rounded-lg flex flex-col items-center justify-center ${
                     isPH ? 'bg-amber-900/30' : 'bg-white/10'
                   }`}>
-                    {isPH && <Crown className="w-3.5 h-3.5 text-amber-200 mb-0.5" />}
-                    <div className="text-2xl font-bold text-white leading-none tabular-nums">{activeFloor}</div>
-                    <div className="text-[9px] text-white/60 uppercase tracking-wider mt-0.5">
+                    {isPH && <Crown className="w-3 h-3 text-amber-200 mb-0.5" />}
+                    <div className="text-lg xl:text-2xl font-bold text-white leading-none tabular-nums">{activeFloor}</div>
+                    <div className="text-[8px] xl:text-[9px] text-white/60 uppercase tracking-wider mt-0.5">
                       {isPH ? 'PH' : 'Floor'}
                     </div>
                   </div>
 
                   {/* Stats */}
-                  <div className="flex-1 flex items-center gap-3">
+                  <div className="flex-1 flex items-center gap-2 xl:gap-3">
                     {activeStats.total > 0 ? (
                       <>
-                        <div className="flex items-center gap-1.5">
-                          <div className="w-2 h-2 rounded-full bg-emerald-400" />
-                          <span className="text-sm text-white font-medium">{activeStats.available}</span>
-                          <span className="text-xs text-white/60">avail</span>
+                        <div className="flex items-center gap-1">
+                          <div className="w-1.5 h-1.5 xl:w-2 xl:h-2 rounded-full bg-emerald-400" />
+                          <span className="text-xs xl:text-sm text-white font-medium">{activeStats.available}</span>
+                          <span className="text-[10px] xl:text-xs text-white/60">avail</span>
                         </div>
                         {activeStats.reserved > 0 && (
-                          <div className="flex items-center gap-1.5">
-                            <div className="w-2 h-2 rounded-full bg-amber-300" />
-                            <span className="text-sm text-white font-medium">{activeStats.reserved}</span>
-                            <span className="text-xs text-white/60">rsrvd</span>
+                          <div className="flex items-center gap-1">
+                            <div className="w-1.5 h-1.5 xl:w-2 xl:h-2 rounded-full bg-amber-300" />
+                            <span className="text-xs xl:text-sm text-white font-medium">{activeStats.reserved}</span>
+                            <span className="text-[10px] xl:text-xs text-white/60">rsrvd</span>
                           </div>
                         )}
                         {activeStats.sold > 0 && (
-                          <div className="flex items-center gap-1.5">
-                            <div className="w-2 h-2 rounded-full bg-white/40" />
-                            <span className="text-sm text-white font-medium">{activeStats.sold}</span>
-                            <span className="text-xs text-white/60">sold</span>
+                          <div className="flex items-center gap-1">
+                            <div className="w-1.5 h-1.5 xl:w-2 xl:h-2 rounded-full bg-white/40" />
+                            <span className="text-xs xl:text-sm text-white font-medium">{activeStats.sold}</span>
+                            <span className="text-[10px] xl:text-xs text-white/60">sold</span>
                           </div>
                         )}
                       </>
                     ) : (
-                      <span className="text-sm text-white/60 italic">Exclusive level</span>
+                      <span className="text-xs xl:text-sm text-white/60 italic">Exclusive level</span>
                     )}
                   </div>
 
                   {/* CTA */}
-                  <div className={`shrink-0 text-xs font-semibold px-3 py-1.5 rounded-lg ${
+                  <div className={`shrink-0 text-[10px] xl:text-xs font-semibold px-2 py-1 xl:px-3 xl:py-1.5 rounded-lg ${
                     isPH
                       ? 'bg-amber-900/30 text-amber-100'
                       : 'bg-white/15 text-white'
@@ -266,23 +266,23 @@ export default function BuildingImage({ apartments, selectedFloor, onFloorClick 
                 </div>
               ) : (
                 /* Idle state: legend */
-                <div className="px-4 py-3 flex items-center justify-between">
+                <div className="px-3 py-2 xl:px-4 xl:py-3 flex items-center justify-between">
                   <div className="flex items-center gap-2 text-slate-400">
-                    <Crosshair className="w-4 h-4" />
-                    <span className="text-sm">Hover over the building to explore</span>
+                    <Crosshair className="w-3.5 h-3.5 xl:w-4 xl:h-4" />
+                    <span className="text-xs xl:text-sm">Hover to explore</span>
                   </div>
-                  <div className="flex items-center gap-3">
-                    <div className="flex items-center gap-1.5">
-                      <div className="w-2 h-2 rounded-full bg-emerald-500" />
-                      <span className="text-[11px] text-slate-500">Available</span>
+                  <div className="flex items-center gap-2 xl:gap-3">
+                    <div className="flex items-center gap-1">
+                      <div className="w-1.5 h-1.5 xl:w-2 xl:h-2 rounded-full bg-emerald-500" />
+                      <span className="text-[10px] xl:text-[11px] text-slate-500">Available</span>
                     </div>
-                    <div className="flex items-center gap-1.5">
-                      <div className="w-2 h-2 rounded-full bg-amber-400" />
-                      <span className="text-[11px] text-slate-500">Reserved</span>
+                    <div className="flex items-center gap-1">
+                      <div className="w-1.5 h-1.5 xl:w-2 xl:h-2 rounded-full bg-amber-400" />
+                      <span className="text-[10px] xl:text-[11px] text-slate-500">Reserved</span>
                     </div>
-                    <div className="flex items-center gap-1.5">
-                      <div className="w-2 h-2 rounded-full bg-slate-300" />
-                      <span className="text-[11px] text-slate-500">Sold</span>
+                    <div className="flex items-center gap-1">
+                      <div className="w-1.5 h-1.5 xl:w-2 xl:h-2 rounded-full bg-slate-300" />
+                      <span className="text-[10px] xl:text-[11px] text-slate-500">Sold</span>
                     </div>
                   </div>
                 </div>

@@ -196,8 +196,8 @@ export default function BuildingExplorer() {
 
         {/* Left Panel - Building Navigator */}
         {!isDetailView && (
-          <div className="hidden lg:flex w-[45%] xl:w-[42%] border-r border-slate-200 bg-white flex-col">
-            <div className="flex-1 p-4 overflow-y-auto">
+          <div className="hidden lg:flex w-[40%] xl:w-[42%] border-r border-slate-200 bg-white flex-col">
+            <div className="flex-1 p-3 xl:p-4 overflow-y-auto">
               {isLoading ? (
                 <BuildingNavigatorSkeleton />
               ) : (
@@ -212,7 +212,7 @@ export default function BuildingExplorer() {
         )}
 
         {/* Right Panel */}
-        <div className={isDetailView ? 'flex-1 overflow-hidden' : 'flex-1 lg:w-[55%] xl:w-[58%]'}>
+        <div className={isDetailView ? 'flex-1 overflow-hidden' : 'flex-1 lg:w-[60%] xl:w-[58%]'}>
           {isDetailView ? (
             <FloorPanel
               floor={selectedFloor}
@@ -223,7 +223,7 @@ export default function BuildingExplorer() {
               totalStats={totalStats}
             />
           ) : (
-            <div className="h-full p-4 lg:p-5 overflow-auto bg-stone-50">
+            <div className="h-full p-3 lg:p-4 xl:p-5 overflow-auto bg-stone-50">
               <FloorPanel
                 floor={selectedFloor}
                 apartments={floorApartments}
