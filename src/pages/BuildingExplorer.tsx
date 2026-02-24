@@ -91,7 +91,8 @@ export default function BuildingExplorer() {
 
           <nav className="hidden md:flex items-center gap-6">
             <Link to="/" className="text-sm text-slate-500 hover:text-slate-900 transition-colors font-medium">Home</Link>
-            <Link to="/building" className="text-sm text-slate-900 font-medium">Explore</Link>
+            <Link to="/building" className="text-sm text-slate-900 font-medium">Interactive Map</Link>
+            <Link to="/apartments" className="text-sm text-slate-500 hover:text-slate-900 transition-colors font-medium">Apartments</Link>
             <Link to="/location" className="text-sm text-slate-500 hover:text-slate-900 transition-colors font-medium">Location</Link>
             <Link to="/about" className="text-sm text-slate-500 hover:text-slate-900 transition-colors font-medium">About</Link>
           </nav>
@@ -107,7 +108,8 @@ export default function BuildingExplorer() {
         {mobileMenuOpen && (
           <div className="md:hidden border-t border-slate-200 bg-white px-4 py-3 space-y-2">
             <Link to="/" className="block py-2 text-sm text-slate-500 hover:text-slate-900">Home</Link>
-            <Link to="/building" className="block py-2 text-sm text-slate-900 font-medium">Explore</Link>
+            <Link to="/building" className="block py-2 text-sm text-slate-900 font-medium">Interactive Map</Link>
+            <Link to="/apartments" className="block py-2 text-sm text-slate-500 hover:text-slate-900">Apartments</Link>
             <Link to="/location" className="block py-2 text-sm text-slate-500 hover:text-slate-900">Location</Link>
             <Link to="/about" className="block py-2 text-sm text-slate-500 hover:text-slate-900">About</Link>
           </div>

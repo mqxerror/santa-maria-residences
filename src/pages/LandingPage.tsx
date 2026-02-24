@@ -56,7 +56,7 @@ export default function LandingPage() {
     if (selectedStatus !== 'available') params.set('status', selectedStatus)
     if (selectedBudget !== 'any') params.set('budget', selectedBudget)
     const queryString = params.toString()
-    navigate(`/building${queryString ? `?${queryString}` : ''}`)
+    navigate(`/apartments${queryString ? `?${queryString}` : ''}`)
   }
 
   return (
@@ -269,15 +269,13 @@ export default function LandingPage() {
                 <select
                   value={selectedBeds}
                   onChange={(e) => setSelectedBeds(e.target.value)}
-                  aria-label="Filter by bedrooms"
+                  aria-label="Filter by size"
                   className="px-3 py-2.5 sm:py-2 bg-background border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-accent"
                 >
-                  <option value="any">All Bedrooms</option>
-                  <option value="studio">Studio</option>
-                  <option value="1">1 Bedroom</option>
-                  <option value="2">2 Bedrooms</option>
-                  <option value="3">3 Bedrooms</option>
-                  <option value="penthouse">Penthouse</option>
+                  <option value="any">All Sizes</option>
+                  <option value="standard">Standard (81-84 m²)</option>
+                  <option value="spacious">Spacious (85 m²)</option>
+                  <option value="penthouse">Penthouse (160 m²)</option>
                 </select>
                 <select
                   value={selectedStatus}
@@ -295,10 +293,10 @@ export default function LandingPage() {
                   className="px-3 py-2.5 sm:py-2 bg-background border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-accent col-span-2 sm:col-span-1"
                 >
                   <option value="any">Any Budget</option>
-                  <option value="300">Under $300K</option>
+                  <option value="350">Under $350K</option>
+                  <option value="400">Under $400K</option>
                   <option value="500">Under $500K</option>
-                  <option value="750">Under $750K</option>
-                  <option value="1000">$1M+</option>
+                  <option value="720">$500K+</option>
                 </select>
               </div>
               <div className="hidden sm:block flex-1 text-right">
