@@ -470,10 +470,11 @@ export default function LandingPage() {
                 <p className="text-accent text-xs font-semibold tracking-widest uppercase mb-4">Now Available</p>
                 <div className="space-y-4">
                   <div className="flex items-baseline gap-2">
-                    <span className="text-5xl font-bold text-primary">{stats.totalUnits}</span>
-                    <span className="text-text-secondary">premium residences</span>
+                    <span className="text-5xl font-bold text-primary">{stats.available}</span>
+                    <span className="text-text-secondary">available residences</span>
                   </div>
                   <p className="text-sm text-text-secondary leading-relaxed">
+                    {stats.reserved > 0 && <><span className="font-medium text-amber-600">{stats.reserved} reserved</span> — </>}
                     Be among the first to secure your residence in Panama City's newest luxury tower. Pre-construction pricing available for early buyers.
                   </p>
                   <div className="pt-2">
@@ -498,7 +499,7 @@ export default function LandingPage() {
                     <p className="text-xs text-text-muted">7-44</p>
                   </div>
                   <div>
-                    <p className="text-2xl font-bold text-text-primary">200</p>
+                    <p className="text-2xl font-bold text-text-primary">{stats.totalUnits}</p>
                     <p className="text-xs text-text-muted">Total apartments</p>
                   </div>
                   <div>
