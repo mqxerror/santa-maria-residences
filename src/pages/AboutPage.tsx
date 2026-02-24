@@ -19,6 +19,7 @@ export default function AboutPage() {
                 alt="Mercan Group"
                 className="h-12 lg:h-14 w-auto"
               />
+              <span className="hidden sm:block text-primary font-semibold text-sm leading-tight">Santa Maria<br/><span className="text-slate-500 font-normal text-xs">Residences</span></span>
             </Link>
             <nav className="hidden md:flex items-center gap-6">
               <Link to="/building" className="text-sm text-slate-600 hover:text-slate-900 transition-colors font-medium">

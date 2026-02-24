@@ -12,6 +12,7 @@ const navItems = [
   { label: 'Interactive Map', href: '/building' },
   { label: 'Apartments', href: '/apartments' },
   { label: 'Location', href: '/location' },
+  { label: 'About', href: '/about' },
 ]
 
 export default function MainNav({ variant = 'solid', className }: MainNavProps) {
@@ -46,6 +47,9 @@ export default function MainNav({ variant = 'solid', className }: MainNavProps) 
               alt="Mercan Group"
               className={cn('w-auto', isTransparent ? 'h-20' : 'h-16 lg:h-18')}
             />
+            <span className={cn('hidden sm:block font-semibold text-sm leading-tight', isTransparent ? 'text-white' : 'text-primary')}>
+              Santa Maria<br/><span className={cn('font-normal text-xs', isTransparent ? 'text-white/60' : 'text-slate-500')}>Residences</span>
+            </span>
           </Link>
 
           {/* Desktop Navigation */}
@@ -57,7 +61,7 @@ export default function MainNav({ variant = 'solid', className }: MainNavProps) 
                   key={item.href}
                   to={item.href}
                   className={cn(
-                    'text-sm font-medium py-2 transition-colors focus:outline-none focus:underline underline-offset-4',
+                    'text-[14px] font-medium py-2.5 transition-colors focus:outline-none focus:underline underline-offset-4',
                     isTransparent
                       ? isActive
                         ? 'text-white'
@@ -109,7 +113,7 @@ export default function MainNav({ variant = 'solid', className }: MainNavProps) 
                     to={item.href}
                     onClick={() => setMobileMenuOpen(false)}
                     className={cn(
-                      'px-4 py-3 rounded-lg transition-colors font-medium focus:outline-none',
+                      'px-4 py-3.5 rounded-lg transition-colors font-medium focus:outline-none min-h-[44px]',
                       isTransparent
                         ? isActive
                           ? 'bg-white/20 text-white'

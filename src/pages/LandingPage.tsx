@@ -61,16 +61,8 @@ export default function LandingPage() {
 
   return (
     <div className="min-h-screen bg-background">
-      {/* Skip Link for Accessibility */}
-      <a
-        href="#main-content"
-        className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-[100] focus:px-4 focus:py-2 focus:bg-white focus:text-primary focus:rounded-lg focus:font-medium focus:outline-none focus:ring-2 focus:ring-primary"
-      >
-        Skip to main content
-      </a>
-
       {/* Navigation */}
-      <header className="absolute top-0 left-0 right-0 z-50">
+      <header className={cn('fixed top-0 left-0 right-0 z-50 transition-all duration-300', isScrolled ? 'bg-primary/95 backdrop-blur-md shadow-lg' : 'bg-transparent')}>
         <div className="page-container py-4">
           <div className="flex items-center justify-between">
             <Link to="/" className="flex items-center gap-3 focus:outline-none focus:ring-2 focus:ring-white/50 focus:ring-offset-2 focus:ring-offset-transparent rounded-lg">
@@ -79,23 +71,24 @@ export default function LandingPage() {
                 alt="Mercan Group"
                 className="h-14 w-auto"
               />
+              <span className="hidden sm:block text-white font-semibold text-sm leading-tight">Santa Maria<br/><span className="text-white/60 font-normal text-xs">Residences</span></span>
             </Link>
 
             {/* Desktop Navigation */}
             <nav className="hidden md:flex items-center gap-6" aria-label="Main navigation">
-              <Link to="/building" className="text-sm text-white/80 hover:text-white transition-colors font-medium py-2 focus:outline-none focus:text-white focus:underline underline-offset-4">
+              <Link to="/building" className="text-[14px] text-white/90 hover:text-white transition-colors font-medium py-2 drop-shadow-[0_1px_2px_rgba(0,0,0,0.5)] focus:outline-none focus:text-white focus:underline underline-offset-4">
                 Interactive Map
               </Link>
-              <Link to="/apartments" className="text-sm text-white/80 hover:text-white transition-colors font-medium py-2 focus:outline-none focus:text-white focus:underline underline-offset-4">
+              <Link to="/apartments" className="text-[14px] text-white/90 hover:text-white transition-colors font-medium py-2 drop-shadow-[0_1px_2px_rgba(0,0,0,0.5)] focus:outline-none focus:text-white focus:underline underline-offset-4">
                 Apartments
               </Link>
-              <Link to="/location" className="text-sm text-white/80 hover:text-white transition-colors font-medium py-2 focus:outline-none focus:text-white focus:underline underline-offset-4">
+              <Link to="/location" className="text-[14px] text-white/90 hover:text-white transition-colors font-medium py-2 drop-shadow-[0_1px_2px_rgba(0,0,0,0.5)] focus:outline-none focus:text-white focus:underline underline-offset-4">
                 Location
               </Link>
-              <Link to="/about" className="text-sm text-white/80 hover:text-white transition-colors font-medium py-2 focus:outline-none focus:text-white focus:underline underline-offset-4">
+              <Link to="/about" className="text-[14px] text-white/90 hover:text-white transition-colors font-medium py-2 drop-shadow-[0_1px_2px_rgba(0,0,0,0.5)] focus:outline-none focus:text-white focus:underline underline-offset-4">
                 About
               </Link>
-              <a href="#investor" className="text-sm text-white/80 hover:text-white transition-colors font-medium py-2 focus:outline-none focus:text-white focus:underline underline-offset-4">
+              <a href="#investor" className="text-[14px] text-white/90 hover:text-white transition-colors font-medium py-2 drop-shadow-[0_1px_2px_rgba(0,0,0,0.5)] focus:outline-none focus:text-white focus:underline underline-offset-4">
                 Investor
               </a>
             </nav>
@@ -157,7 +150,7 @@ export default function LandingPage() {
       </header>
 
       {/* Hero Section - Enhanced with Aceternity UI */}
-      <section id="main-content" className="relative h-[85vh] min-h-[500px] md:min-h-[600px] flex items-center overflow-hidden">
+      <main id="main-content" className="relative h-[85vh] min-h-[500px] md:min-h-[600px] flex items-center overflow-hidden">
         {/* Background Image with Parallax */}
         <div className="absolute inset-0 overflow-hidden">
           <div
@@ -265,7 +258,7 @@ export default function LandingPage() {
           <span className="text-white/60 text-xs font-medium tracking-wider uppercase">Discover</span>
           <div className="w-px h-8 bg-gradient-to-b from-accent/60 to-transparent" />
         </div>
-      </section>
+      </main>
 
       {/* Quick Search Bar */}
       <section className="relative -mt-6 sm:-mt-10 z-10" aria-label="Search filters">
@@ -325,21 +318,14 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* Sticky Mini-Search Bar (appears on scroll) */}
+      {/* Sticky Search Bar (appears below fixed header on scroll) */}
       <div className={cn(
-        'fixed top-0 left-0 right-0 z-50 transition-all duration-300',
+        'fixed top-[72px] left-0 right-0 z-40 transition-all duration-300',
         isScrolled ? 'translate-y-0 opacity-100' : '-translate-y-full opacity-0 pointer-events-none'
       )}>
         <div className="bg-surface/95 backdrop-blur-md border-b border-border shadow-sm">
           <div className="page-container py-2.5">
             <div className="flex items-center gap-2 sm:gap-3">
-              <Link to="/" className="flex items-center gap-2 focus:outline-none focus:ring-2 focus:ring-primary/50 rounded-lg">
-                <img
-                  src="https://www.mercan.com/wp-content/uploads/2024/06/logo.png"
-                  alt="Mercan Group"
-                  className="h-8 w-auto"
-                />
-              </Link>
               <select
                 value={selectedBeds}
                 onChange={(e) => setSelectedBeds(e.target.value)}
@@ -483,30 +469,20 @@ export default function LandingPage() {
             <div className="grid grid-cols-1 lg:grid-cols-3">
               {/* Left: Availability Stats */}
               <div className="p-8 lg:border-r border-stone-100">
-                <p className="text-accent text-xs font-semibold tracking-widest uppercase mb-4">Live Availability</p>
+                <p className="text-accent text-xs font-semibold tracking-widest uppercase mb-4">Now Available</p>
                 <div className="space-y-4">
                   <div className="flex items-baseline gap-2">
-                    <span className="text-5xl font-bold text-primary">{stats.available}</span>
-                    <span className="text-text-secondary">units available</span>
+                    <span className="text-5xl font-bold text-primary">{stats.totalUnits}</span>
+                    <span className="text-text-secondary">premium residences</span>
                   </div>
-                  <div className="flex items-center gap-4 text-sm">
-                    <div className="flex items-center gap-2">
-                      <div className="w-3 h-3 rounded-full bg-emerald-500" />
-                      <span className="text-text-secondary">Available: {stats.available}</span>
+                  <p className="text-sm text-text-secondary leading-relaxed">
+                    Be among the first to secure your residence in Panama City's newest luxury tower. Pre-construction pricing available for early buyers.
+                  </p>
+                  <div className="pt-2">
+                    <div className="flex items-center gap-2 text-sm">
+                      <div className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse" />
+                      <span className="text-emerald-600 font-medium">Accepting reservations now</span>
                     </div>
-                    <div className="flex items-center gap-2">
-                      <div className="w-3 h-3 rounded-full bg-amber-500" />
-                      <span className="text-text-secondary">Reserved: {stats.reserved}</span>
-                    </div>
-                  </div>
-                  <div className="pt-4">
-                    <div className="h-2 bg-stone-100 rounded-full overflow-hidden">
-                      <div
-                        className="h-full bg-gradient-to-r from-emerald-500 to-emerald-400 rounded-full transition-all duration-500"
-                        style={{ width: `${(stats.available / stats.totalUnits) * 100}%` }}
-                      />
-                    </div>
-                    <p className="text-xs text-text-muted mt-2">{Math.round((stats.available / stats.totalUnits) * 100)}% still available</p>
                   </div>
                 </div>
               </div>
@@ -589,7 +565,7 @@ export default function LandingPage() {
                 containerClassName="rounded-xl"
                 className="flex items-center gap-3 px-10 py-5 bg-slate-950 text-white font-semibold text-lg"
               >
-                Explore All Units
+                Explore the Building
                 <ArrowRight className="w-5 h-5" />
               </HoverBorderGradient>
             </Link>
@@ -873,7 +849,7 @@ export default function LandingPage() {
                 containerClassName="rounded-xl"
                 className="flex items-center gap-2 px-8 py-3 bg-slate-950 text-white font-medium"
               >
-                Explore Available Units
+                Start Your Investment
                 <ArrowRight className="w-4 h-4" />
               </HoverBorderGradient>
             </Link>

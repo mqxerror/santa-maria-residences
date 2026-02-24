@@ -140,6 +140,7 @@ export default function LocationPage() {
                 alt="Mercan Group"
                 className="h-12 lg:h-14 w-auto"
               />
+              <span className="hidden sm:block text-primary font-semibold text-sm leading-tight">Santa Maria<br/><span className="text-slate-500 font-normal text-xs">Residences</span></span>
             </Link>
 
             <nav className="hidden md:flex items-center gap-6">
@@ -180,7 +181,7 @@ export default function LocationPage() {
 
       {/* Hero Section with Map */}
       <section id="main-content" className="relative h-[60vh] min-h-[400px] md:min-h-[500px]">
-        <div className="absolute inset-0">
+        <div className="absolute inset-0 bg-slate-200">
           <iframe
             src={mapEmbedUrl}
             width="100%"

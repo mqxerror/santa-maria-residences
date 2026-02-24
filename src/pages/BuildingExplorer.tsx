@@ -86,6 +86,7 @@ export default function BuildingExplorer() {
               alt="Mercan Group"
               className="h-14 w-auto"
             />
+            <span className="hidden sm:block text-primary font-semibold text-sm leading-tight">Santa Maria<br/><span className="text-slate-500 font-normal text-xs">Residences</span></span>
           </Link>
 
           <nav className="hidden md:flex items-center gap-6">

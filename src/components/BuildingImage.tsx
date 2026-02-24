@@ -107,7 +107,7 @@ export default function BuildingImage({ apartments, selectedFloor, onFloorClick 
               max={MAX_FLOOR}
               value={jumpToFloor}
               onChange={(e) => setJumpToFloor(e.target.value)}
-              placeholder={String(MIN_FLOOR)}
+              placeholder="7-44"
               className="w-full px-2 py-1.5 text-center text-sm font-semibold border border-border rounded-lg bg-surface focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent"
             />
           </form>

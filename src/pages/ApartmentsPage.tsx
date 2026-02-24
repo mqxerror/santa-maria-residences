@@ -5,6 +5,7 @@ import { fetchApartments } from '@/lib/supabase'
 import type { ExecutiveSuite } from '@/types/database'
 import { projectConfig } from '@/config/project'
 import { getSuiteType, getSuiteImage } from '@/config/suiteData'
+import { getEstimatedPrice, formatPriceShort } from '@/lib/apartment-utils'
 import {
   Menu, X, Check, Clock, Lock, Maximize2, ArrowRight, ArrowUpDown,
   SlidersHorizontal, Building2, Filter, Grid3X3, LayoutList,
@@ -169,6 +170,7 @@ export default function ApartmentsPage() {
                 alt="Mercan Group"
                 className="h-12 lg:h-14 w-auto"
               />
+              <span className="hidden sm:block text-primary font-semibold text-sm leading-tight">Santa Maria<br/><span className="text-slate-500 font-normal text-xs">Residences</span></span>
             </Link>
 
             <nav className="hidden md:flex items-center gap-6">
@@ -548,7 +550,7 @@ export default function ApartmentsPage() {
                       {/* Price */}
                       <div className="mb-4">
                         <p className="text-xs text-slate-400 uppercase tracking-wider">From</p>
-                        <p className="text-2xl font-bold text-primary">Contact for Pricing</p>
+                        <p className="text-2xl font-bold text-primary">{formatPriceShort(getEstimatedPrice(apt.floor, apt.size_sqm))}</p>
                       </div>
 
                       {/* CTA Button */}
@@ -618,7 +620,7 @@ export default function ApartmentsPage() {
                     {/* Price */}
                     <div className="text-right">
                       <p className="text-xs text-slate-400 uppercase">From</p>
-                      <p className="text-lg font-bold text-primary">Contact</p>
+                      <p className="text-lg font-bold text-primary">{formatPriceShort(getEstimatedPrice(apt.floor, apt.size_sqm))}</p>
                     </div>
 
                     {/* Status */}
