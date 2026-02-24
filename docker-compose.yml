@@ -1,0 +1,9 @@
+services:
+  santa-maria:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: santa-maria-web
+    restart: always
+    ports:
+      - "3080:80"
