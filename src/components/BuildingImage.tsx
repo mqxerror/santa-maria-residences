@@ -94,7 +94,7 @@ export default function BuildingImage({ apartments, selectedFloor, onFloorClick 
   return (
     <div className="h-full flex flex-col">
       {/* Header */}
-      <div className="mb-2 xl:mb-4">
+      <div className="mb-1 xl:mb-3">
         <h2 className="text-xl xl:text-2xl text-text-primary heading-display">Building Navigator</h2>
         <p className="text-xs xl:text-sm text-gold-600 mt-0.5 xl:mt-1">Select a floor to explore apartments</p>
       </div>
@@ -115,7 +115,7 @@ export default function BuildingImage({ apartments, selectedFloor, onFloorClick 
             />
           </form>
 
-          <div className="flex-1 flex flex-col max-h-[38vh] xl:max-h-none rounded-xl overflow-hidden shadow-md border border-border">
+          <div className="flex-1 flex flex-col min-h-0 rounded-xl overflow-hidden shadow-md border border-border">
             <button
               onClick={handleFloorUp}
               disabled={selectedFloor === MAX_FLOOR}
@@ -156,7 +156,7 @@ export default function BuildingImage({ apartments, selectedFloor, onFloorClick 
         <div className="flex-1 flex flex-col min-h-0">
           {/* Building Image */}
           <div className="flex-1 relative flex items-center justify-center min-h-0">
-            <div className="relative h-full w-full max-h-[42vh] xl:max-h-[750px]">
+            <div className="relative h-full w-full xl:max-h-[750px]">
               <img
                 src="/assets/renders/elevation.jpg"
                 alt="Santa Maria Residences Tower"
@@ -203,7 +203,7 @@ export default function BuildingImage({ apartments, selectedFloor, onFloorClick 
           </div>
 
           {/* Floor Info Panel — fixed below building, never clips */}
-          <div className="shrink-0 mt-2 xl:mt-3">
+          <div className="shrink-0 mt-1 xl:mt-2">
             <div
               className={`rounded-lg xl:rounded-xl overflow-hidden transition-all duration-300 ${
                 activeFloor

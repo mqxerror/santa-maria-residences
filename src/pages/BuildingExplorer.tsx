@@ -76,15 +76,15 @@ export default function BuildingExplorer() {
   const floors = Array.from({ length: MAX_FLOOR - MIN_FLOOR + 1 }, (_, i) => MAX_FLOOR - i)
 
   return (
-    <div className="min-h-screen flex flex-col bg-stone-50">
+    <div className="min-h-screen lg:h-screen flex flex-col lg:overflow-hidden bg-stone-50">
       {/* Header */}
       <header className="bg-white border-b border-slate-200 sticky top-0 z-50">
-        <div className="max-w-screen-2xl mx-auto px-4 md:px-6 lg:px-8 py-4 flex items-center justify-between">
-          <Link to="/" className="flex items-center gap-3">
+        <div className="max-w-screen-2xl mx-auto px-4 md:px-6 lg:px-8 py-2 xl:py-4 flex items-center justify-between">
+          <Link to="/" className="flex items-center gap-2 xl:gap-3">
             <img
               src={projectConfig.media.partnerLogo}
               alt="Mercan Group"
-              className="h-14 w-auto"
+              className="h-10 xl:h-14 w-auto"
             />
             <span className="hidden sm:block text-primary font-semibold text-sm leading-tight">Santa Maria<br/><span className="text-slate-500 font-normal text-xs">Residences</span></span>
           </Link>
@@ -196,7 +196,7 @@ export default function BuildingExplorer() {
 
         {/* Left Panel - Building Navigator */}
         {!isDetailView && (
-          <div className="hidden lg:flex w-[40%] xl:w-[42%] border-r border-slate-200 bg-white flex-col">
+          <div className="hidden lg:flex w-[35%] xl:w-[42%] border-r border-slate-200 bg-white flex-col">
             <div className="flex-1 p-3 xl:p-4 overflow-hidden">
               {isLoading ? (
                 <BuildingNavigatorSkeleton />
@@ -212,7 +212,7 @@ export default function BuildingExplorer() {
         )}
 
         {/* Right Panel */}
-        <div className={isDetailView ? 'flex-1 overflow-hidden' : 'flex-1 lg:w-[60%] xl:w-[58%]'}>
+        <div className={isDetailView ? 'flex-1 overflow-hidden' : 'flex-1 lg:w-[65%] xl:w-[58%] overflow-hidden'}>
           {isDetailView ? (
             <FloorPanel
               floor={selectedFloor}
