@@ -1,22 +1,12 @@
 import { useState, useEffect } from 'react'
 import type { Apartment } from '@/types/database'
-import { ChevronUp, ChevronDown, Check, Clock, Lock } from 'lucide-react'
+import { ChevronUp, ChevronDown, Check, Clock, Lock, Crown } from 'lucide-react'
+import { MIN_FLOOR, MAX_FLOOR, TOTAL_RESIDENTIAL_FLOORS, BUILDING_CONFIG, PENTHOUSE_FLOOR } from '@/config/building'
 
 interface BuildingImageProps {
   apartments: Apartment[]
   selectedFloor: number | null
   onFloorClick: (floor: number) => void
-}
-
-const MIN_FLOOR = 7
-const MAX_FLOOR = 41
-const TOTAL_FLOORS = MAX_FLOOR - MIN_FLOOR + 1
-
-const BUILDING_CONFIG = {
-  top: 5,
-  bottom: 72,
-  left: 28,
-  right: 72,
 }
 
 type FloorStatus = 'available' | 'limited' | 'sold' | 'empty'
@@ -83,15 +73,16 @@ export default function BuildingImage({ apartments, selectedFloor, onFloorClick 
     return () => window.removeEventListener('keydown', handleKeyDown)
   }, [selectedFloor])
 
-  const floors = Array.from({ length: TOTAL_FLOORS }, (_, i) => {
+  const floors = Array.from({ length: TOTAL_RESIDENTIAL_FLOORS }, (_, i) => {
     const floor = MAX_FLOOR - i
-    const floorHeight = (BUILDING_CONFIG.bottom - BUILDING_CONFIG.top) / TOTAL_FLOORS
+    const floorHeight = (BUILDING_CONFIG.bottom - BUILDING_CONFIG.top) / TOTAL_RESIDENTIAL_FLOORS
     return {
       floor,
       top: BUILDING_CONFIG.top + i * floorHeight,
       height: floorHeight,
       status: getFloorStatus(floor),
       stats: getFloorStats(floor),
+      isPenthouse: floor >= PENTHOUSE_FLOOR,
     }
   })
 
@@ -101,14 +92,13 @@ export default function BuildingImage({ apartments, selectedFloor, onFloorClick 
     <div className="h-full flex flex-col">
       {/* Header */}
       <div className="mb-4">
-        <h2 className="text-2xl text-text-primary font-semibold">Building Navigator</h2>
-        <p className="text-sm text-text-secondary mt-1">Select a floor to explore units</p>
+        <h2 className="text-2xl text-text-primary heading-display">Building Navigator</h2>
+        <p className="text-sm text-gold-600 mt-1">Select a floor to explore apartments</p>
       </div>
 
       <div className="flex-1 flex gap-4 min-h-0">
-        {/* Elevator Panel - PRIMARY CONTROL */}
+        {/* Elevator Panel */}
         <div className="flex flex-col w-20 shrink-0">
-          {/* Jump to floor */}
           <form onSubmit={handleJumpToFloor} className="mb-3">
             <label className="text-xs text-text-muted block mb-1">Go to floor</label>
             <input
@@ -117,14 +107,12 @@ export default function BuildingImage({ apartments, selectedFloor, onFloorClick 
               max={MAX_FLOOR}
               value={jumpToFloor}
               onChange={(e) => setJumpToFloor(e.target.value)}
-              placeholder="19"
+              placeholder={String(MIN_FLOOR)}
               className="w-full px-2 py-1.5 text-center text-sm font-semibold border border-border rounded-lg bg-surface focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent"
             />
           </form>
 
-          {/* Elevator display */}
           <div className="flex-1 flex flex-col rounded-xl overflow-hidden shadow-md border border-border">
-            {/* Up button */}
             <button
               onClick={handleFloorUp}
               disabled={selectedFloor === MAX_FLOOR}
@@ -133,17 +121,20 @@ export default function BuildingImage({ apartments, selectedFloor, onFloorClick 
               <ChevronUp className="w-5 h-5 mx-auto text-text-secondary" />
             </button>
 
-            {/* Floor display */}
-            <div className="flex-1 flex items-center justify-center bg-gradient-to-b from-primary to-primary-dark">
+            <div className={`flex-1 flex items-center justify-center ${selectedFloor && selectedFloor >= PENTHOUSE_FLOOR ? 'bg-gradient-to-b from-amber-600 to-amber-700' : 'bg-gradient-to-b from-primary to-primary-dark'}`}>
               <div className="text-center">
+                {selectedFloor && selectedFloor >= PENTHOUSE_FLOOR && (
+                  <Crown className="w-4 h-4 text-amber-200 mx-auto mb-1" />
+                )}
                 <div className="text-4xl font-bold text-white tabular-nums tracking-tight">
                   {selectedFloor || '--'}
                 </div>
-                <div className="text-[10px] text-white/60 mt-1 uppercase tracking-widest">Floor</div>
+                <div className="text-[10px] text-white/60 mt-1 uppercase tracking-widest">
+                  {selectedFloor && selectedFloor >= PENTHOUSE_FLOOR ? 'PH' : 'Floor'}
+                </div>
               </div>
             </div>
 
-            {/* Down button */}
             <button
               onClick={handleFloorDown}
               disabled={selectedFloor === MIN_FLOOR}
@@ -153,21 +144,27 @@ export default function BuildingImage({ apartments, selectedFloor, onFloorClick 
             </button>
           </div>
 
-          {/* Floor range */}
           <div className="mt-2 text-center text-xs text-text-muted">
             Floors {MIN_FLOOR}–{MAX_FLOOR}
           </div>
         </div>
 
-        {/* Building Image - SECONDARY CONTEXT */}
+        {/* Building Image */}
         <div className="flex-1 relative flex items-center justify-center min-h-0">
-          <div className="relative h-full max-h-[560px] aspect-[3/5]">
-            {/* Building Image */}
+          <div className="relative h-full w-full max-h-[800px]">
             <img
-              src="/assets/santa-maria-tower.jpg"
+              src="/assets/renders/elevation.jpg"
               alt="Santa Maria Residences Tower"
-              className="h-full w-full object-cover rounded-2xl shadow-lg"
+              className="h-full w-full object-contain rounded-2xl"
             />
+
+            {/* Penthouse zone label */}
+            <div className="absolute z-10 pointer-events-none" style={{ top: '5%', right: '5%' }}>
+              <div className="flex items-center gap-1.5 bg-amber-500/90 backdrop-blur-sm px-2.5 py-1 rounded-lg">
+                <Crown className="w-3.5 h-3.5 text-amber-900" />
+                <span className="text-[10px] font-bold text-amber-900 uppercase tracking-wider">Penthouse Zone</span>
+              </div>
+            </div>
 
             {/* Floor Overlays */}
             <div className="absolute inset-0 rounded-2xl overflow-hidden">
@@ -190,26 +187,23 @@ export default function BuildingImage({ apartments, selectedFloor, onFloorClick 
                     }}
                     aria-label={`Floor ${f.floor}: ${f.stats.available} of ${f.stats.total} available`}
                   >
-                    {/* Selected floor - architectural glow band */}
                     {isSelected && (
-                      <div className="absolute inset-x-0 inset-y-[-1px] floor-highlight-band flex items-center justify-center">
-                        {/* Floor pill - centered */}
-                        <div className="floor-pill text-primary text-[11px] font-bold px-3 py-1 rounded-md">
+                      <div className={`absolute inset-0 ${f.isPenthouse ? 'bg-amber-400/30 border-y border-amber-400/50' : 'floor-highlight-band'} flex items-center justify-center`}>
+                        <div className={`${f.isPenthouse ? 'bg-amber-400 text-amber-900' : 'floor-pill text-primary'} text-[10px] font-bold px-2.5 py-0.5 rounded-md`}>
+                          {f.isPenthouse && <Crown className="w-2.5 h-2.5 inline mr-0.5 -mt-0.5" />}
                           {f.floor}
                         </div>
                       </div>
                     )}
-
-                    {/* Hover state - subtle */}
                     {isHovered && !isSelected && (
-                      <div className="absolute inset-0 bg-white/10 transition-all duration-150" />
+                      <div className="absolute inset-0 bg-white/15 transition-all duration-150 border-y border-white/20" />
                     )}
                   </button>
                 )
               })}
             </div>
 
-            {/* Premium Tooltip */}
+            {/* Tooltip */}
             {activeFloor && (
               <div
                 className="absolute z-20 pointer-events-none floor-tooltip"
@@ -218,50 +212,54 @@ export default function BuildingImage({ apartments, selectedFloor, onFloorClick 
                   top: `${floors.find((f) => f.floor === activeFloor)?.top || 0}%`,
                 }}
               >
-                <div className="bg-primary text-white rounded-xl shadow-xl px-4 py-3 min-w-[150px]">
-                  <div className="text-lg font-semibold">Floor {activeFloor}</div>
+                <div className={`${activeFloor >= PENTHOUSE_FLOOR ? 'bg-gradient-to-br from-amber-600 to-amber-700 border-amber-400/30' : 'bg-gradient-to-br from-primary to-primary-dark border-gold-500/30'} text-white rounded-xl shadow-xl px-4 py-3 min-w-[150px] border`}>
+                  <div className="text-lg font-semibold font-serif flex items-center gap-2">
+                    {activeFloor >= PENTHOUSE_FLOOR && <Crown className="w-4 h-4 text-amber-200" />}
+                    Floor {activeFloor}
+                  </div>
                   <div className="text-sm text-white/80 mt-1.5 space-y-1">
                     {(() => {
                       const stats = getFloorStats(activeFloor)
-                      return (
+                      return stats.total > 0 ? (
                         <>
                           <div className="flex items-center gap-2">
-                            <Check className="w-3.5 h-3.5 text-accent-light" />
+                            <Check className="w-3.5 h-3.5 text-green-400" />
                             <span>{stats.available} available</span>
                           </div>
                           {stats.reserved > 0 && (
                             <div className="flex items-center gap-2">
-                              <Clock className="w-3.5 h-3.5 text-amber-400" />
+                              <Clock className="w-3.5 h-3.5 text-gold-400" />
                               <span>{stats.reserved} reserved</span>
                             </div>
                           )}
                         </>
+                      ) : (
+                        <span className="text-white/50">Exclusive level</span>
                       )
                     })()}
                   </div>
-                  <div className="text-xs text-white/50 mt-2 pt-2 border-t border-white/20">
+                  <div className="text-xs text-gold-300/70 mt-2 pt-2 border-t border-gold-500/20">
                     Click to view units
                   </div>
-                  {/* Arrow */}
-                  <div className="absolute left-0 top-5 w-2.5 h-2.5 bg-primary transform -translate-x-1 rotate-45" />
+                  <div className={`absolute left-0 top-5 w-2.5 h-2.5 ${activeFloor >= PENTHOUSE_FLOOR ? 'bg-amber-600' : 'bg-primary'} transform -translate-x-1 rotate-45 border-l border-b border-gold-500/30`} />
                 </div>
               </div>
             )}
 
-            {/* Legend - inside building card, bottom-left */}
-            <div className="absolute bottom-3 left-3 flex items-center gap-4 px-3 py-2 bg-black/60 backdrop-blur-sm rounded-lg">
+            {/* Legend */}
+            <div className="absolute bottom-3 left-3 flex items-center gap-4 px-3 py-2 bg-black/70 backdrop-blur-sm rounded-lg border border-gold-500/20">
               <div className="flex items-center gap-1.5">
-                <div className="w-2.5 h-2.5 rounded-full bg-emerald-400" />
-                <Check className="w-3 h-3 text-emerald-400" />
+                <div className="w-2.5 h-2.5 rounded-full bg-green-400" />
+                <Check className="w-3 h-3 text-green-400" />
                 <span className="text-[11px] text-white font-medium">Available</span>
               </div>
-              <div className="w-px h-4 bg-white/20" />
+              <div className="w-px h-4 bg-gold-500/30" />
               <div className="flex items-center gap-1.5">
-                <div className="w-2.5 h-2.5 rounded-full bg-amber-400" />
-                <Clock className="w-3 h-3 text-amber-400" />
+                <div className="w-2.5 h-2.5 rounded-full bg-gold-400" />
+                <Clock className="w-3 h-3 text-gold-400" />
                 <span className="text-[11px] text-white font-medium">Reserved</span>
               </div>
-              <div className="w-px h-4 bg-white/20" />
+              <div className="w-px h-4 bg-gold-500/30" />
               <div className="flex items-center gap-1.5">
                 <div className="w-2.5 h-2.5 rounded-full bg-white/40" />
                 <Lock className="w-3 h-3 text-white/60" />

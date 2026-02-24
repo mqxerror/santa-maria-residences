@@ -1,18 +1,17 @@
 // Santa Maria Residences - Project Configuration
-// This file contains all project-specific metadata and content
 
 export const projectConfig = {
   // Basic Info
   name: 'Santa Maria Residences',
-  tagline: 'Elevated Living in the Heart of Panama City',
-  description: 'Premium residential tower offering 35 floors of sophisticated living with panoramic city and ocean views.',
+  tagline: 'Premium Residential Living in the Heart of Panama City',
+  description: 'Luxury residential tower with 200 apartments across 44 floors, featuring stunning city and ocean views in the prestigious Santa Maria district.',
 
   // Location
   location: {
     city: 'Panama City',
     country: 'Panama',
-    neighborhood: 'San Francisco',
-    address: 'Via España, San Francisco',
+    neighborhood: 'Santa Maria',
+    address: 'Santa Maria, Panama City',
     coordinates: {
       lat: 9.0082,
       lng: -79.5034,
@@ -21,96 +20,154 @@ export const projectConfig = {
 
   // Building Stats
   building: {
-    totalFloors: 35,
-    floorRange: { min: 7, max: 41 },
-    totalUnits: 204,
-    unitTypes: ['Studio', '1 Bedroom', '2 Bedroom', '3 Bedroom', 'Penthouse'],
-    completionYear: 2025,
+    totalFloors: 44,
+    floorRange: { min: 7, max: 44 },
+    penthouseFloor: 38,
+    totalUnits: 200,
+    typicalFloors: { min: 7, max: 37, unitsPerFloor: 6 },
+    upperFloors: { min: 38, max: 44, unitsPerFloor: 2 },
+    unitTypes: ['2 Bedrooms', '3 Bedrooms + Den'],
+    completionYear: 2027,
   },
 
   // Pricing
   pricing: {
-    startingFrom: '$280,000',
-    pricePerSqm: 'From $3,500/m²',
     currency: 'USD',
+    startingFrom: '$319K',
+    typicalRange: '$319K - $377K',
+    upperRange: '$715K - $720K',
+    // Pricing is per-unit based on official price list, not a simple formula
+    // Floor 7 starts at $319,200 (Unit F) to $346,800 (Unit A)
+    // Each floor adds ~$1,000 per unit
+    floorPremiumPerUnit: 1000,
   },
 
-  // Contact
+  // Contact (minimal - no public-facing contact forms)
   contact: {
-    phone: '+1-514-282-9214',
-    whatsapp: '+1-514-282-9214',
-    email: 'info@santamariaresidences.com',
-    salesOffice: 'Tower Lobby, Ground Floor',
+    email: 'info@mercan.com',
   },
 
   // Media
   media: {
-    heroImage: '/assets/santa-maria-tower.jpg',
-    heroVideo: null, // '/assets/hero-video.mp4' when available
-    logo: '/assets/logo.png',
+    heroImage: '/assets/renders/perspective.jpg',
+    partnerLogo: 'https://www.mercan.com/wp-content/uploads/2024/06/logo.png',
+    renders: {
+      perspective: '/assets/renders/perspective.jpg',
+      entrance: '/assets/renders/entrance.jpg',
+      entranceDetail: '/assets/renders/entrance-detail.jpg',
+      elevation: '/assets/renders/elevation.jpg',
+      pool: '/assets/renders/pool.jpg',
+      gym: '/assets/renders/gym.jpg',
+      movies: '/assets/renders/movies.jpg',
+      living: '/assets/renders/living.jpg',
+    },
+    floorPlans: {
+      typical: '/assets/floor-plans/typical-floor-plan.pdf',
+      upper: '/assets/floor-plans/upper-floor-plan.pdf',
+    },
     gallery: [
-      { src: '/assets/gallery/unit-render.jpg', alt: 'Modern living room interior with floor-to-ceiling windows and city views' },
-      { src: '/assets/gallery/view-rooftop.jpg', alt: 'Rooftop infinity pool with panoramic Panama City skyline' },
-      { src: '/assets/gallery/lobby.jpg', alt: 'Grand lobby entrance with marble floors and contemporary design' },
+      { src: '/assets/renders/living.jpg', alt: 'Luxury living room with panoramic views' },
+      { src: '/assets/renders/pool.jpg', alt: 'Rooftop infinity pool' },
+      { src: '/assets/renders/entrance.jpg', alt: 'Grand entrance and lobby' },
+      { src: '/assets/renders/gym.jpg', alt: 'State-of-the-art fitness center' },
     ],
   },
 
-  // Highlights (for landing page)
+  // Branding
+  branding: {
+    developer: 'Mercan Properties',
+    colors: {
+      primary: '#1a1a2e',
+      accent: '#c9a227',
+      secondary: '#4a4a4a',
+    },
+  },
+
+  // Highlights
   highlights: [
     {
-      title: 'Prime Location',
-      description: 'Minutes from business district, shopping, and entertainment',
+      title: 'Premium Location',
+      description: 'Santa Maria — one of Panama City\'s most prestigious neighborhoods',
       icon: 'MapPin',
     },
     {
-      title: 'Premium Finishes',
-      description: 'Italian marble, German appliances, smart home technology',
-      icon: 'Gem',
+      title: 'Investment Opportunity',
+      description: 'Strong rental yields and capital appreciation potential',
+      icon: 'TrendingUp',
     },
     {
       title: 'World-Class Amenities',
-      description: 'Rooftop infinity pool, fitness center, concierge services',
+      description: 'Rooftop pool, fitness center, cinema room, and more',
       icon: 'Building2',
     },
     {
-      title: 'Investment Ready',
-      description: 'Flexible payment plans, rental management available',
-      icon: 'TrendingUp',
+      title: 'Residency Pathway',
+      description: 'Qualifying investment for Panama permanent residency',
+      icon: 'Globe',
     },
   ],
 
   // Amenities
   amenities: {
-    interior: [
-      'Floor-to-ceiling windows',
-      'Central air conditioning',
-      'Smart home ready',
-      'Premium fixtures',
-      'Porcelain flooring',
-      'Modern kitchen',
-    ],
-    building: [
+    buildingFeatures: [
       'Rooftop infinity pool',
+      'Fully equipped gym',
+      'Cinema room',
       '24/7 security',
-      'Fitness center',
-      'Business lounge',
-      'Covered parking',
-      'Concierge services',
+      'Social area',
+      'Underground parking',
+    ],
+    // Alias for components that reference this name
+    hotelAmenities: [
+      'Rooftop infinity pool',
+      'Fully equipped gym',
+      'Cinema room',
+      '24/7 security',
+      'Social area',
+      'Underground parking',
+    ],
+    unitFeatures: [
+      'Floor-to-ceiling windows',
+      'Premium finishes',
+      'Open-concept kitchen',
+      'Smart home ready',
+      'City and ocean views',
+      'Private balcony',
+    ],
+    suiteFeatures: [
+      'Floor-to-ceiling windows',
+      'Premium finishes',
+      'Open-concept kitchen',
+      'Smart home ready',
+      'City and ocean views',
+      'Private balcony',
     ],
     nearby: [
+      'Santa Maria Golf Club',
       'Shopping centers',
       'International schools',
-      'Hospitals',
-      'Parks & recreation',
-      'Fine dining',
+      'Tocumen International Airport (25 min)',
       'Banking district',
+      'Costa del Este',
+    ],
+  },
+
+  // Investment Info
+  investment: {
+    program: 'Panama Friendly Nations Visa',
+    benefits: [
+      'Permanent residency pathway',
+      'No minimum stay requirement',
+      'Tax-friendly jurisdiction',
+      'Strong rental income potential',
+      'Capital appreciation',
     ],
   },
 
   // Social Links
   social: {
-    instagram: 'https://instagram.com/santamariaresidences',
-    facebook: 'https://facebook.com/santamariaresidences',
+    instagram: null,
+    facebook: null,
     linkedin: null,
   },
 }

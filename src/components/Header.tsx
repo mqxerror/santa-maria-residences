@@ -7,11 +7,11 @@ export default function Header() {
         <Link to="/" className="flex items-center gap-3">
           {/* Logo placeholder */}
           <div className="w-10 h-10 rounded-lg bg-primary flex items-center justify-center">
-            <span className="text-white font-bold text-lg">SM</span>
+            <span className="text-white font-bold text-lg">PH</span>
           </div>
           <div>
-            <h1 className="text-xl font-semibold text-text-primary">Santa Maria</h1>
-            <p className="text-xs text-text-muted -mt-0.5">Residences</p>
+            <h1 className="text-xl font-semibold text-text-primary">Santa Maria Residences</h1>
+            <p className="text-xs text-text-muted -mt-0.5">Premium Apartments</p>
           </div>
         </Link>
         <nav className="flex items-center gap-6">

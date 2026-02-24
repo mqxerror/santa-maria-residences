@@ -75,7 +75,7 @@ export default function InventoryTable({
                   </td>
                 )}
                 <td className="px-4 py-3 font-medium">
-                  {apt.floor}-{apt.unit}
+                  {apt.floor}-{apt.unit_number}
                 </td>
                 <td className="px-4 py-3">{apt.floor}</td>
                 <td className="px-4 py-3">{apt.size_sqm} m²</td>

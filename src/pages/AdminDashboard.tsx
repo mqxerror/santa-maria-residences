@@ -1,9 +1,9 @@
 import { useState } from 'react'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
-import { supabase } from '@/lib/supabase'
+import { supabase, fetchApartments } from '@/lib/supabase'
 import { useAuth } from '@/contexts/AuthContext'
 import { toast } from 'sonner'
-import type { Apartment, ApartmentStatus } from '@/types/database'
+import type { ApartmentStatus } from '@/types/database'
 import AdminHeader from '@/components/AdminHeader'
 import SummaryCards from '@/components/SummaryCards'
 import InventoryTable from '@/components/InventoryTable'
@@ -19,14 +19,7 @@ export default function AdminDashboard() {
   const { data: apartments = [], isLoading } = useQuery({
     queryKey: ['apartments'],
     queryFn: async () => {
-      const { data, error } = await supabase
-        .from('apartments')
-        .select('*')
-        .order('floor', { ascending: true })
-        .order('unit', { ascending: true })
-
-      if (error) throw error
-      return data as Apartment[]
+      return await fetchApartments()
     },
   })
 
@@ -95,7 +88,7 @@ export default function AdminDashboard() {
   if (searchQuery.trim()) {
     const query = searchQuery.toLowerCase().trim()
     filteredApartments = filteredApartments.filter((apt) => {
-      const unitId = `${apt.floor}-${apt.unit}`.toLowerCase()
+      const unitId = `${apt.floor}-${apt.unit_number}`.toLowerCase()
       return unitId.includes(query) || apt.floor.toString().includes(query)
     })
   }
