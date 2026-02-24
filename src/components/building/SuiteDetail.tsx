@@ -396,7 +396,7 @@ export default function SuiteDetail({ suite, onBack, allSuites = [] }: SuiteDeta
         >
           <div
             className="modal-content bg-white rounded-2xl shadow-2xl max-w-5xl w-full flex flex-col"
-            style={{ maxHeight: 'calc(100vh - 48px)' }}
+            style={{ height: 'calc(100vh - 48px)' }}
             onClick={(e) => e.stopPropagation()}
           >
             {/* Modal Header */}
@@ -409,8 +409,8 @@ export default function SuiteDetail({ suite, onBack, allSuites = [] }: SuiteDeta
               </div>
               <div className="flex items-center gap-2">
                 <a
-                  href={activeMedia === 'render' ? suiteImage : activeMedia === 'view' ? '/assets/gallery/rooftop-pool.jpg' : '#'}
-                  download={`Suite-${suite.floor}-${suite.unit_number}-${activeMedia}.jpg`}
+                  href={activeMedia === 'render' ? suiteImage : activeMedia === 'view' ? '/assets/gallery/rooftop-pool.jpg' : floorPlanPdf}
+                  download={`Suite-${suite.floor}-${suite.unit_number}-${activeMedia}${activeMedia === 'floorplan' ? '.pdf' : '.jpg'}`}
                   className="py-2 px-3 bg-slate-100 border border-slate-200 text-slate-600 text-xs font-medium rounded-lg hover:bg-slate-50 transition-colors flex items-center gap-1.5"
                 >
                   <Download className="w-3.5 h-3.5" />
