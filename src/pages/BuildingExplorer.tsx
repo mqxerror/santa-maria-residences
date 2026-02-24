@@ -197,7 +197,7 @@ export default function BuildingExplorer() {
         {/* Left Panel - Building Navigator */}
         {!isDetailView && (
           <div className="hidden lg:flex w-[40%] xl:w-[42%] border-r border-slate-200 bg-white flex-col">
-            <div className="flex-1 p-3 xl:p-4 overflow-y-auto">
+            <div className="flex-1 p-3 xl:p-4 overflow-hidden">
               {isLoading ? (
                 <BuildingNavigatorSkeleton />
               ) : (

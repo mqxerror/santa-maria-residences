@@ -115,7 +115,7 @@ export default function BuildingImage({ apartments, selectedFloor, onFloorClick 
             />
           </form>
 
-          <div className="flex-1 flex flex-col max-h-[50vh] xl:max-h-none rounded-xl overflow-hidden shadow-md border border-border">
+          <div className="flex-1 flex flex-col max-h-[38vh] xl:max-h-none rounded-xl overflow-hidden shadow-md border border-border">
             <button
               onClick={handleFloorUp}
               disabled={selectedFloor === MAX_FLOOR}
@@ -156,7 +156,7 @@ export default function BuildingImage({ apartments, selectedFloor, onFloorClick 
         <div className="flex-1 flex flex-col min-h-0">
           {/* Building Image */}
           <div className="flex-1 relative flex items-center justify-center min-h-0">
-            <div className="relative h-full w-full max-h-[55vh] xl:max-h-[750px]">
+            <div className="relative h-full w-full max-h-[42vh] xl:max-h-[750px]">
               <img
                 src="/assets/renders/elevation.jpg"
                 alt="Santa Maria Residences Tower"
