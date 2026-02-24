@@ -25,56 +25,62 @@ export default function AdminDashboard() {
 
   const updateStatusMutation = useMutation({
     mutationFn: async ({ id, status }: { id: string; status: ApartmentStatus }) => {
-      const { error } = await supabase
+      const { error, count } = await supabase
         .from('apartments')
         .update({ status, updated_by: user?.email })
         .eq('id', id)
+        .select()
 
       if (error) throw error
+      if (count === 0) throw new Error('Update blocked — check database permissions (RLS)')
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['apartments'] })
       toast.success('Status updated')
     },
-    onError: () => {
-      toast.error('Failed to update status')
+    onError: (err: Error) => {
+      toast.error(err.message || 'Failed to update status')
     },
   })
 
   const updateNotesMutation = useMutation({
     mutationFn: async ({ id, notes }: { id: string; notes: string }) => {
-      const { error } = await supabase
+      const { error, count } = await supabase
         .from('apartments')
         .update({ notes, updated_by: user?.email })
         .eq('id', id)
+        .select()
 
       if (error) throw error
+      if (count === 0) throw new Error('Update blocked — check database permissions (RLS)')
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['apartments'] })
       toast.success('Notes saved')
     },
-    onError: () => {
-      toast.error('Failed to save notes')
+    onError: (err: Error) => {
+      toast.error(err.message || 'Failed to save notes')
     },
   })
 
   const bulkUpdateMutation = useMutation({
     mutationFn: async ({ ids, status }: { ids: string[]; status: ApartmentStatus }) => {
-      const { error } = await supabase
+      const { error, count } = await supabase
         .from('apartments')
         .update({ status, updated_by: user?.email })
         .in('id', ids)
+        .select()
 
       if (error) throw error
+      if (count === 0) throw new Error('Update blocked — check database permissions (RLS)')
     },
     onSuccess: (_, variables) => {
       queryClient.invalidateQueries({ queryKey: ['apartments'] })
       toast.success(`${variables.ids.length} units updated to ${variables.status}`)
       setSelectedIds(new Set())
     },
-    onError: () => {
-      toast.error('Failed to update units')
+    onError: (err: Error) => {
+      toast.error(err.message || 'Failed to update units')
     },
   })
 
