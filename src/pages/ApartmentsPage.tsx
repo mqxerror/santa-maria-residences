@@ -201,7 +201,7 @@ export default function ApartmentsPage() {
   }
 
   const handleCardClick = (apt: ExecutiveSuite) => {
-    navigate(`/suite/${apt.floor}/${apt.unit_number}`)
+    navigate(`/building?floor=${apt.floor}&unit=${apt.id}`)
   }
 
   return (
