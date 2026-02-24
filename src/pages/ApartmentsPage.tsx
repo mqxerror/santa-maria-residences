@@ -1,5 +1,5 @@
 import { useState, useMemo, useEffect } from 'react'
-import { Link, useNavigate, useSearchParams } from 'react-router-dom'
+import { Link, useSearchParams } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
 import { fetchApartments } from '@/lib/supabase'
 import type { ExecutiveSuite } from '@/types/database'
@@ -13,6 +13,7 @@ import {
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import Footer from '@/components/Footer'
+import SuiteDetail from '@/components/building/SuiteDetail'
 // Aceternity UI Components
 import { BackgroundBeams, TextGenerateEffect, HoverBorderGradient, Spotlight } from '@/components/ui'
 
@@ -35,7 +36,6 @@ const getDirectionLabel = (unitNumber: number): string => {
 type SizeFilter = 'all' | 'standard' | 'spacious' | 'penthouse'
 
 export default function ApartmentsPage() {
-  const navigate = useNavigate()
   const [searchParams, setSearchParams] = useSearchParams()
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [statusFilter, setStatusFilter] = useState<StatusFilter>('all')
@@ -47,6 +47,7 @@ export default function ApartmentsPage() {
   const [budgetFilter, setBudgetFilter] = useState<string>('all')
   const [showFilters, setShowFilters] = useState(false)
   const [hoveredCard, setHoveredCard] = useState<string | null>(null)
+  const [selectedApartment, setSelectedApartment] = useState<ExecutiveSuite | null>(null)
   const [currentPage, setCurrentPage] = useState(1)
   const itemsPerPage = 12 // Show 12 items per page (4x3 grid)
 
@@ -201,7 +202,8 @@ export default function ApartmentsPage() {
   }
 
   const handleCardClick = (apt: ExecutiveSuite) => {
-    navigate(`/building?floor=${apt.floor}&unit=${apt.id}`)
+    setSelectedApartment(apt)
+    window.scrollTo({ top: 0, behavior: 'smooth' })
   }
 
   return (
@@ -255,6 +257,17 @@ export default function ApartmentsPage() {
         </div>
       </header>
 
+      {/* Suite Detail View */}
+      {selectedApartment ? (
+        <div className="flex-1">
+          <SuiteDetail
+            suite={selectedApartment}
+            onBack={() => setSelectedApartment(null)}
+            allSuites={apartments}
+          />
+        </div>
+      ) : (
+      <>
       {/* Hero Section with Spotlight */}
       <section className="relative py-16 overflow-hidden bg-gradient-to-br from-primary via-primary-dark to-slate-900">
         <Spotlight className="-top-40 left-0 md:left-60 md:-top-20" fill="rgba(201, 162, 39, 0.15)" />
@@ -830,6 +843,8 @@ export default function ApartmentsPage() {
       </section>
 
       <Footer />
+      </>
+      )}
     </div>
   )
 }
