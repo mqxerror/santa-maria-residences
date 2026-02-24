@@ -69,7 +69,7 @@ export default function LandingPage() {
               <img
                 src="https://www.mercan.com/wp-content/uploads/2024/06/logo.png"
                 alt="Mercan Group"
-                className="h-14 w-auto"
+                className="h-10 xl:h-14 w-auto"
               />
               <span className="hidden sm:block text-white font-semibold text-sm leading-tight">Santa Maria<br/><span className="text-white/60 font-normal text-xs">Residences</span></span>
             </Link>
@@ -150,7 +150,7 @@ export default function LandingPage() {
       </header>
 
       {/* Hero Section - Enhanced with Aceternity UI */}
-      <main id="main-content" className="relative h-[85vh] min-h-[500px] md:min-h-[600px] flex items-center overflow-hidden">
+      <main id="main-content" className="relative h-[85vh] min-h-[500px] md:min-h-[500px] flex items-center overflow-hidden">
         {/* Background Image with Parallax */}
         <div className="absolute inset-0 overflow-hidden">
           <div
@@ -366,7 +366,7 @@ export default function LandingPage() {
       </div>
 
       {/* Why Santa Maria - Stats & Image Grid */}
-      <section className="py-16 bg-gradient-to-b from-stone-50/80 to-white overflow-hidden">
+      <section className="py-10 lg:py-16 bg-gradient-to-b from-stone-50/80 to-white overflow-hidden">
         <div className="page-container">
           {/* Section Header */}
           <div className="text-center mb-12">
@@ -532,7 +532,7 @@ export default function LandingPage() {
       </section>
 
       {/* Full-bleed Lifestyle Break - Parallax Section */}
-      <section className="relative h-[60vh] min-h-[350px] md:min-h-[450px] flex items-center overflow-hidden">
+      <section className="relative h-[60vh] min-h-[350px] md:min-h-[350px] flex items-center overflow-hidden">
         {/* Parallax Background Image */}
         <div
           className="absolute inset-0 -top-20 -bottom-20"
@@ -573,7 +573,7 @@ export default function LandingPage() {
       </section>
 
       {/* Location */}
-      <section className="py-16 bg-gradient-to-b from-stone-50 to-white">
+      <section className="py-10 lg:py-16 bg-gradient-to-b from-stone-50 to-white">
         <div className="page-container">
           {/* Section Header */}
           <div className="text-center mb-10">
@@ -677,7 +677,7 @@ export default function LandingPage() {
       </section>
 
       {/* Investment Journey Section - Timeline Approach */}
-      <section id="investor" className="py-20 bg-gradient-to-b from-primary via-primary-dark to-slate-900 relative overflow-hidden scroll-mt-16">
+      <section id="investor" className="py-12 lg:py-20 bg-gradient-to-b from-primary via-primary-dark to-slate-900 relative overflow-hidden scroll-mt-16">
         {/* Background decorative elements */}
         <div className="absolute top-0 left-1/4 w-[500px] h-[500px] bg-accent/5 rounded-full blur-3xl" />
         <div className="absolute bottom-0 right-1/4 w-[400px] h-[400px] bg-white/5 rounded-full blur-3xl" />

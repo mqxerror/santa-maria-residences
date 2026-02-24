@@ -17,7 +17,7 @@ export default function AboutPage() {
               <img
                 src="https://www.mercan.com/wp-content/uploads/2024/06/logo.png"
                 alt="Mercan Group"
-                className="h-12 lg:h-14 w-auto"
+                className="h-10 lg:h-12 xl:h-14 w-auto"
               />
               <span className="hidden sm:block text-primary font-semibold text-sm leading-tight">Santa Maria<br/><span className="text-slate-500 font-normal text-xs">Residences</span></span>
             </Link>
@@ -40,7 +40,7 @@ export default function AboutPage() {
       </header>
 
       {/* Hero - Enhanced with Aceternity */}
-      <section id="main-content" className="relative h-[50vh] min-h-[400px] overflow-hidden">
+      <section id="main-content" className="relative h-[50vh] min-h-[320px] md:min-h-[400px] overflow-hidden">
         <div className="absolute inset-0">
           <img
             src={projectConfig.media.heroImage}
@@ -63,7 +63,7 @@ export default function AboutPage() {
       </section>
 
       {/* Project Story */}
-      <section className="py-16">
+      <section className="py-10 lg:py-16">
         <div className="page-container">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 items-center">
             <div>
@@ -103,7 +103,7 @@ export default function AboutPage() {
       </section>
 
       {/* Amenities - BentoGrid Layout */}
-      <section className="py-16 bg-surface">
+      <section className="py-10 lg:py-16 bg-surface">
         <div className="page-container">
           <div className="text-center mb-12">
             <p className="text-accent text-sm font-medium tracking-wider uppercase mb-3">
@@ -182,7 +182,7 @@ export default function AboutPage() {
       </section>
 
       {/* Gallery */}
-      <section className="py-16">
+      <section className="py-10 lg:py-16">
         <div className="page-container">
           <div className="text-center mb-12">
             <p className="text-accent text-sm font-medium tracking-wider uppercase mb-3">
@@ -207,7 +207,7 @@ export default function AboutPage() {
       </section>
 
       {/* Location */}
-      <section className="py-16 bg-surface">
+      <section className="py-10 lg:py-16 bg-surface">
         <div className="page-container">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
             <div>
@@ -248,7 +248,7 @@ export default function AboutPage() {
       </section>
 
       {/* CTA - Enhanced */}
-      <section className="py-16 bg-primary relative overflow-hidden">
+      <section className="py-10 lg:py-16 bg-primary relative overflow-hidden">
         <div className="page-container text-center relative z-10">
           <h2 className="text-3xl font-semibold text-white mb-4">
             Ready to Explore?

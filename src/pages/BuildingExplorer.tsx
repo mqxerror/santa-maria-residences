@@ -12,7 +12,7 @@ import { projectConfig } from '@/config/project'
 
 export default function BuildingExplorer() {
   const [searchParams, setSearchParams] = useSearchParams()
-  const [selectedFloor, setSelectedFloor] = useState<number | null>(null)
+  const [selectedFloor, setSelectedFloor] = useState<number | null>(MIN_FLOOR)
   const [selectedApartment, setSelectedApartment] = useState<Apartment | null>(null)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [showMobileFloorPicker, setShowMobileFloorPicker] = useState(false)

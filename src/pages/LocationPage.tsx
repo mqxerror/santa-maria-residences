@@ -138,7 +138,7 @@ export default function LocationPage() {
               <img
                 src="https://www.mercan.com/wp-content/uploads/2024/06/logo.png"
                 alt="Mercan Group"
-                className="h-12 lg:h-14 w-auto"
+                className="h-10 lg:h-12 xl:h-14 w-auto"
               />
               <span className="hidden sm:block text-primary font-semibold text-sm leading-tight">Santa Maria<br/><span className="text-slate-500 font-normal text-xs">Residences</span></span>
             </Link>
@@ -180,7 +180,7 @@ export default function LocationPage() {
       </header>
 
       {/* Hero Section with Map */}
-      <section id="main-content" className="relative h-[60vh] min-h-[400px] md:min-h-[500px]">
+      <section id="main-content" className="relative h-[60vh] min-h-[400px] md:min-h-[400px]">
         <div className="absolute inset-0 bg-slate-200">
           <iframe
             src={mapEmbedUrl}
@@ -241,7 +241,7 @@ export default function LocationPage() {
       </section>
 
       {/* Transportation Section - Premium Cards */}
-      <section className="py-16 md:py-20 bg-gradient-to-b from-stone-50 to-white overflow-hidden">
+      <section className="py-10 md:py-14 lg:py-20 bg-gradient-to-b from-stone-50 to-white overflow-hidden">
         <div className="page-container">
           <div className="text-center mb-12">
             <p className="text-accent text-xs font-semibold tracking-widest uppercase mb-3">
@@ -334,7 +334,7 @@ export default function LocationPage() {
       </section>
 
       {/* Neighborhood Section - Premium Grid */}
-      <section className="py-16 md:py-20">
+      <section className="py-10 md:py-14 lg:py-20">
         <div className="page-container">
           <div className="text-center mb-12">
             <p className="text-accent text-xs font-semibold tracking-widest uppercase mb-3">
@@ -385,7 +385,7 @@ export default function LocationPage() {
       </section>
 
       {/* Why This Location */}
-      <section className="py-16 md:py-20 bg-gradient-to-br from-stone-50 to-stone-100">
+      <section className="py-10 md:py-14 lg:py-20 bg-gradient-to-br from-stone-50 to-stone-100">
         <div className="page-container">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             {/* Image Grid */}

@@ -216,7 +216,7 @@ export default function ApartmentsPage() {
               <img
                 src="https://www.mercan.com/wp-content/uploads/2024/06/logo.png"
                 alt="Mercan Group"
-                className="h-12 lg:h-14 w-auto"
+                className="h-10 lg:h-12 xl:h-14 w-auto"
               />
               <span className="hidden sm:block text-primary font-semibold text-sm leading-tight">Santa Maria<br/><span className="text-slate-500 font-normal text-xs">Residences</span></span>
             </Link>
@@ -269,7 +269,7 @@ export default function ApartmentsPage() {
       ) : (
       <>
       {/* Hero Section with Spotlight */}
-      <section className="relative py-16 overflow-hidden bg-gradient-to-br from-primary via-primary-dark to-slate-900">
+      <section className="relative py-10 lg:py-16 overflow-hidden bg-gradient-to-br from-primary via-primary-dark to-slate-900">
         <Spotlight className="-top-40 left-0 md:left-60 md:-top-20" fill="rgba(201, 162, 39, 0.15)" />
         <div className="page-container relative z-10">
           <div className="max-w-3xl">
@@ -819,7 +819,7 @@ export default function ApartmentsPage() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-16 bg-gradient-to-br from-primary via-primary-dark to-slate-900 relative overflow-hidden">
+      <section className="py-10 lg:py-16 bg-gradient-to-br from-primary via-primary-dark to-slate-900 relative overflow-hidden">
         <BackgroundBeams className="opacity-20" />
         <div className="page-container relative z-10 text-center">
           <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
