@@ -66,7 +66,7 @@ export const getSuiteTypeFromLetter = (_type: string, sizeSqm: number): string =
 }
 
 // Default render image for all apartments
-export const DEFAULT_SUITE_IMAGE = '/assets/renders/living.jpg'
+export const DEFAULT_SUITE_IMAGE = '/assets/renders/living.webp'
 
 // Suite images - use renders since we don't have per-unit images
 export const SUITE_IMAGES: Record<number, string> = {}

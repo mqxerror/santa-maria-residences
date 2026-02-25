@@ -11,9 +11,9 @@ import { BackgroundBeams, TextGenerateEffect, FlipWords, Spotlight, HoverBorderG
 
 // Gallery images for FocusCards showcase
 const galleryCards = [
-  { title: 'Rooftop Infinity Pool', src: '/assets/renders/pool.jpg', subtitle: 'Panoramic views' },
-  { title: 'Luxury Living', src: '/assets/renders/living.jpg', subtitle: 'Premium finishes' },
-  { title: 'Grand Entrance', src: '/assets/renders/entrance.jpg', subtitle: 'Elegant lobby' },
+  { title: 'Rooftop Infinity Pool', src: '/assets/renders/pool.webp', subtitle: 'Panoramic views' },
+  { title: 'Luxury Living', src: '/assets/renders/living.webp', subtitle: 'Premium finishes' },
+  { title: 'Grand Entrance', src: '/assets/renders/entrance.webp', subtitle: 'Elegant lobby' },
 ]
 
 export default function LandingPage() {
@@ -407,7 +407,7 @@ export default function LandingPage() {
               {/* Main Image */}
               <div className="relative h-48 rounded-2xl overflow-hidden">
                 <img
-                  src="/assets/renders/pool.jpg"
+                  src="/assets/renders/pool.webp"
                   alt="Rooftop infinity pool"
                   className="w-full h-full object-cover"
                 />
@@ -421,7 +421,7 @@ export default function LandingPage() {
               <div className="grid grid-cols-2 gap-4">
                 <div className="relative h-32 rounded-xl overflow-hidden group">
                   <img
-                    src="/assets/renders/entrance-detail.jpg"
+                    src="/assets/renders/entrance-detail.webp"
                     alt="Premium lobby"
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                   />
@@ -433,7 +433,7 @@ export default function LandingPage() {
                 </div>
                 <div className="relative h-32 rounded-xl overflow-hidden group">
                   <img
-                    src="/assets/renders/living.jpg"
+                    src="/assets/renders/living.webp"
                     alt="Hotel management"
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                   />
@@ -537,7 +537,7 @@ export default function LandingPage() {
         <div
           className="absolute inset-0 -top-20 -bottom-20"
           style={{
-            backgroundImage: 'url(/assets/renders/perspective.jpg)',
+            backgroundImage: 'url(/assets/renders/perspective.webp)',
             backgroundAttachment: 'fixed',
             backgroundPosition: 'center',
             backgroundRepeat: 'no-repeat',

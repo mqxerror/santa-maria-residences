@@ -95,7 +95,7 @@ const transportInfo = [
     distance: '25 km',
     time: '25-35 min',
     description: 'Panama\'s main international hub with 85+ destinations worldwide',
-    image: '/assets/renders/perspective.jpg'
+    image: '/assets/renders/perspective.webp'
   },
   {
     icon: Car,
@@ -103,7 +103,7 @@ const transportInfo = [
     distance: '2 km',
     time: '3 min',
     description: 'Express toll road connecting to airport and Costa del Este',
-    image: '/assets/renders/entrance.jpg'
+    image: '/assets/renders/entrance.webp'
   },
   {
     icon: Train,
@@ -111,7 +111,7 @@ const transportInfo = [
     distance: '1.5 km',
     time: '5 min walk',
     description: 'Via España station - fast access across the city',
-    image: '/assets/renders/elevation.jpg'
+    image: '/assets/renders/elevation.webp'
   },
 ]
 
@@ -297,7 +297,7 @@ export default function LocationPage() {
       <section className="relative h-[40vh] min-h-[280px] md:min-h-[320px] flex items-center overflow-hidden">
         <div className="absolute inset-0">
           <img
-            src="/assets/renders/perspective.jpg"
+            src="/assets/renders/perspective.webp"
             alt="Panama City skyline"
             className="w-full h-full object-cover"
             onError={(e) => {

@@ -113,7 +113,7 @@ export function getFloorPlanImage(sizeSqm: number): string {
 
   // Upper floor units (160m²) - use upper floor plan
   if (rounded >= 150) {
-    return '/assets/floor-plans/upper-floor-plan.png'
+    return '/assets/floor-plans/upper-floor-plan.webp'
   }
 
   const mapping: Record<number, string> = {
@@ -123,7 +123,7 @@ export function getFloorPlanImage(sizeSqm: number): string {
   }
 
   const key = mapping[rounded] || 'typical-floor-plan'
-  return `/assets/floor-plans/${key}.png`
+  return `/assets/floor-plans/${key}.webp`
 }
 
 // Get floor plan PDF for download

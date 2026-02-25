@@ -21,7 +21,7 @@ type ViewMode = 'A' | 'C'
 // Helper to get floor plan for specific unit
 const getFloorPlanImage = (unitNumber: number): string => {
   const suiteInfo = getSuiteInfo(unitNumber)
-  return suiteInfo?.floorPlanFile || '/assets/renders/living.jpg'
+  return suiteInfo?.floorPlanFile || '/assets/renders/living.webp'
 }
 
 // Unified gallery data structure for modal
@@ -291,7 +291,7 @@ export default function BuildingExplorerDualAB() {
             <div className="flex-1 flex items-center justify-center overflow-hidden min-h-0 p-2">
               <div className="relative h-full max-h-[90%] w-auto" style={{ aspectRatio: '3/4', maxWidth: '100%' }}>
                 <img
-                  src="/assets/renders/elevation.jpg"
+                  src="/assets/renders/elevation.webp"
                   alt="Santa Maria Residences Tower"
                   className="h-full w-full object-cover rounded-2xl shadow-xl"
                 />

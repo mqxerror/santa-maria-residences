@@ -49,27 +49,27 @@ export const projectConfig = {
 
   // Media
   media: {
-    heroImage: '/assets/renders/perspective.jpg',
+    heroImage: '/assets/renders/perspective.webp',
     partnerLogo: 'https://www.mercan.com/wp-content/uploads/2024/06/logo.png',
     renders: {
-      perspective: '/assets/renders/perspective.jpg',
-      entrance: '/assets/renders/entrance.jpg',
-      entranceDetail: '/assets/renders/entrance-detail.jpg',
-      elevation: '/assets/renders/elevation.jpg',
-      pool: '/assets/renders/pool.jpg',
-      gym: '/assets/renders/gym.jpg',
-      movies: '/assets/renders/movies.jpg',
-      living: '/assets/renders/living.jpg',
+      perspective: '/assets/renders/perspective.webp',
+      entrance: '/assets/renders/entrance.webp',
+      entranceDetail: '/assets/renders/entrance-detail.webp',
+      elevation: '/assets/renders/elevation.webp',
+      pool: '/assets/renders/pool.webp',
+      gym: '/assets/renders/gym.webp',
+      movies: '/assets/renders/movies.webp',
+      living: '/assets/renders/living.webp',
     },
     floorPlans: {
       typical: '/assets/floor-plans/typical-floor-plan.pdf',
       upper: '/assets/floor-plans/upper-floor-plan.pdf',
     },
     gallery: [
-      { src: '/assets/renders/living.jpg', alt: 'Luxury living room with panoramic views' },
-      { src: '/assets/renders/pool.jpg', alt: 'Rooftop infinity pool' },
-      { src: '/assets/renders/entrance.jpg', alt: 'Grand entrance and lobby' },
-      { src: '/assets/renders/gym.jpg', alt: 'State-of-the-art fitness center' },
+      { src: '/assets/renders/living.webp', alt: 'Luxury living room with panoramic views' },
+      { src: '/assets/renders/pool.webp', alt: 'Rooftop infinity pool' },
+      { src: '/assets/renders/entrance.webp', alt: 'Grand entrance and lobby' },
+      { src: '/assets/renders/gym.webp', alt: 'State-of-the-art fitness center' },
     ],
   },
 

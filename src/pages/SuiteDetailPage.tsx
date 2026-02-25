@@ -45,8 +45,8 @@ const getSuiteImages = (unitNumber: number): string[] => {
   // Return the specific image plus gallery images as fallback
   return [
     specificImage,
-    '/assets/renders/living.jpg',
-    '/assets/renders/entrance.jpg',
+    '/assets/renders/living.webp',
+    '/assets/renders/entrance.webp',
   ]
 }
 

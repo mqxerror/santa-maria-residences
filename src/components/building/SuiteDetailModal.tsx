@@ -26,9 +26,9 @@ export default function SuiteDetailModal({
     // Larger units (7, 8, 9, 11) use type-07 render
     // Others use type-08 render
     if ([7, 8, 9, 11].includes(unitNumber)) {
-      return '/assets/gallery/suite-type-07.jpg'
+      return '/assets/gallery/suite-type-07.webp'
     }
-    return '/assets/gallery/suite-type-08.jpg'
+    return '/assets/gallery/suite-type-08.webp'
   }
 
   // Get size category

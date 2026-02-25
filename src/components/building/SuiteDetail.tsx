@@ -19,7 +19,7 @@ const formatPrice = (price: number): string => formatPriceShort(price)
 
 // Get apartment image based on unit number
 const getSuiteImage = (_unitNumber: number): string => {
-  return '/assets/renders/living.jpg'
+  return '/assets/renders/living.webp'
 }
 
 const statusConfig = {
@@ -166,7 +166,7 @@ export default function SuiteDetail({ suite, onBack, allSuites = [] }: SuiteDeta
                   )}
                   {activeMedia === 'view' && (
                     <img
-                      src="/assets/gallery/rooftop-pool.jpg"
+                      src="/assets/gallery/rooftop-pool.webp"
                       alt="View from suite"
                       className="w-full h-full object-cover group-hover:scale-[1.02] transition-transform duration-500"
                     />
@@ -308,7 +308,7 @@ export default function SuiteDetail({ suite, onBack, allSuites = [] }: SuiteDeta
                   )}
                 >
                   <img
-                    src="/assets/gallery/rooftop-pool.jpg"
+                    src="/assets/gallery/rooftop-pool.webp"
                     alt="View"
                     className="w-full h-full object-cover"
                   />
@@ -409,8 +409,8 @@ export default function SuiteDetail({ suite, onBack, allSuites = [] }: SuiteDeta
               </div>
               <div className="flex items-center gap-2">
                 <a
-                  href={activeMedia === 'render' ? suiteImage : activeMedia === 'view' ? '/assets/gallery/rooftop-pool.jpg' : floorPlanPdf}
-                  download={`Suite-${suite.floor}-${suite.unit_number}-${activeMedia}${activeMedia === 'floorplan' ? '.pdf' : '.jpg'}`}
+                  href={activeMedia === 'render' ? suiteImage : activeMedia === 'view' ? '/assets/gallery/rooftop-pool.webp' : floorPlanPdf}
+                  download={`Suite-${suite.floor}-${suite.unit_number}-${activeMedia}${activeMedia === 'floorplan' ? '.pdf' : '.webp'}`}
                   className="py-2 px-3 bg-slate-100 border border-slate-200 text-slate-600 text-xs font-medium rounded-lg hover:bg-slate-50 transition-colors flex items-center gap-1.5"
                 >
                   <Download className="w-3.5 h-3.5" />
@@ -436,7 +436,7 @@ export default function SuiteDetail({ suite, onBack, allSuites = [] }: SuiteDeta
               )}
               {activeMedia === 'view' && (
                 <img
-                  src="/assets/gallery/rooftop-pool.jpg"
+                  src="/assets/gallery/rooftop-pool.webp"
                   alt="View from suite"
                   className="w-full h-full object-contain"
                 />
@@ -470,7 +470,7 @@ export default function SuiteDetail({ suite, onBack, allSuites = [] }: SuiteDeta
                   activeMedia === 'view' ? 'ring-2 ring-amber-500' : 'opacity-60 hover:opacity-100'
                 )}
               >
-                <img src="/assets/gallery/rooftop-pool.jpg" alt="View" className="w-full h-full object-cover" />
+                <img src="/assets/gallery/rooftop-pool.webp" alt="View" className="w-full h-full object-cover" />
               </button>
               <button
                 onClick={() => setActiveMedia('floorplan')}

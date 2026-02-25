@@ -13,7 +13,7 @@ import { getSuiteType, getSuiteImage, getSuiteInfo } from '@/config/suiteData'
 
 const getFloorPlanImage = (unitNumber: number): string => {
   const suiteInfo = getSuiteInfo(unitNumber)
-  return suiteInfo?.floorPlanFile || '/assets/floor-plans/typical-floor-plan.png'
+  return suiteInfo?.floorPlanFile || '/assets/floor-plans/typical-floor-plan.webp'
 }
 
 const statusConfig = {
@@ -121,7 +121,7 @@ export default function BuildingExplorerDual() {
             <div className="relative h-full max-h-[600px] aspect-[3/4] w-full max-w-[400px]">
               {/* Building Image */}
               <img
-                src="/assets/renders/elevation.jpg"
+                src="/assets/renders/elevation.webp"
                 alt="Santa Maria Residences Tower"
                 className="h-full w-full object-cover rounded-2xl shadow-xl"
               />
@@ -381,7 +381,7 @@ export default function BuildingExplorerDual() {
                       alt={`Suite ${selectedSuite.unit_number} Floor Plan`}
                       className="w-full h-auto rounded-lg floorplan-reveal"
                       onError={(e) => {
-                        e.currentTarget.src = '/assets/renders/living.jpg'
+                        e.currentTarget.src = '/assets/renders/living.webp'
                       }}
                     />
                   </div>

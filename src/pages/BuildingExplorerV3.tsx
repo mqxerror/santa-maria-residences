@@ -98,7 +98,7 @@ export default function BuildingExplorerV3() {
           <div className="relative h-full max-h-[800px] aspect-[3/4] mx-auto">
             {/* Building Image */}
             <img
-              src="/assets/renders/elevation.jpg"
+              src="/assets/renders/elevation.webp"
               alt="Santa Maria Residences Tower"
               className="h-full w-full object-cover rounded-3xl shadow-2xl"
             />

@@ -158,7 +158,7 @@ export default function BuildingImage({ apartments, selectedFloor, onFloorClick 
           <div className="flex-1 relative flex items-center justify-center min-h-0">
             <div className="relative h-full w-full xl:max-h-[750px]">
               <img
-                src="/assets/renders/elevation.jpg"
+                src="/assets/renders/elevation.webp"
                 alt="Santa Maria Residences Tower"
                 className="h-full w-full object-contain rounded-2xl"
               />
