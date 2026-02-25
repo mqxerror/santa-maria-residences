@@ -69,7 +69,7 @@ export default function LandingPage() {
               <img
                 src="https://www.mercan.com/wp-content/uploads/2024/06/logo.png"
                 alt="Mercan Group"
-                className="h-10 xl:h-14 w-auto"
+                className="h-14 xl:h-20 w-auto"
               />
               <span className="hidden sm:block text-white font-semibold text-sm leading-tight">Santa Maria<br/><span className="text-white/60 font-normal text-xs">Residences</span></span>
             </Link>
