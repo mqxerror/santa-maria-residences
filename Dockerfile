@@ -24,10 +24,16 @@ RUN npm run build
 # Production stage
 FROM nginx:alpine
 
-# Copy custom nginx config for SPA routing + Supabase API proxy
+# Copy custom nginx config for SPA routing + Supabase API proxy + domain redirect
 RUN echo 'server { \
     listen 80; \
-    server_name _; \
+    server_name globalresidencysolution.com www.globalresidencysolution.com; \
+    return 301 https://santamariaresidence.com$request_uri; \
+} \
+\
+server { \
+    listen 80; \
+    server_name santamariaresidence.com www.santamariaresidence.com _; \
     root /usr/share/nginx/html; \
     index index.html; \
     \
