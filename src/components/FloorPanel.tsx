@@ -2,8 +2,9 @@ import { useState } from 'react'
 import type { ExecutiveSuite } from '@/types/database'
 import SuiteCard from './building/SuiteCard'
 import SuiteDetail from './building/SuiteDetail'
-import { Check, Clock, Lock, Building2, Home, ArrowUpDown } from 'lucide-react'
+import { Check, Clock, Lock, Building2, Home, ArrowUpDown, ChevronLeft, ChevronRight } from 'lucide-react'
 import { cn } from '@/lib/utils'
+import { MIN_FLOOR, MAX_FLOOR } from '@/config/building'
 
 interface FloorPanelProps {
   floor: number | null
@@ -12,6 +13,11 @@ interface FloorPanelProps {
   selectedApartment: ExecutiveSuite | null
   onApartmentClick: (apt: ExecutiveSuite | null) => void
   totalStats?: { available: number; reserved: number; sold: number; total: number }
+  onToggleBuilding?: () => void
+  buildingPanelVisible?: boolean
+  onFloorChange?: (floor: number) => void
+  minFloor?: number
+  maxFloor?: number
 }
 
 type StatusFilter = 'all' | 'available' | 'reserved' | 'sold'
@@ -24,6 +30,11 @@ export default function FloorPanel({
   selectedApartment,
   onApartmentClick,
   totalStats,
+  onToggleBuilding,
+  buildingPanelVisible,
+  onFloorChange,
+  minFloor = MIN_FLOOR,
+  maxFloor = MAX_FLOOR,
 }: FloorPanelProps) {
   const [statusFilter, setStatusFilter] = useState<StatusFilter>('all')
   const [sortBy, setSortBy] = useState<SortOption>('unit')
@@ -120,13 +131,47 @@ export default function FloorPanel({
 
   return (
     <div className="h-full flex flex-col">
-      {/* Page Header */}
+      {/* Floor Navigation Header */}
       <div className="mb-4">
-        <div className="text-xs text-slate-400 mb-1">
-          Santa Maria Residences / Floor {floor}
-        </div>
-        <div className="flex items-baseline justify-between">
-          <h2 className="text-xl text-slate-900 font-semibold">Floor {floor}</h2>
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            {onToggleBuilding && (
+              <button
+                onClick={onToggleBuilding}
+                className="hidden lg:flex items-center gap-2 px-3 py-2 text-sm font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-lg transition-colors border border-slate-200"
+              >
+                <Building2 className="w-4 h-4" />
+                <span>{buildingPanelVisible ? 'Hide Building' : 'View Building'}</span>
+              </button>
+            )}
+
+            <div className="flex items-center gap-1">
+              {onFloorChange && (
+                <button
+                  onClick={() => onFloorChange(Math.max(minFloor, floor - 1))}
+                  disabled={floor <= minFloor}
+                  className="p-1.5 hover:bg-slate-100 rounded-lg disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+                  aria-label="Previous floor"
+                >
+                  <ChevronLeft className="w-5 h-5 text-slate-600" />
+                </button>
+              )}
+              <h2 className="text-xl text-slate-900 font-semibold min-w-[110px] text-center">
+                Floor {floor}
+              </h2>
+              {onFloorChange && (
+                <button
+                  onClick={() => onFloorChange(Math.min(maxFloor, floor + 1))}
+                  disabled={floor >= maxFloor}
+                  className="p-1.5 hover:bg-slate-100 rounded-lg disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+                  aria-label="Next floor"
+                >
+                  <ChevronRight className="w-5 h-5 text-slate-600" />
+                </button>
+              )}
+            </div>
+          </div>
+
           <span className="text-xs text-slate-400">
             {stats.available} of {stats.total} available
           </span>
@@ -206,7 +251,7 @@ export default function FloorPanel({
         </div>
       ) : (
         <div className="flex-1 overflow-y-auto scrollbar-thin -mx-1 px-1">
-          <div className="grid grid-cols-2 xl:grid-cols-3 gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-2 2xl:grid-cols-3 gap-3">
             {filteredApartments.map((suite) => (
               <SuiteCard
                 key={suite.id}

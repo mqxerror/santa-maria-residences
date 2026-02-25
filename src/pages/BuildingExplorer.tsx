@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
 import { fetchApartments } from '@/lib/supabase'
@@ -16,6 +16,7 @@ export default function BuildingExplorer() {
   const [selectedApartment, setSelectedApartment] = useState<Apartment | null>(null)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [showMobileFloorPicker, setShowMobileFloorPicker] = useState(false)
+  const [buildingPanelOpen, setBuildingPanelOpen] = useState(true)
 
   const { data: apartments = [], isLoading } = useQuery({
     queryKey: ['apartments'],
@@ -62,6 +63,11 @@ export default function BuildingExplorer() {
     setSelectedFloor(floor)
     setSelectedApartment(null)
   }
+
+  const handleFloorChange = useCallback((floor: number) => {
+    setSelectedFloor(floor)
+    setSelectedApartment(null)
+  }, [])
 
   const isDetailView = !!selectedApartment
 
@@ -194,10 +200,14 @@ export default function BuildingExplorer() {
           </div>
         )}
 
-        {/* Left Panel - Building Navigator */}
+        {/* Left Panel - Building Navigator (collapsible) */}
         {!isDetailView && (
-          <div className="hidden lg:flex w-[35%] xl:w-[42%] border-r border-slate-200 bg-white flex-col">
-            <div className="flex-1 p-3 xl:p-4 overflow-hidden">
+          <div
+            className={`hidden lg:flex border-r border-slate-200 bg-white flex-col transition-all duration-300 overflow-hidden ${
+              buildingPanelOpen ? 'w-[35%] xl:w-[42%]' : 'w-0 border-r-0'
+            }`}
+          >
+            <div className="flex-1 p-3 xl:p-4 overflow-hidden min-w-[300px]">
               {isLoading ? (
                 <BuildingNavigatorSkeleton />
               ) : (
@@ -212,7 +222,7 @@ export default function BuildingExplorer() {
         )}
 
         {/* Right Panel */}
-        <div className={isDetailView ? 'flex-1 overflow-hidden' : 'flex-1 lg:w-[65%] xl:w-[58%] overflow-hidden'}>
+        <div className="flex-1 overflow-hidden">
           {isDetailView ? (
             <FloorPanel
               floor={selectedFloor}
@@ -231,6 +241,11 @@ export default function BuildingExplorer() {
                 selectedApartment={selectedApartment}
                 onApartmentClick={setSelectedApartment}
                 totalStats={totalStats}
+                onToggleBuilding={() => setBuildingPanelOpen(!buildingPanelOpen)}
+                buildingPanelVisible={buildingPanelOpen}
+                onFloorChange={handleFloorChange}
+                minFloor={MIN_FLOOR}
+                maxFloor={MAX_FLOOR}
               />
             </div>
           )}
