@@ -27,7 +27,7 @@ export const projectConfig = {
     typicalFloors: { min: 7, max: 37, unitsPerFloor: 6 },
     upperFloors: { min: 38, max: 44, unitsPerFloor: 2 },
     unitTypes: ['2 Bedrooms', '3 Bedrooms + Den'],
-    completionYear: 2027,
+    completionYear: 2028,
   },
 
   // Pricing
