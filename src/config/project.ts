@@ -13,8 +13,8 @@ export const projectConfig = {
     neighborhood: 'Santa Maria',
     address: 'Santa Maria, Panama City',
     coordinates: {
-      lat: 8.9829616,
-      lng: -79.5252443,
+      lat: 9.0082,
+      lng: -79.5034,
     },
   },
 
