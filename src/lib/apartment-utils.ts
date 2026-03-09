@@ -1,5 +1,5 @@
 // Santa Maria Residences - Apartment Utility Functions
-// Based on official price list HD5B SANTAMARIA (Dec 5, 2025 R1)
+// Based on official SANTA MARIA Price Listing
 import { PENTHOUSE_FLOOR } from '@/config/building'
 
 // Official unit sizes from price list
@@ -44,21 +44,21 @@ export function getBathrooms(_sizeSqm: number, floor?: number): number {
 }
 
 // Official price calculation from price list
-// Base prices at Floor 7: A=$346,800 B=$346,800 C=$346,800 D=$330,480 E=$342,720 F=$319,200
+// Base prices at Floor 7: A=$364,140 B=$364,140 C=$364,140 D=$347,004 E=$359,856 F=$359,856
 // Each floor adds $1,000 per unit
-// Upper floors: A=$715,200+floor_premium B=$715,200+floor_premium at Floor 38
+// Upper floors: A=$750,960+floor_premium B=$750,960+floor_premium at Floor 38
 const BASE_PRICES_FLOOR_7: Record<string, number> = {
-  A: 346_800,
-  B: 346_800,
-  C: 346_800,
-  D: 330_480,
-  E: 342_720,
-  F: 319_200,
+  A: 364_140,
+  B: 364_140,
+  C: 364_140,
+  D: 347_004,
+  E: 359_856,
+  F: 359_856,
 }
 
 const BASE_PRICES_FLOOR_38: Record<string, number> = {
-  A: 715_200,
-  B: 715_200,
+  A: 750_960,
+  B: 750_960,
 }
 
 const FLOOR_PREMIUM = 1_000 // $1,000 per floor above base
@@ -66,9 +66,7 @@ const FLOOR_PREMIUM = 1_000 // $1,000 per floor above base
 export function getUnitPrice(floor: number, unitLetter: string): number {
   if (floor >= PENTHOUSE_FLOOR) {
     const basePrice = BASE_PRICES_FLOOR_38[unitLetter] || BASE_PRICES_FLOOR_38.A
-    // Floor 44 is priced at floor 41 level per official price list ($718,200)
-    const effectiveFloor = floor === 44 ? 41 : floor
-    return basePrice + (effectiveFloor - 38) * FLOOR_PREMIUM
+    return basePrice + (floor - 38) * FLOOR_PREMIUM
   }
   const basePrice = BASE_PRICES_FLOOR_7[unitLetter] || BASE_PRICES_FLOOR_7.A
   return basePrice + (floor - 7) * FLOOR_PREMIUM

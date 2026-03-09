@@ -33,12 +33,12 @@ export const projectConfig = {
   // Pricing
   pricing: {
     currency: 'USD',
-    startingFrom: '$319K',
-    typicalRange: '$319K - $377K',
-    upperRange: '$715K - $720K',
-    // Pricing is per-unit based on official price list, not a simple formula
-    // Floor 7 starts at $319,200 (Unit F) to $346,800 (Unit A)
-    // Each floor adds ~$1,000 per unit
+    startingFrom: '$347K',
+    typicalRange: '$347K - $394K',
+    upperRange: '$751K - $757K',
+    // Pricing is per-unit based on official SANTA MARIA Price Listing
+    // Floor 7 starts at $347,004 (Unit D) to $364,140 (Unit A)
+    // Each floor adds $1,000 per unit
     floorPremiumPerUnit: 1000,
   },
 
