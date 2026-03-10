@@ -215,8 +215,8 @@ export default function LandingPage() {
                 </HoverBorderGradient>
               </Link>
               <a
-                href="/assets/floor-plans/typical-floor-plan.pdf"
-                download="Santa-Maria-Floor-Plan.pdf"
+                href="/assets/Mercan-Group-Panama-Brochure.pdf"
+                download="Mercan-Group-Panama-Brochure.pdf"
                 className="inline-flex items-center gap-2 px-5 py-3 text-white/80 hover:text-white text-sm font-medium transition-colors group"
               >
                 <Download className="w-4 h-4 group-hover:scale-110 transition-transform" />
