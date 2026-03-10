@@ -179,7 +179,7 @@ export default function LandingPage() {
         <BackgroundBeams className="opacity-40" />
 
         {/* Content */}
-        <div className="relative page-container z-10">
+        <div className="relative page-container z-10 pt-20 lg:pt-24">
           <div className="max-w-2xl">
 
             {/* Animated Heading */}
