@@ -268,52 +268,37 @@ export default function ApartmentsPage() {
         </div>
       ) : (
       <>
-      {/* Hero Section with Spotlight */}
-      <section className="relative py-10 lg:py-16 overflow-hidden bg-gradient-to-br from-primary via-primary-dark to-slate-900">
+      {/* Compact Hero */}
+      <section className="relative py-5 lg:py-6 overflow-hidden bg-gradient-to-br from-primary via-primary-dark to-slate-900">
         <Spotlight className="-top-40 left-0 md:left-60 md:-top-20" fill="rgba(201, 162, 39, 0.15)" />
         <div className="page-container relative z-10">
-          <div className="max-w-3xl">
-            <p className="text-accent text-sm font-semibold tracking-widest uppercase mb-4">
-              {stats.available} of {stats.total} Available
-            </p>
-            <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">
-              <TextGenerateEffect words="Explore All Apartments" className="text-white" filter={false} duration={0.6} />
-            </h1>
-            <p className="text-white/70 text-lg">
-              Browse our complete collection of {projectConfig.building.totalUnits} apartments across {projectConfig.building.totalFloors} floors.
-              Filter by size, floor, or availability to find your perfect residence.
-            </p>
-          </div>
+          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+            <div>
+              <h1 className="text-2xl md:text-3xl font-bold text-white mb-1">
+                <TextGenerateEffect words="Explore All Apartments" className="text-white" filter={false} duration={0.6} />
+              </h1>
+              <p className="text-white/60 text-sm">
+                {projectConfig.building.totalUnits} apartments across {projectConfig.building.totalFloors} floors — filter by size, floor, or availability.
+              </p>
+            </div>
 
-          {/* Quick Stats Row */}
-          <div className="mt-10 grid grid-cols-2 md:grid-cols-4 gap-4">
-            <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 border border-white/20">
-              <div className="flex items-center gap-2 mb-1">
+            {/* Inline Stats */}
+            <div className="flex items-center gap-3 md:gap-4 shrink-0">
+              <div className="flex items-center gap-1.5">
                 <div className="w-2 h-2 rounded-full bg-emerald-400" />
-                <span className="text-white/70 text-sm">Available</span>
+                <span className="text-white font-semibold text-sm">{stats.available}</span>
+                <span className="text-white/50 text-xs">available</span>
               </div>
-              <p className="text-3xl font-bold text-white">{stats.available}</p>
-            </div>
-            <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 border border-white/20">
-              <div className="flex items-center gap-2 mb-1">
+              <div className="flex items-center gap-1.5">
                 <div className="w-2 h-2 rounded-full bg-amber-400" />
-                <span className="text-white/70 text-sm">Reserved</span>
+                <span className="text-white font-semibold text-sm">{stats.reserved}</span>
+                <span className="text-white/50 text-xs">reserved</span>
               </div>
-              <p className="text-3xl font-bold text-white">{stats.reserved}</p>
-            </div>
-            <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 border border-white/20">
-              <div className="flex items-center gap-2 mb-1">
-                <div className="w-2 h-2 rounded-full bg-slate-400" />
-                <span className="text-white/70 text-sm">Sold</span>
+              <div className="flex items-center gap-1.5">
+                <Building2 className="w-3.5 h-3.5 text-white/50" />
+                <span className="text-white font-semibold text-sm">{projectConfig.building.floorRange.min}-{projectConfig.building.floorRange.max}</span>
+                <span className="text-white/50 text-xs">floors</span>
               </div>
-              <p className="text-3xl font-bold text-white">{stats.sold}</p>
-            </div>
-            <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 border border-white/20">
-              <div className="flex items-center gap-2 mb-1">
-                <Building2 className="w-4 h-4 text-white/70" />
-                <span className="text-white/70 text-sm">Floors</span>
-              </div>
-              <p className="text-3xl font-bold text-white">{projectConfig.building.floorRange.min}-{projectConfig.building.floorRange.max}</p>
             </div>
           </div>
         </div>

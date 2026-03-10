@@ -85,7 +85,7 @@ export default function BuildingExplorer() {
     <div className="min-h-screen lg:h-screen flex flex-col lg:overflow-hidden bg-stone-50">
       {/* Header */}
       <header className="bg-white border-b border-slate-200 sticky top-0 z-50">
-        <div className="max-w-screen-2xl mx-auto px-4 md:px-6 lg:px-8 py-2 xl:py-4 flex items-center justify-between">
+        <div className="max-w-screen-2xl mx-auto px-4 md:px-6 lg:px-8 py-2 xl:py-3 flex items-center justify-between">
           <Link to="/" className="flex items-center gap-2 xl:gap-3">
             <img
               src={projectConfig.media.partnerLogo}
@@ -204,10 +204,10 @@ export default function BuildingExplorer() {
         {!isDetailView && (
           <div
             className={`hidden lg:flex border-r border-slate-200 bg-white flex-col transition-all duration-300 overflow-hidden ${
-              buildingPanelOpen ? 'w-[35%] xl:w-[42%]' : 'w-0 border-r-0'
+              buildingPanelOpen ? 'w-[30%] xl:w-[38%]' : 'w-0 border-r-0'
             }`}
           >
-            <div className="flex-1 p-3 xl:p-4 overflow-hidden min-w-[300px]">
+            <div className="flex-1 p-2 xl:p-3 overflow-hidden min-w-[280px]">
               {isLoading ? (
                 <BuildingNavigatorSkeleton />
               ) : (

@@ -24,43 +24,8 @@ RUN npm run build
 # Production stage
 FROM nginx:alpine
 
-# Copy custom nginx config for SPA routing + Supabase API proxy + domain redirect
-RUN echo 'server { \
-    listen 80; \
-    server_name globalresidencysolution.com www.globalresidencysolution.com; \
-    return 301 https://santamariaresidence.com$request_uri; \
-} \
-\
-server { \
-    listen 80; \
-    server_name santamariaresidence.com www.santamariaresidence.com _; \
-    root /usr/share/nginx/html; \
-    index index.html; \
-    \
-    # Supabase API proxy - same origin avoids CORS/mixed-content issues \
-    location /supabase/ { \
-        proxy_pass http://38.97.60.181:8000/; \
-        proxy_http_version 1.1; \
-        proxy_set_header Host $host; \
-        proxy_set_header X-Real-IP $remote_addr; \
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for; \
-        proxy_set_header X-Forwarded-Proto $scheme; \
-        proxy_set_header Authorization $http_authorization; \
-        proxy_set_header apikey $http_apikey; \
-        proxy_pass_request_headers on; \
-    } \
-    \
-    # SPA routing \
-    location / { \
-        try_files $uri $uri/ /index.html; \
-    } \
-    \
-    # Static assets caching \
-    location ~* \.(js|css|png|jpg|jpeg|gif|ico|svg|webp|woff|woff2|ttf|eot)$ { \
-        expires 1y; \
-        add_header Cache-Control "public, immutable"; \
-    } \
-}' > /etc/nginx/conf.d/default.conf
+# Copy nginx config - domain redirects handled by host nginx
+COPY nginx.conf /etc/nginx/conf.d/default.conf
 
 # Copy built assets from builder
 COPY --from=builder /app/dist /usr/share/nginx/html

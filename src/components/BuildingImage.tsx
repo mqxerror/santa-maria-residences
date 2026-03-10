@@ -94,12 +94,12 @@ export default function BuildingImage({ apartments, selectedFloor, onFloorClick 
   return (
     <div className="h-full flex flex-col">
       {/* Header */}
-      <div className="mb-1 xl:mb-3">
-        <h2 className="text-xl xl:text-2xl text-text-primary heading-display">Building Navigator</h2>
-        <p className="text-xs xl:text-sm text-gold-600 mt-0.5 xl:mt-1">Select a floor to explore apartments</p>
+      <div className="mb-1 xl:mb-2">
+        <h2 className="text-lg xl:text-xl text-text-primary heading-display">Building Navigator</h2>
+        <p className="text-xs text-gold-600 mt-0.5">Select a floor to explore apartments</p>
       </div>
 
-      <div className="flex-1 flex gap-2 xl:gap-4 min-h-0">
+      <div className="flex-1 flex gap-2 xl:gap-3 min-h-0">
         {/* Elevator Panel */}
         <div className="flex flex-col w-14 xl:w-20 shrink-0">
           <form onSubmit={handleJumpToFloor} className="mb-2 xl:mb-3">
@@ -155,8 +155,8 @@ export default function BuildingImage({ apartments, selectedFloor, onFloorClick 
         {/* Building Column */}
         <div className="flex-1 flex flex-col min-h-0">
           {/* Building Image */}
-          <div className="flex-1 relative flex items-center justify-center min-h-0">
-            <div className="relative h-full w-full xl:max-h-[750px]">
+          <div className="flex-1 relative min-h-0">
+            <div className="relative h-full w-full">
               <img
                 src="/assets/renders/elevation.webp"
                 alt="Santa Maria Residences Tower"
@@ -203,7 +203,7 @@ export default function BuildingImage({ apartments, selectedFloor, onFloorClick 
           </div>
 
           {/* Floor Info Panel — fixed below building, never clips */}
-          <div className="shrink-0 mt-1 xl:mt-2">
+          <div className="shrink-0 mt-1">
             <div
               className={`rounded-lg xl:rounded-xl overflow-hidden transition-all duration-300 ${
                 activeFloor

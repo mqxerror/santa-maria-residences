@@ -69,7 +69,7 @@ export default function LandingPage() {
               <img
                 src="https://www.mercan.com/wp-content/uploads/2024/06/logo.png"
                 alt="Mercan Group"
-                className="h-10 lg:h-14 xl:h-20 w-auto"
+                className="h-10 lg:h-12 xl:h-16 w-auto"
               />
               <span className="hidden sm:block text-white font-semibold text-sm leading-tight">Santa Maria<br/><span className="text-white/60 font-normal text-xs">Residences</span></span>
             </Link>
@@ -183,7 +183,7 @@ export default function LandingPage() {
           <div className="max-w-2xl">
 
             {/* Animated Heading */}
-            <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold text-white leading-tight mb-6">
+            <h1 className="text-4xl md:text-5xl lg:text-5xl xl:text-6xl font-bold text-white leading-tight mb-6">
               <TextGenerateEffect
                 words={projectConfig.name}
                 className="text-white"
@@ -380,23 +380,23 @@ export default function LandingPage() {
             <div className="grid grid-cols-2 gap-3 md:gap-4">
               <div className="bg-primary rounded-xl md:rounded-2xl p-4 md:p-6 text-white relative overflow-hidden group">
                 <div className="absolute inset-0 bg-accent/10 opacity-0 group-hover:opacity-100 transition-opacity" />
-                <p className="text-3xl md:text-5xl font-bold mb-1 relative z-10">{projectConfig.building.totalUnits}</p>
+                <p className="text-3xl md:text-4xl xl:text-5xl font-bold mb-1 relative z-10">{projectConfig.building.totalUnits}</p>
                 <p className="text-white/70 text-xs md:text-sm relative z-10">Apartments</p>
                 <p className="text-white/50 text-[10px] md:text-xs mt-1.5 md:mt-2 relative z-10">Across {projectConfig.building.totalFloors} floors</p>
               </div>
               <div className="bg-white border border-stone-200 rounded-xl md:rounded-2xl p-4 md:p-6 hover:border-accent/30 transition-colors group">
-                <p className="text-3xl md:text-5xl font-bold text-primary mb-1">{projectConfig.building.completionYear}</p>
+                <p className="text-3xl md:text-4xl xl:text-5xl font-bold text-primary mb-1">{projectConfig.building.completionYear}</p>
                 <p className="text-text-secondary text-xs md:text-sm">Delivery Year</p>
                 <p className="text-text-muted text-[10px] md:text-xs mt-1.5 md:mt-2">Ready for occupancy</p>
               </div>
               <div className="bg-white border border-stone-200 rounded-xl md:rounded-2xl p-4 md:p-6 hover:border-accent/30 transition-colors group">
-                <p className="text-3xl md:text-5xl font-bold text-accent mb-1">5★</p>
+                <p className="text-3xl md:text-4xl xl:text-5xl font-bold text-accent mb-1">5★</p>
                 <p className="text-text-secondary text-xs md:text-sm">Premium Living</p>
                 <p className="text-text-muted text-[10px] md:text-xs mt-1.5 md:mt-2">Santa Maria, Panama City</p>
               </div>
               <div className="bg-accent rounded-xl md:rounded-2xl p-4 md:p-6 text-primary-dark relative overflow-hidden group">
                 <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity" />
-                <p className="text-3xl md:text-5xl font-bold mb-1 relative z-10">24/7</p>
+                <p className="text-3xl md:text-4xl xl:text-5xl font-bold mb-1 relative z-10">24/7</p>
                 <p className="text-primary-dark/80 text-xs md:text-sm relative z-10">Full Amenities</p>
                 <p className="text-primary-dark/60 text-[10px] md:text-xs mt-1.5 md:mt-2 relative z-10">Pool, gym, cinema & more</p>
               </div>
@@ -405,7 +405,7 @@ export default function LandingPage() {
             {/* Right: Image + Features */}
             <div className="space-y-4">
               {/* Main Image */}
-              <div className="relative h-48 rounded-2xl overflow-hidden">
+              <div className="relative h-40 lg:h-48 rounded-2xl overflow-hidden">
                 <img
                   src="/assets/renders/pool.webp"
                   alt="Rooftop infinity pool"
@@ -419,25 +419,25 @@ export default function LandingPage() {
               </div>
               {/* Feature Row */}
               <div className="grid grid-cols-2 gap-4">
-                <div className="relative h-32 rounded-xl overflow-hidden group">
+                <div className="relative h-28 lg:h-32 rounded-xl overflow-hidden group">
                   <img
                     src="/assets/renders/entrance-detail.webp"
                     alt="Premium lobby"
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
                   <div className="absolute bottom-3 left-3">
                     <p className="text-white text-sm font-medium">Premium Location</p>
                     <p className="text-white/70 text-xs">Santa Maria district</p>
                   </div>
                 </div>
-                <div className="relative h-32 rounded-xl overflow-hidden group">
+                <div className="relative h-28 lg:h-32 rounded-xl overflow-hidden group">
                   <img
                     src="/assets/renders/living.webp"
                     alt="Hotel management"
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
                   <div className="absolute bottom-3 left-3">
                     <p className="text-white text-sm font-medium">Investment Returns</p>
                     <p className="text-white/70 text-xs">Strong rental yields</p>
@@ -553,7 +553,7 @@ export default function LandingPage() {
             <p className="text-accent text-sm font-semibold tracking-widest uppercase mb-4 animate-fade-in">
               {stats.available} of {stats.totalUnits} Units Available
             </p>
-            <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight mb-5">
+            <h2 className="text-3xl md:text-4xl lg:text-4xl xl:text-5xl font-bold text-white leading-tight mb-5">
               Find Your Perfect Residence
             </h2>
             <p className="text-lg md:text-xl text-white/80 mb-10 leading-relaxed">
@@ -709,7 +709,7 @@ export default function LandingPage() {
                 {/* Card */}
                 <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-6 hover:bg-white/10 hover:border-accent/30 transition-all h-full">
                   <h3 className="text-lg font-bold text-white mb-2">Invest</h3>
-                  <p className="text-4xl font-bold text-accent mb-2">$319K</p>
+                  <p className="text-4xl font-bold text-accent mb-2">$347K</p>
                   <p className="text-sm text-white/60">Minimum property investment to qualify for the program</p>
                 </div>
               </div>

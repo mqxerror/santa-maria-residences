@@ -45,7 +45,7 @@ export default function MainNav({ variant = 'solid', className }: MainNavProps) 
             <img
               src="https://www.mercan.com/wp-content/uploads/2024/06/logo.png"
               alt="Mercan Group"
-              className={cn('w-auto', isTransparent ? 'h-20' : 'h-16 lg:h-18')}
+              className={cn('w-auto', isTransparent ? 'h-14 xl:h-16' : 'h-12 lg:h-14')}
             />
             <span className={cn('hidden sm:block font-semibold text-sm leading-tight', isTransparent ? 'text-white' : 'text-primary')}>
               Santa Maria<br/><span className={cn('font-normal text-xs', isTransparent ? 'text-white/60' : 'text-slate-500')}>Residences</span>
