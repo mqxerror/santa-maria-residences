@@ -193,13 +193,13 @@ export default function ApartmentsPage() {
   }
 
   // Stats - use config total for consistency
-  const stats = {
+  const stats = useMemo(() => ({
     total: projectConfig.building.totalUnits, // 200 total apartments
     available: apartments.filter(a => a.status === 'available').length,
     reserved: apartments.filter(a => a.status === 'reserved').length,
     sold: apartments.filter(a => a.status === 'sold').length,
     filtered: filteredApartments.length,
-  }
+  }), [apartments, filteredApartments.length])
 
   const handleCardClick = (apt: ExecutiveSuite) => {
     setSelectedApartment(apt)
@@ -565,6 +565,7 @@ export default function ApartmentsPage() {
                       <img
                         src={getSuiteImage(apt.unit_number)}
                         alt={`Suite ${apt.floor}-${apt.unit_number}`}
+                        loading="lazy"
                         className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
@@ -658,6 +659,7 @@ export default function ApartmentsPage() {
                       <img
                         src={getSuiteImage(apt.unit_number)}
                         alt={`Suite ${apt.floor}-${apt.unit_number}`}
+                        loading="lazy"
                         className="w-full h-full object-cover"
                       />
                     </div>

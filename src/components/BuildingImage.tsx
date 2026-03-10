@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import type { Apartment } from '@/types/database'
 import { ChevronUp, ChevronDown, Crown, Crosshair } from 'lucide-react'
 import { MIN_FLOOR, MAX_FLOOR, TOTAL_RESIDENTIAL_FLOORS, BUILDING_CONFIG, PENTHOUSE_FLOOR } from '@/config/building'
@@ -74,7 +74,7 @@ export default function BuildingImage({ apartments, selectedFloor, onFloorClick 
     return () => window.removeEventListener('keydown', handleKeyDown)
   }, [selectedFloor])
 
-  const floors = Array.from({ length: TOTAL_RESIDENTIAL_FLOORS }, (_, i) => {
+  const floors = useMemo(() => Array.from({ length: TOTAL_RESIDENTIAL_FLOORS }, (_, i) => {
     const floor = MAX_FLOOR - i
     const floorHeight = (BUILDING_CONFIG.bottom - BUILDING_CONFIG.top) / TOTAL_RESIDENTIAL_FLOORS
     return {
@@ -85,7 +85,7 @@ export default function BuildingImage({ apartments, selectedFloor, onFloorClick 
       stats: getFloorStats(floor),
       isPenthouse: floor >= PENTHOUSE_FLOOR,
     }
-  })
+  }), [apartments, selectedFloor])
 
   const activeFloor = hoveredFloor || selectedFloor
   const activeStats = activeFloor ? getFloorStats(activeFloor) : null

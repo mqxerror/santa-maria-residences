@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useMemo } from 'react'
 import type { ExecutiveSuite } from '@/types/database'
 import SuiteCard from './building/SuiteCard'
 import SuiteDetail from './building/SuiteDetail'
@@ -101,33 +101,34 @@ export default function FloorPanel({
   }
 
   // Calculate stats
-  const stats = {
+  const stats = useMemo(() => ({
     total: apartments.length,
     available: apartments.filter((a) => a.status === 'available').length,
     reserved: apartments.filter((a) => a.status === 'reserved').length,
     sold: apartments.filter((a) => a.status === 'sold').length,
-  }
+  }), [apartments])
 
-  // Filter apartments
-  let filteredApartments = statusFilter === 'all'
-    ? apartments
-    : apartments.filter((a) => a.status === statusFilter)
+  // Filter and sort apartments
+  const filteredApartments = useMemo(() => {
+    let result = statusFilter === 'all'
+      ? apartments
+      : apartments.filter((a) => a.status === statusFilter)
 
-  if (showOnlyAvailable) {
-    filteredApartments = filteredApartments.filter((a) => a.status === 'available')
-  }
-
-  // Sort apartments
-  filteredApartments = [...filteredApartments].sort((a, b) => {
-    if (sortBy === 'unit') return a.unit_number - b.unit_number
-    if (sortBy === 'size') return b.size_sqm - a.size_sqm
-    if (sortBy === 'price') {
-      const priceA = (3200 + (a.floor - 7) * 50) * a.size_sqm
-      const priceB = (3200 + (b.floor - 7) * 50) * b.size_sqm
-      return priceA - priceB
+    if (showOnlyAvailable) {
+      result = result.filter((a) => a.status === 'available')
     }
-    return 0
-  })
+
+    return [...result].sort((a, b) => {
+      if (sortBy === 'unit') return a.unit_number - b.unit_number
+      if (sortBy === 'size') return b.size_sqm - a.size_sqm
+      if (sortBy === 'price') {
+        const priceA = (3200 + (a.floor - 7) * 50) * a.size_sqm
+        const priceB = (3200 + (b.floor - 7) * 50) * b.size_sqm
+        return priceA - priceB
+      }
+      return 0
+    })
+  }, [apartments, statusFilter, showOnlyAvailable, sortBy])
 
   return (
     <div className="h-full flex flex-col">
@@ -256,7 +257,7 @@ export default function FloorPanel({
               <SuiteCard
                 key={suite.id}
                 suite={suite}
-                onClick={() => onApartmentClick(suite)}
+                onClick={onApartmentClick}
               />
             ))}
           </div>

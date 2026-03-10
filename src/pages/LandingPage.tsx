@@ -24,12 +24,19 @@ export default function LandingPage() {
   const [isScrolled, setIsScrolled] = useState(false)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
-  // Track scroll for sticky search bar
+  // Track scroll for sticky search bar (RAF-throttled)
   useEffect(() => {
+    let ticking = false
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 500)
+      if (ticking) return
+      ticking = true
+      requestAnimationFrame(() => {
+        const scrolled = window.scrollY > 500
+        setIsScrolled(prev => prev === scrolled ? prev : scrolled)
+        ticking = false
+      })
     }
-    window.addEventListener('scroll', handleScroll)
+    window.addEventListener('scroll', handleScroll, { passive: true })
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 

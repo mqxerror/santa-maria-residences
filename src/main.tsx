@@ -9,9 +9,9 @@ import './index.css'
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      staleTime: 1000 * 10, // 10 seconds — data considered fresh for 10s
-      refetchOnWindowFocus: true, // refetch when user tabs back to the site
-      refetchOnMount: true, // refetch when component mounts
+      staleTime: 5 * 60 * 1000, // 5 minutes — apartment data doesn't change often
+      refetchOnWindowFocus: false, // avoid unnecessary network churn
+      refetchOnMount: true, // first load should be fresh
       retry: 1,
     },
   },

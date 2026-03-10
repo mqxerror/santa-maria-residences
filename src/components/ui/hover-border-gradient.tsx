@@ -46,12 +46,36 @@ export function HoverBorderGradient({
     "radial-gradient(75% 181.15942028985506% at 50% 50%, #d4af37 0%, rgba(255, 255, 255, 0) 100%)";
 
   useEffect(() => {
-    if (!hovered) {
+    if (hovered) return;
+
+    // Only run interval when component is visible
+    const el = document.querySelector(`[data-hover-border-id]`);
+    if (!el) {
       const interval = setInterval(() => {
         setDirection((prevState) => rotateDirection(prevState));
       }, duration * 1000);
       return () => clearInterval(interval);
     }
+
+    let interval: ReturnType<typeof setInterval> | null = null;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          interval = setInterval(() => {
+            setDirection((prevState) => rotateDirection(prevState));
+          }, duration * 1000);
+        } else if (interval) {
+          clearInterval(interval);
+          interval = null;
+        }
+      },
+      { threshold: 0 }
+    );
+    observer.observe(el);
+    return () => {
+      observer.disconnect();
+      if (interval) clearInterval(interval);
+    };
   }, [hovered, duration]);
 
   return (

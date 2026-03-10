@@ -1,10 +1,11 @@
+import React, { useCallback } from 'react'
 import { cn } from '@/lib/utils'
 import type { ExecutiveSuite } from '@/types/database'
 import { ArrowRight } from 'lucide-react'
 
 interface SuiteCardProps {
   suite: ExecutiveSuite
-  onClick: () => void
+  onClick: (suite: ExecutiveSuite | null) => void
 }
 
 import { getUnitType, getUnitPrice, formatPriceShort, getViewDirection as getView } from '@/lib/apartment-utils'
@@ -47,16 +48,20 @@ const statusConfig = {
   },
 }
 
-export default function SuiteCard({ suite, onClick }: SuiteCardProps) {
+const SuiteCard = React.memo(function SuiteCard({ suite, onClick }: SuiteCardProps) {
   const config = statusConfig[suite.status]
   const suiteType = getSuiteType(suite.size_sqm, suite.floor)
   const price = suite.price_display || formatPriceShort(getUnitPrice(suite.floor, suite.unit))
   const viewDirection = getViewDirection(suite.unit_number)
   const isSold = suite.status === 'sold'
 
+  const handleClick = useCallback(() => {
+    onClick(suite)
+  }, [onClick, suite])
+
   return (
     <button
-      onClick={onClick}
+      onClick={handleClick}
       className={cn(
         'bg-white rounded-xl p-4 text-left w-full group',
         'border border-slate-200 hover:border-slate-300 hover:shadow-md',
@@ -98,4 +103,6 @@ export default function SuiteCard({ suite, onClick }: SuiteCardProps) {
       </div>
     </button>
   )
-}
+})
+
+export default SuiteCard

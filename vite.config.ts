@@ -10,4 +10,16 @@ export default defineConfig({
       '@': path.resolve(__dirname, './src'),
     },
   },
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          'framer-motion': ['framer-motion'],
+          'react-router': ['react-router-dom'],
+          'supabase': ['@supabase/supabase-js'],
+          'react-query': ['@tanstack/react-query'],
+        },
+      },
+    },
+  },
 })

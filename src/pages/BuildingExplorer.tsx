@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, useMemo } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
 import { fetchApartments } from '@/lib/supabase'
@@ -52,12 +52,12 @@ export default function BuildingExplorer() {
     ? apartments.filter((apt) => apt.floor === selectedFloor)
     : []
 
-  const totalStats = {
+  const totalStats = useMemo(() => ({
     total: apartments.length,
     available: apartments.filter((a) => a.status === 'available').length,
     reserved: apartments.filter((a) => a.status === 'reserved').length,
     sold: apartments.filter((a) => a.status === 'sold').length,
-  }
+  }), [apartments])
 
   const handleFloorClick = (floor: number) => {
     setSelectedFloor(floor)
