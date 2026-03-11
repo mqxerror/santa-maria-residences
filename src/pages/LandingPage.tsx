@@ -294,7 +294,7 @@ export default function LandingPage() {
         <div className="page-container">
           <div className="bg-surface rounded-xl shadow-lg border border-border p-4 sm:px-5 sm:py-4">
             <div className="flex flex-col sm:flex-row sm:items-center gap-3">
-              <div className="grid grid-cols-2 sm:flex gap-3 flex-1">
+              <div className="grid grid-cols-2 sm:flex gap-3">
                 <select
                   value={selectedBeds}
                   onChange={(e) => setSelectedBeds(e.target.value)}
@@ -328,14 +328,14 @@ export default function LandingPage() {
                   <option value="720">$500K+</option>
                 </select>
               </div>
-              <div className="hidden sm:block flex-1 text-right">
-                <span className="text-sm text-text-muted">
+              <div className="hidden sm:flex items-center flex-1 justify-end">
+                <span className="text-sm text-text-muted whitespace-nowrap">
                   <span className="font-semibold text-text-primary">{stats.available}</span> units available
                 </span>
               </div>
               <button
                 onClick={handleSearch}
-                className="w-full sm:w-auto px-5 py-2.5 sm:py-2 bg-primary hover:bg-primary-light text-white text-sm font-medium rounded-lg transition-colors flex items-center justify-center gap-2 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:ring-offset-2"
+                className="w-full sm:w-auto px-5 py-2.5 sm:py-2 bg-primary hover:bg-primary-light text-white text-sm font-medium rounded-lg transition-colors flex items-center justify-center gap-2 shrink-0 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:ring-offset-2"
               >
                 View Units
                 <ChevronRight className="w-4 h-4" aria-hidden="true" />
