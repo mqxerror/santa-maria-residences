@@ -215,6 +215,8 @@ export default function ApartmentsPage() {
             <Link to="/" className="flex items-center gap-3">
               <img
                 src="https://www.mercan.com/wp-content/uploads/2024/06/logo.png"
+                width={160}
+                height={40}
                 alt="Mercan Group"
                 className="h-10 lg:h-12 xl:h-14 w-auto"
               />
@@ -287,17 +289,17 @@ export default function ApartmentsPage() {
               <div className="flex items-center gap-1.5">
                 <div className="w-2 h-2 rounded-full bg-emerald-400" />
                 <span className="text-white font-semibold text-sm">{stats.available}</span>
-                <span className="text-white/50 text-xs">available</span>
+                <span className="text-white/70 text-xs">available</span>
               </div>
               <div className="flex items-center gap-1.5">
                 <div className="w-2 h-2 rounded-full bg-amber-400" />
                 <span className="text-white font-semibold text-sm">{stats.reserved}</span>
-                <span className="text-white/50 text-xs">reserved</span>
+                <span className="text-white/70 text-xs">reserved</span>
               </div>
               <div className="flex items-center gap-1.5">
-                <Building2 className="w-3.5 h-3.5 text-white/50" />
+                <Building2 className="w-3.5 h-3.5 text-white/70" />
                 <span className="text-white font-semibold text-sm">{projectConfig.building.floorRange.min}-{projectConfig.building.floorRange.max}</span>
-                <span className="text-white/50 text-xs">floors</span>
+                <span className="text-white/70 text-xs">floors</span>
               </div>
             </div>
           </div>

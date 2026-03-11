@@ -96,6 +96,9 @@ export default function AboutPage() {
                 src="/assets/renders/entrance.webp"
                 alt="Grand Entrance"
                 className="w-full h-full object-cover"
+                loading="lazy"
+                width={1920}
+                height={1080}
               />
             </div>
           </div>

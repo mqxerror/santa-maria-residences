@@ -4,7 +4,7 @@ import { AuthProvider } from './contexts/AuthContext'
 import ProtectedRoute from './components/ProtectedRoute'
 import PageTransition from './components/PageTransition'
 
-// Eager load — critical for FCP
+// Eager load — critical for LCP
 import LandingPage from './pages/LandingPage'
 
 // Lazy-loaded pages
@@ -28,7 +28,6 @@ function AppRoutes() {
     <Suspense fallback={<div className="min-h-screen flex items-center justify-center"><div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin" /></div>}>
       <PageTransition key={location.pathname}>
         <Routes location={location}>
-          {/* Public Routes */}
           <Route path="/" element={<LandingPage />} />
           <Route path="/building" element={<BuildingExplorer />} />
           <Route path="/building-dual" element={<BuildingExplorerDualAB />} />
@@ -40,8 +39,6 @@ function AppRoutes() {
           <Route path="/about" element={<AboutPage />} />
           <Route path="/apartments" element={<ApartmentsPage />} />
           <Route path="/location" element={<LocationPage />} />
-
-          {/* Admin Routes */}
           <Route path="/login" element={<LoginPage />} />
           <Route
             path="/admin"

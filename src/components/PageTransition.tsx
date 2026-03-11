@@ -1,4 +1,4 @@
-import { useEffect, useState, type ReactNode } from 'react'
+import { useEffect, useState, useRef, type ReactNode } from 'react'
 import { useLocation } from 'react-router-dom'
 
 interface PageTransitionProps {
@@ -7,14 +7,19 @@ interface PageTransitionProps {
 
 export default function PageTransition({ children }: PageTransitionProps) {
   const location = useLocation()
-  const [isVisible, setIsVisible] = useState(false)
+  const [isVisible, setIsVisible] = useState(true)
   const [displayChildren, setDisplayChildren] = useState(children)
+  const isFirstMount = useRef(true)
 
   useEffect(() => {
-    // Start fade out
+    if (isFirstMount.current) {
+      // First mount — show immediately, no fade delay (critical for FCP/LCP)
+      isFirstMount.current = false
+      return
+    }
+    // Subsequent navigations — fade transition
     setIsVisible(false)
 
-    // After fade out, update children and fade in
     const timeout = setTimeout(() => {
       setDisplayChildren(children)
       setIsVisible(true)
@@ -22,11 +27,6 @@ export default function PageTransition({ children }: PageTransitionProps) {
 
     return () => clearTimeout(timeout)
   }, [location.pathname])
-
-  // Initial mount
-  useEffect(() => {
-    setIsVisible(true)
-  }, [])
 
   return (
     <div

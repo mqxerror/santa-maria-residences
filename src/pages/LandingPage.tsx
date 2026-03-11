@@ -1,13 +1,18 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useMemo, lazy, Suspense } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
-import { fetchApartments } from '@/lib/supabase'
 import { projectConfig } from '@/config/project'
 import { MapPin, Building2, TrendingUp, ChevronRight, Download, ArrowRight, Users, Calendar, Globe, ExternalLink, Menu, X } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import Footer from '@/components/Footer'
-// Aceternity UI Components
-import { BackgroundBeams, TextGenerateEffect, FlipWords, Spotlight, HoverBorderGradient, FocusCards } from '@/components/ui'
+
+// Lazy-load Aceternity UI components to keep framer-motion out of critical render path
+const BackgroundBeams = lazy(() => import('@/components/ui/background-beams').then(m => ({ default: m.BackgroundBeams })))
+const TextGenerateEffect = lazy(() => import('@/components/ui/text-generate-effect').then(m => ({ default: m.TextGenerateEffect })))
+const FlipWords = lazy(() => import('@/components/ui/flip-words').then(m => ({ default: m.FlipWords })))
+const Spotlight = lazy(() => import('@/components/ui/spotlight').then(m => ({ default: m.Spotlight })))
+const HoverBorderGradient = lazy(() => import('@/components/ui/hover-border-gradient').then(m => ({ default: m.HoverBorderGradient })))
+const FocusCards = lazy(() => import('@/components/ui/focus-cards').then(m => ({ default: m.FocusCards })))
 
 // Gallery images for FocusCards showcase
 const galleryCards = [
@@ -23,6 +28,21 @@ export default function LandingPage() {
   const [selectedBudget, setSelectedBudget] = useState<string>('any')
   const [isScrolled, setIsScrolled] = useState(false)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+
+  // Hide static hero shell when scrolled past hero (it's outside #root for instant LCP)
+  useEffect(() => {
+    const shell = document.getElementById('hero-shell')
+    if (!shell) return
+    const handleScroll = () => {
+      shell.style.display = window.scrollY > window.innerHeight ? 'none' : ''
+    }
+    window.addEventListener('scroll', handleScroll, { passive: true })
+    return () => {
+      window.removeEventListener('scroll', handleScroll)
+      // Restore shell visibility when navigating away (SPA)
+      shell.style.display = ''
+    }
+  }, [])
 
   // Track scroll for sticky search bar (RAF-throttled)
   useEffect(() => {
@@ -43,19 +63,20 @@ export default function LandingPage() {
   const { data: apartments = [] } = useQuery({
     queryKey: ['apartments'],
     queryFn: async () => {
+      const { fetchApartments } = await import('@/lib/supabase')
       return await fetchApartments()
     },
   })
 
   // Calculate stats
-  const stats = {
+  const stats = useMemo(() => ({
     available: apartments.filter((a) => a.status === 'available').length,
     reserved: apartments.filter((a) => a.status === 'reserved').length,
     floors: projectConfig.building.totalFloors,
     totalUnits: projectConfig.building.totalUnits,
     startingPrice: projectConfig.pricing.startingFrom,
     deliveryYear: projectConfig.building.completionYear,
-  }
+  }), [apartments])
 
   const handleSearch = () => {
     const params = new URLSearchParams()
@@ -75,6 +96,8 @@ export default function LandingPage() {
             <Link to="/" className="flex items-center gap-3 focus:outline-none focus:ring-2 focus:ring-white/50 focus:ring-offset-2 focus:ring-offset-transparent rounded-lg">
               <img
                 src="https://www.mercan.com/wp-content/uploads/2024/06/logo.png"
+                width={160}
+                height={40}
                 alt="Mercan Group"
                 className="h-10 lg:h-12 xl:h-16 w-auto"
               />
@@ -157,33 +180,26 @@ export default function LandingPage() {
       </header>
 
       {/* Hero Section - Enhanced with Aceternity UI */}
+      {/* Background image is provided by #hero-shell outside React root for instant LCP */}
       <main id="main-content" className="relative h-[85vh] min-h-[500px] md:min-h-[500px] flex items-center overflow-hidden">
-        {/* Background Image with Parallax */}
+        {/* Gradient overlays on top of static hero shell image */}
         <div className="absolute inset-0 overflow-hidden">
-          <div
-            className="absolute inset-0 scale-105"
-            style={{ transform: `translateY(${isScrolled ? '5%' : '0'})`, transition: 'transform 0.5s ease-out' }}
-          >
-            <img
-              src={projectConfig.media.heroImage}
-              alt={projectConfig.name}
-              className="w-full h-full object-cover"
-              style={{ objectPosition: 'center 25%' }}
-            />
-          </div>
-          {/* Layered gradient for depth */}
           <div className="absolute inset-0 bg-gradient-to-r from-black/85 via-black/50 to-black/20" />
           <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-black/30" />
         </div>
 
-        {/* Animated Spotlight Effect */}
-        <Spotlight
-          className="-top-40 left-0 md:left-60 md:-top-20"
-          fill="#d4af37"
-        />
+        {/* Animated Spotlight Effect (lazy — decorative) */}
+        <Suspense fallback={null}>
+          <Spotlight
+            className="-top-40 left-0 md:left-60 md:-top-20"
+            fill="#d4af37"
+          />
+        </Suspense>
 
-        {/* Animated Background Beams */}
-        <BackgroundBeams className="opacity-40" />
+        {/* Animated Background Beams (lazy — decorative) */}
+        <Suspense fallback={null}>
+          <BackgroundBeams className="opacity-40" />
+        </Suspense>
 
         {/* Content */}
         <div className="relative page-container z-10 pt-20 lg:pt-24">
@@ -191,35 +207,41 @@ export default function LandingPage() {
 
             {/* Animated Heading */}
             <h1 className="text-4xl md:text-5xl lg:text-5xl xl:text-6xl font-bold text-white leading-tight mb-6">
-              <TextGenerateEffect
-                words={projectConfig.name}
-                className="text-white"
-                filter={false}
-                duration={0.8}
-              />
+              <Suspense fallback={<span className="text-white">{projectConfig.name}</span>}>
+                <TextGenerateEffect
+                  words={projectConfig.name}
+                  className="text-white"
+                  filter={false}
+                  duration={0.8}
+                />
+              </Suspense>
             </h1>
 
             {/* Animated Tagline with FlipWords */}
             <p className="text-xl md:text-2xl text-white/80 mb-8 flex items-center gap-2 flex-wrap">
               Experience
-              <FlipWords
-                words={['Luxury', 'Elegance', 'Comfort', 'Excellence']}
-                className="text-accent font-semibold"
-                duration={3000}
-              />
+              <Suspense fallback={<span className="text-accent font-semibold">Luxury</span>}>
+                <FlipWords
+                  words={['Luxury', 'Elegance', 'Comfort', 'Excellence']}
+                  className="text-accent font-semibold"
+                  duration={3000}
+                />
+              </Suspense>
               <span className="hidden sm:inline">in the heart of Panama</span>
             </p>
 
             {/* CTAs with HoverBorderGradient */}
             <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 mb-10">
               <Link to="/building">
-                <HoverBorderGradient
-                  containerClassName="rounded-xl"
-                  className="flex items-center gap-2 px-6 py-3 bg-slate-950 text-white font-medium"
-                >
-                  Explore Availability
-                  <ArrowRight className="w-4 h-4" />
-                </HoverBorderGradient>
+                <Suspense fallback={<span className="flex items-center gap-2 px-6 py-3 bg-slate-950 text-white font-medium rounded-xl border border-white/20">Explore Availability <ArrowRight className="w-4 h-4" /></span>}>
+                  <HoverBorderGradient
+                    containerClassName="rounded-xl"
+                    className="flex items-center gap-2 px-6 py-3 bg-slate-950 text-white font-medium"
+                  >
+                    Explore Availability
+                    <ArrowRight className="w-4 h-4" />
+                  </HoverBorderGradient>
+                </Suspense>
               </Link>
               <a
                 href="/assets/Mercan-Group-Panama-Brochure.pdf"
@@ -373,11 +395,11 @@ export default function LandingPage() {
       </div>
 
       {/* Why Santa Maria - Stats & Image Grid */}
-      <section className="py-10 lg:py-16 bg-gradient-to-b from-stone-50/80 to-white overflow-hidden">
+      <section className="py-10 lg:py-16 bg-gradient-to-b from-stone-50 to-white overflow-hidden">
         <div className="page-container">
           {/* Section Header */}
           <div className="text-center mb-12">
-            <p className="text-accent text-xs font-semibold tracking-widest uppercase mb-2">Why Choose Us</p>
+            <p className="text-gold-700 text-xs font-semibold tracking-widest uppercase mb-2">Why Choose Us</p>
             <h2 className="text-2xl sm:text-3xl font-bold text-text-primary">The Santa Maria Advantage</h2>
           </div>
 
@@ -389,23 +411,23 @@ export default function LandingPage() {
                 <div className="absolute inset-0 bg-accent/10 opacity-0 group-hover:opacity-100 transition-opacity" />
                 <p className="text-3xl md:text-4xl xl:text-5xl font-bold mb-1 relative z-10">{projectConfig.building.totalUnits}</p>
                 <p className="text-white/70 text-xs md:text-sm relative z-10">Apartments</p>
-                <p className="text-white/50 text-[10px] md:text-xs mt-1.5 md:mt-2 relative z-10">Across {projectConfig.building.totalFloors} floors</p>
+                <p className="text-white/70 text-[10px] md:text-xs mt-1.5 md:mt-2 relative z-10">Across {projectConfig.building.totalFloors} floors</p>
               </div>
               <div className="bg-white border border-stone-200 rounded-xl md:rounded-2xl p-4 md:p-6 hover:border-accent/30 transition-colors group">
                 <p className="text-3xl md:text-4xl xl:text-5xl font-bold text-primary mb-1">{projectConfig.building.completionYear}</p>
                 <p className="text-text-secondary text-xs md:text-sm">Delivery Year</p>
-                <p className="text-text-muted text-[10px] md:text-xs mt-1.5 md:mt-2">Ready for occupancy</p>
+                <p className="text-text-secondary text-[10px] md:text-xs mt-1.5 md:mt-2">Ready for occupancy</p>
               </div>
               <div className="bg-white border border-stone-200 rounded-xl md:rounded-2xl p-4 md:p-6 hover:border-accent/30 transition-colors group">
-                <p className="text-3xl md:text-4xl xl:text-5xl font-bold text-accent mb-1">5★</p>
+                <p className="text-3xl md:text-4xl xl:text-5xl font-bold text-gold-700 mb-1">5★</p>
                 <p className="text-text-secondary text-xs md:text-sm">Premium Living</p>
-                <p className="text-text-muted text-[10px] md:text-xs mt-1.5 md:mt-2">Santa Maria, Panama City</p>
+                <p className="text-text-secondary text-[10px] md:text-xs mt-1.5 md:mt-2">Santa Maria, Panama City</p>
               </div>
               <div className="bg-accent rounded-xl md:rounded-2xl p-4 md:p-6 text-primary-dark relative overflow-hidden group">
                 <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity" />
                 <p className="text-3xl md:text-4xl xl:text-5xl font-bold mb-1 relative z-10">24/7</p>
                 <p className="text-primary-dark/80 text-xs md:text-sm relative z-10">Full Amenities</p>
-                <p className="text-primary-dark/60 text-[10px] md:text-xs mt-1.5 md:mt-2 relative z-10">Pool, gym, cinema & more</p>
+                <p className="text-primary-dark/80 text-[10px] md:text-xs mt-1.5 md:mt-2 relative z-10">Pool, gym, cinema & more</p>
               </div>
             </div>
 
@@ -417,6 +439,9 @@ export default function LandingPage() {
                   src="/assets/renders/pool.webp"
                   alt="Rooftop infinity pool"
                   className="w-full h-full object-cover"
+                  loading="lazy"
+                  width={1920}
+                  height={1080}
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
                 <div className="absolute bottom-4 left-4">
@@ -431,6 +456,9 @@ export default function LandingPage() {
                     src="/assets/renders/entrance-detail.webp"
                     alt="Premium lobby"
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    loading="lazy"
+                    width={1920}
+                    height={1080}
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
                   <div className="absolute bottom-3 left-3">
@@ -443,6 +471,9 @@ export default function LandingPage() {
                     src="/assets/renders/living.webp"
                     alt="Hotel management"
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    loading="lazy"
+                    width={1920}
+                    height={1080}
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
                   <div className="absolute bottom-3 left-3">
@@ -460,10 +491,12 @@ export default function LandingPage() {
       <section className="py-12 bg-white">
         <div className="page-container">
           <div className="text-center mb-8">
-            <p className="text-accent text-xs font-semibold tracking-widest uppercase mb-2">Gallery</p>
+            <p className="text-gold-700 text-xs font-semibold tracking-widest uppercase mb-2">Gallery</p>
             <h2 className="text-2xl sm:text-3xl font-bold text-text-primary">Experience the Lifestyle</h2>
           </div>
-          <FocusCards cards={galleryCards} />
+          <Suspense fallback={<div className="grid grid-cols-1 md:grid-cols-3 gap-4">{galleryCards.map(c => <div key={c.title} className="aspect-[4/3] bg-stone-100 rounded-lg" />)}</div>}>
+            <FocusCards cards={galleryCards} />
+          </Suspense>
         </div>
       </section>
 
@@ -474,7 +507,7 @@ export default function LandingPage() {
             <div className="grid grid-cols-1 lg:grid-cols-3">
               {/* Left: Availability Stats */}
               <div className="p-8 lg:border-r border-stone-100">
-                <p className="text-accent text-xs font-semibold tracking-widest uppercase mb-4">Now Available</p>
+                <p className="text-gold-700 text-xs font-semibold tracking-widest uppercase mb-4">Now Available</p>
                 <div className="space-y-4">
                   <div className="flex items-baseline gap-2">
                     <span className="text-5xl font-bold text-primary">{stats.available}</span>
@@ -495,7 +528,7 @@ export default function LandingPage() {
 
               {/* Center: Quick Stats */}
               <div className="p-8 lg:border-r border-stone-100 bg-stone-50/50">
-                <p className="text-accent text-xs font-semibold tracking-widest uppercase mb-4">Suite Overview</p>
+                <p className="text-gold-700 text-xs font-semibold tracking-widest uppercase mb-4">Suite Overview</p>
                 <div className="grid grid-cols-2 gap-4">
                   <div>
                     <p className="text-2xl font-bold text-text-primary">81-160</p>
@@ -523,15 +556,17 @@ export default function LandingPage() {
                   <p className="text-white text-xl font-semibold">Browse our interactive building explorer</p>
                 </div>
                 <Link to="/building">
-                  <HoverBorderGradient
-                    containerClassName="rounded-xl"
-                    className="flex items-center gap-2 px-6 py-3 bg-white text-primary font-medium"
-                  >
-                    Explore Units
-                    <ArrowRight className="w-4 h-4" />
-                  </HoverBorderGradient>
+                  <Suspense fallback={<span className="flex items-center gap-2 px-6 py-3 bg-white text-primary font-medium rounded-xl border border-white/20">Explore Units <ArrowRight className="w-4 h-4" /></span>}>
+                    <HoverBorderGradient
+                      containerClassName="rounded-xl"
+                      className="flex items-center gap-2 px-6 py-3 bg-white text-primary font-medium"
+                    >
+                      Explore Units
+                      <ArrowRight className="w-4 h-4" />
+                    </HoverBorderGradient>
+                  </Suspense>
                 </Link>
-                <p className="text-white/50 text-xs mt-4">View floor plans, pricing & availability</p>
+                <p className="text-white/70 text-xs mt-4">View floor plans, pricing & availability</p>
               </div>
             </div>
           </div>
@@ -567,13 +602,15 @@ export default function LandingPage() {
               From spacious 2-bedroom apartments to premium penthouses — explore floor plans, views, and availability in our interactive building explorer.
             </p>
             <Link to="/building">
-              <HoverBorderGradient
-                containerClassName="rounded-xl"
-                className="flex items-center gap-3 px-10 py-5 bg-slate-950 text-white font-semibold text-lg"
-              >
-                Explore the Building
-                <ArrowRight className="w-5 h-5" />
-              </HoverBorderGradient>
+              <Suspense fallback={<span className="flex items-center gap-3 px-10 py-5 bg-slate-950 text-white font-semibold text-lg rounded-xl border border-white/20">Explore the Building <ArrowRight className="w-5 h-5" /></span>}>
+                <HoverBorderGradient
+                  containerClassName="rounded-xl"
+                  className="flex items-center gap-3 px-10 py-5 bg-slate-950 text-white font-semibold text-lg"
+                >
+                  Explore the Building
+                  <ArrowRight className="w-5 h-5" />
+                </HoverBorderGradient>
+              </Suspense>
             </Link>
           </div>
         </div>
@@ -584,7 +621,7 @@ export default function LandingPage() {
         <div className="page-container">
           {/* Section Header */}
           <div className="text-center mb-10">
-            <p className="text-accent text-xs font-semibold tracking-widest uppercase mb-2">Prime Location</p>
+            <p className="text-gold-700 text-xs font-semibold tracking-widest uppercase mb-2">Prime Location</p>
             <h2 className="text-2xl sm:text-3xl font-bold text-text-primary">Where Convenience Meets Lifestyle</h2>
           </div>
 
@@ -692,7 +729,7 @@ export default function LandingPage() {
         <div className="page-container relative z-10">
           {/* Section Header */}
           <div className="text-center mb-16">
-            <p className="text-accent text-xs font-semibold tracking-widest uppercase mb-3">Your Path to Residency</p>
+            <p className="text-gold-700 text-xs font-semibold tracking-widest uppercase mb-3">Your Path to Residency</p>
             <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">Investment Journey</h2>
             <p className="text-white/60 max-w-xl mx-auto">
               A clear pathway from investment to permanent residency in one of the world's most strategic locations.
@@ -716,7 +753,7 @@ export default function LandingPage() {
                 {/* Card */}
                 <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-6 hover:bg-white/10 hover:border-accent/30 transition-all h-full">
                   <h3 className="text-lg font-bold text-white mb-2">Invest</h3>
-                  <p className="text-4xl font-bold text-accent mb-2">$347K</p>
+                  <p className="text-4xl font-bold text-gold-700 mb-2">$347K</p>
                   <p className="text-sm text-white/60">Minimum property investment to qualify for the program</p>
                 </div>
               </div>
@@ -730,7 +767,7 @@ export default function LandingPage() {
                 </div>
                 <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-6 hover:bg-white/10 hover:border-accent/30 transition-all h-full">
                   <h3 className="text-lg font-bold text-white mb-2">Apply</h3>
-                  <p className="text-4xl font-bold text-accent mb-2">30 Days</p>
+                  <p className="text-4xl font-bold text-gold-700 mb-2">30 Days</p>
                   <p className="text-sm text-white/60">Fast-track to permanent residency approval</p>
                 </div>
               </div>
@@ -744,7 +781,7 @@ export default function LandingPage() {
                 </div>
                 <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-6 hover:bg-white/10 hover:border-accent/30 transition-all h-full">
                   <h3 className="text-lg font-bold text-white mb-2">Maintain</h3>
-                  <p className="text-4xl font-bold text-accent mb-2">1 Visit</p>
+                  <p className="text-4xl font-bold text-gold-700 mb-2">1 Visit</p>
                   <p className="text-sm text-white/60">Just one visit every 2 years to maintain status</p>
                 </div>
               </div>
@@ -758,7 +795,7 @@ export default function LandingPage() {
                 </div>
                 <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-6 hover:bg-white/10 hover:border-accent/30 transition-all h-full">
                   <h3 className="text-lg font-bold text-white mb-2">Citizenship</h3>
-                  <p className="text-4xl font-bold text-accent mb-2">5 Years</p>
+                  <p className="text-4xl font-bold text-gold-700 mb-2">5 Years</p>
                   <p className="text-sm text-white/60">Pathway to full Panamanian citizenship</p>
                 </div>
               </div>
@@ -778,7 +815,7 @@ export default function LandingPage() {
                 </div>
                 <div>
                   <p className="text-2xl font-bold text-white">2.77M</p>
-                  <p className="text-xs text-white/50">Visitors in 2024 (+10.6%)</p>
+                  <p className="text-xs text-white/70">Visitors in 2024 (+10.6%)</p>
                 </div>
               </div>
               <div className="flex items-center gap-4 bg-white/5 backdrop-blur-sm rounded-xl p-4 border border-white/10 hover:border-accent/30 transition-colors group">
@@ -787,7 +824,7 @@ export default function LandingPage() {
                 </div>
                 <div>
                   <p className="text-2xl font-bold text-white">$4.99B</p>
-                  <p className="text-xs text-white/50">Canal revenue FY2024</p>
+                  <p className="text-xs text-white/70">Canal revenue FY2024</p>
                 </div>
               </div>
               <div className="flex items-center gap-4 bg-white/5 backdrop-blur-sm rounded-xl p-4 border border-white/10 hover:border-accent/30 transition-colors group">
@@ -796,7 +833,7 @@ export default function LandingPage() {
                 </div>
                 <div>
                   <p className="text-2xl font-bold text-white">85+</p>
-                  <p className="text-xs text-white/50">Direct flight destinations</p>
+                  <p className="text-xs text-white/70">Direct flight destinations</p>
                 </div>
               </div>
             </div>
@@ -810,7 +847,7 @@ export default function LandingPage() {
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
               {/* Left: Partner Info */}
               <div className="lg:col-span-5">
-                <p className="text-accent text-xs font-semibold tracking-widest uppercase mb-2">Trusted Partner</p>
+                <p className="text-gold-700 text-xs font-semibold tracking-widest uppercase mb-2">Trusted Partner</p>
                 <h3 className="text-2xl font-bold text-white mb-3">Globally Supported by Mercan</h3>
                 <p className="text-white/60 text-sm mb-4">
                   Since 1989, Mercan has operated globally with expertise in investment and immigration services across 30+ countries.
@@ -830,19 +867,19 @@ export default function LandingPage() {
               <div className="lg:col-span-7 grid grid-cols-2 sm:grid-cols-4 gap-4">
                 <div className="text-center">
                   <p className="text-3xl font-bold text-white">900+</p>
-                  <p className="text-xs text-white/50 mt-1">Team worldwide</p>
+                  <p className="text-xs text-white/70 mt-1">Team worldwide</p>
                 </div>
                 <div className="text-center">
                   <p className="text-3xl font-bold text-white">4,100+</p>
-                  <p className="text-xs text-white/50 mt-1">Golden Visa investors</p>
+                  <p className="text-xs text-white/70 mt-1">Golden Visa investors</p>
                 </div>
                 <div className="text-center">
                   <p className="text-3xl font-bold text-white">$2B</p>
-                  <p className="text-xs text-white/50 mt-1">Project development</p>
+                  <p className="text-xs text-white/70 mt-1">Project development</p>
                 </div>
                 <div className="text-center">
                   <p className="text-3xl font-bold text-white">35+</p>
-                  <p className="text-xs text-white/50 mt-1">Years experience</p>
+                  <p className="text-xs text-white/70 mt-1">Years experience</p>
                 </div>
               </div>
             </div>
@@ -851,13 +888,15 @@ export default function LandingPage() {
           {/* CTA */}
           <div className="mt-12 text-center">
             <Link to="/building" className="inline-block">
-              <HoverBorderGradient
-                containerClassName="rounded-xl"
-                className="flex items-center gap-2 px-8 py-3 bg-slate-950 text-white font-medium"
-              >
-                Start Your Investment
-                <ArrowRight className="w-4 h-4" />
-              </HoverBorderGradient>
+              <Suspense fallback={<span className="flex items-center gap-2 px-8 py-3 bg-slate-950 text-white font-medium rounded-xl border border-white/20">Start Your Investment <ArrowRight className="w-4 h-4" /></span>}>
+                <HoverBorderGradient
+                  containerClassName="rounded-xl"
+                  className="flex items-center gap-2 px-8 py-3 bg-slate-950 text-white font-medium"
+                >
+                  Start Your Investment
+                  <ArrowRight className="w-4 h-4" />
+                </HoverBorderGradient>
+              </Suspense>
             </Link>
             <p className="text-xs text-white/40 mt-6 max-w-xl mx-auto">
               Programs vary by country; eligibility and timelines depend on individual circumstances. This is not immigration advice.
