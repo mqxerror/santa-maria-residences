@@ -29,17 +29,17 @@ export default function LandingPage() {
   const [isScrolled, setIsScrolled] = useState(false)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
-  // Hide static hero shell when scrolled past hero (it's outside #root for instant LCP)
+  // Manage static hero shell visibility (it's outside #root for instant LCP)
   useEffect(() => {
     const shell = document.getElementById('hero-shell')
     if (!shell) return
     const handleScroll = () => {
+      // Hide shell when scrolled past hero to avoid showing behind other sections
       shell.style.display = window.scrollY > window.innerHeight ? 'none' : ''
     }
     window.addEventListener('scroll', handleScroll, { passive: true })
     return () => {
       window.removeEventListener('scroll', handleScroll)
-      // Restore shell visibility when navigating away (SPA)
       shell.style.display = ''
     }
   }, [])
@@ -88,7 +88,7 @@ export default function LandingPage() {
   }
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen">
       {/* Navigation */}
       <header className={cn('fixed top-0 left-0 right-0 z-50 transition-all duration-300', isScrolled ? 'bg-primary/95 backdrop-blur-md shadow-lg' : 'bg-transparent')}>
         <div className="page-container py-4">
@@ -180,9 +180,9 @@ export default function LandingPage() {
       </header>
 
       {/* Hero Section - Enhanced with Aceternity UI */}
-      {/* Background image is provided by #hero-shell outside React root for instant LCP */}
+      {/* Background image provided by #hero-shell (outside React root) for instant LCP */}
       <main id="main-content" className="relative h-[85vh] min-h-[500px] md:min-h-[500px] flex items-center overflow-hidden">
-        {/* Gradient overlays on top of static hero shell image */}
+        {/* Gradient overlays — static shell hero image shows through */}
         <div className="absolute inset-0 overflow-hidden">
           <div className="absolute inset-0 bg-gradient-to-r from-black/85 via-black/50 to-black/20" />
           <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-black/30" />
