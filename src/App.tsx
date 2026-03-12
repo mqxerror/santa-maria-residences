@@ -20,6 +20,7 @@ const LocationPage = lazy(() => import('./pages/LocationPage'))
 const ApartmentsPage = lazy(() => import('./pages/ApartmentsPage'))
 const LoginPage = lazy(() => import('./pages/LoginPage'))
 const AdminDashboard = lazy(() => import('./pages/AdminDashboard'))
+const ProfilePage = lazy(() => import('./pages/ProfilePage'))
 
 function AppRoutes() {
   const location = useLocation()
@@ -45,6 +46,14 @@ function AppRoutes() {
             element={
               <ProtectedRoute>
                 <AdminDashboard />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/profile"
+            element={
+              <ProtectedRoute>
+                <ProfilePage />
               </ProtectedRoute>
             }
           />

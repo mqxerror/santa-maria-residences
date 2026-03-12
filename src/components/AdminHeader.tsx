@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '@/contexts/AuthContext'
-import { LogOut } from 'lucide-react'
+import { LogOut, UserCog } from 'lucide-react'
 import { toast } from 'sonner'
 
 export default function AdminHeader() {
@@ -22,6 +22,13 @@ export default function AdminHeader() {
         </div>
         <div className="flex items-center gap-4">
           <span className="text-sm text-white/80">{user?.email}</span>
+          <button
+            onClick={() => navigate('/profile')}
+            className="flex items-center gap-2 px-3 py-2 rounded-lg bg-white/10 hover:bg-white/20 transition-colors text-sm"
+          >
+            <UserCog className="w-4 h-4" />
+            Profile
+          </button>
           <button
             onClick={handleSignOut}
             className="flex items-center gap-2 px-3 py-2 rounded-lg bg-white/10 hover:bg-white/20 transition-colors text-sm"
